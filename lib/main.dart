@@ -1,4 +1,3 @@
-import 'package:alltalk_translate/home_page.dart';
 import 'package:alltalk_translate/route_generator.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
