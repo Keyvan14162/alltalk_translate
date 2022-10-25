@@ -1,6 +1,5 @@
 import 'package:alltalk_translate/providers.dart';
 import 'package:alltalk_translate/widgets/change_language_button.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_tts/flutter_tts.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
@@ -13,7 +12,8 @@ class HomePage extends StatefulHookConsumerWidget {
 }
 
 class _HomePageState extends ConsumerState<HomePage> {
-  late TextEditingController _textController;
+  late TextEditingController _firstTextController;
+  late TextEditingController _secondTextController;
   FlutterTts flutterTts = FlutterTts();
 
   double volume = 1.0;
@@ -26,8 +26,9 @@ class _HomePageState extends ConsumerState<HomePage> {
   @override
   void initState() {
     super.initState();
+    _firstTextController = TextEditingController();
+    _secondTextController = TextEditingController();
     init();
-    _textController = TextEditingController();
   }
 
   void init() async {
@@ -38,10 +39,9 @@ class _HomePageState extends ConsumerState<HomePage> {
   @override
   Widget build(BuildContext context) {
     double screenHeight = MediaQuery.of(context).size.height;
-    int textFieldLineCount = (screenHeight / 50).toInt();
-    print(screenHeight);
+    int textFieldLineCount = screenHeight ~/ 40;
     return Scaffold(
-      appBar: AppBar(title: const Text("Text")),
+      appBar: AppBar(title: const Text("AllTalk Translate")),
       body: SingleChildScrollView(
         child: Column(children: [
           Text("${ref.watch(langCodeProvider)} text"),
@@ -59,22 +59,37 @@ class _HomePageState extends ConsumerState<HomePage> {
                     ),
                     child: Padding(
                       padding: const EdgeInsets.only(left: 10),
-                      child: TextField(
-                        maxLines: textFieldLineCount,
-                        minLines: textFieldLineCount,
-                        controller: _textController,
-                        textAlignVertical: TextAlignVertical.center,
-                        decoration: InputDecoration(
-                          hintText: "Write message...",
-                          border: InputBorder.none,
-                        ),
-                        onChanged: (value) {
-                          _text = value.toString();
-                        },
-                        onSubmitted: (value) async {
-                          // _textController.clear();
-                          _speak();
-                        },
+                      child: Stack(
+                        children: [
+                          TextField(
+                            maxLines: textFieldLineCount,
+                            minLines: textFieldLineCount,
+                            controller: _firstTextController,
+                            decoration: const InputDecoration(
+                              hintText: "Write message...",
+                              border: InputBorder.none,
+                            ),
+                            onChanged: (value) {
+                              _text = value.toString();
+                            },
+                            onSubmitted: (value) async {
+                              // _textController.clear();
+                              _speak();
+                            },
+                          ),
+                          Positioned(
+                            bottom: 0,
+                            right: 0,
+                            child: IconButton(
+                              icon: const Icon(
+                                Icons.volume_up,
+                              ),
+                              onPressed: () async {
+                                _speak();
+                              },
+                            ),
+                          )
+                        ],
                       ),
                     ),
                   ),
@@ -94,18 +109,18 @@ class _HomePageState extends ConsumerState<HomePage> {
                       child: TextField(
                         maxLines: textFieldLineCount,
                         minLines: textFieldLineCount,
-                        controller: _textController,
+                        controller: _secondTextController,
                         textAlignVertical: TextAlignVertical.center,
-                        decoration: InputDecoration(
+                        decoration: const InputDecoration(
                           hintText: "Write message...",
                           border: InputBorder.none,
                         ),
                         onChanged: (value) {
-                          _text = value.toString();
+                          // _text = value.toString();
                         },
                         onSubmitted: (value) async {
                           // _textController.clear();
-                          _speak();
+                          // _speak();
                         },
                       ),
                     ),
@@ -170,8 +185,11 @@ class _HomePageState extends ConsumerState<HomePage> {
                 Container(
                   margin: const EdgeInsets.only(left: 10),
                   child: Text(
-                      double.parse((volume).toStringAsFixed(2)).toString(),
-                      style: const TextStyle(fontSize: 17)),
+                    double.parse(
+                      (volume).toStringAsFixed(2),
+                    ).toString(),
+                    style: const TextStyle(fontSize: 17),
+                  ),
                 )
               ],
             ),
@@ -223,7 +241,7 @@ class _HomePageState extends ConsumerState<HomePage> {
 
   void _speak() async {
     initSetting();
-    await flutterTts.speak(_textController.text);
+    await flutterTts.speak(_firstTextController.text);
   }
 
   void _stop() async {
