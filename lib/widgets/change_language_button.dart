@@ -1,6 +1,5 @@
 import 'package:alltalk_translate/providers.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_tts/flutter_tts.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 
 class ChangeLanguageButton extends StatefulHookConsumerWidget {
@@ -15,7 +14,6 @@ class ChangeLanguageButton extends StatefulHookConsumerWidget {
 class _ChangeLanguageButtonState extends ConsumerState<ChangeLanguageButton> {
   String selectedCountryAbbreviation = "tr";
   final double flagImageHeight = 36;
-  FlutterTts flutterTts = FlutterTts();
 
   @override
   Widget build(BuildContext context) {
@@ -60,8 +58,6 @@ class _ChangeLanguageButtonState extends ConsumerState<ChangeLanguageButton> {
           onTap: () async {
             selectedCountryAbbreviation = countryAbbreviation;
             ref.read(langCodeProvider.notifier).state = element.toString();
-            await flutterTts
-                .setLanguage(ref.read(langCodeProvider.notifier).state);
           },
           child: Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
