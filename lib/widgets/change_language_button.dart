@@ -1,10 +1,11 @@
 import 'package:alltalk_translate/providers.dart';
 import 'package:flutter/material.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
+import 'package:alltalk_translate/country_constants.dart' as country_constants;
 
 class ChangeLanguageButton extends StatefulHookConsumerWidget {
-  const ChangeLanguageButton({required this.languages, super.key});
-  final List<String>? languages;
+  const ChangeLanguageButton({required this.buttonNumber, super.key});
+  final int buttonNumber;
 
   @override
   ConsumerState<ChangeLanguageButton> createState() =>
@@ -14,6 +15,7 @@ class ChangeLanguageButton extends StatefulHookConsumerWidget {
 class _ChangeLanguageButtonState extends ConsumerState<ChangeLanguageButton> {
   String selectedCountryAbbreviation = "tr";
   final double flagImageHeight = 36;
+  List<String> myLanguages = country_constants.countryCodes;
 
   @override
   Widget build(BuildContext context) {
@@ -44,20 +46,29 @@ class _ChangeLanguageButtonState extends ConsumerState<ChangeLanguageButton> {
 
   List<PopupMenuItem> createPopupMenuItems() {
     List<PopupMenuItem> popupMenuItemList = [];
-    widget.languages?.asMap().forEach((index, element) {
+    // widget.languages?
+    myLanguages.asMap().forEach((index, element) {
       List<String> countryNameList = element.toString().split("-");
+      print(countryNameList);
       String countryAbbreviation = "";
       if (countryNameList.length == 1) {
         countryAbbreviation = countryNameList[0];
       } else if (countryNameList.length == 2) {
         countryAbbreviation = countryNameList[1].toLowerCase();
       }
+      // print(countryAbbreviation);
 
       popupMenuItemList.add(
         PopupMenuItem(
           onTap: () async {
             selectedCountryAbbreviation = countryAbbreviation;
-            ref.read(langCodeProvider.notifier).state = element.toString();
+            if (widget.buttonNumber == 1) {
+              ref.read(firstLangCodeProvider.notifier).state =
+                  element.toString();
+            } else {
+              ref.read(secondLangCodeProvider.notifier).state =
+                  element.toString();
+            }
           },
           child: Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,

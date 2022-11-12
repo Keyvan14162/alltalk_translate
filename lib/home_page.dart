@@ -3,6 +3,7 @@ import 'package:alltalk_translate/widgets/change_language_button.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_tts/flutter_tts.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
+import 'package:translator/translator.dart';
 
 class HomePage extends StatefulHookConsumerWidget {
   const HomePage({Key? key}) : super(key: key);
@@ -13,6 +14,7 @@ class HomePage extends StatefulHookConsumerWidget {
 
 class _HomePageState extends ConsumerState<HomePage> {
   late TextEditingController _firstTextController;
+  final translator = GoogleTranslator();
   late TextEditingController _secondTextController;
   FlutterTts flutterTts = FlutterTts();
 
@@ -41,12 +43,23 @@ class _HomePageState extends ConsumerState<HomePage> {
     await flutterTts.setVolume(volume);
     await flutterTts.setPitch(pitch);
     await flutterTts.setSpeechRate(speechRate);
-    await flutterTts.setLanguage(ref.read(langCodeProvider.notifier).state);
+    // await flutterTts
+    //     .setLanguage(ref.read(firstLangCodeProvider.notifier).state);
   }
 
-  Future _speak() async {
+  Future _speak(int buttonNumber) async {
     await initSetting();
-    await flutterTts.speak(_firstTextController.text);
+    // var x = await flutterTts.speak(_firstTextController.text);
+    // print(x); konusursa 1 konusmazsa 0
+    if (buttonNumber == 1) {
+      await flutterTts
+          .setLanguage(ref.read(firstLangCodeProvider.notifier).state);
+      await flutterTts.speak(_firstTextController.text);
+    } else {
+      await flutterTts
+          .setLanguage(ref.read(secondLangCodeProvider.notifier).state);
+      await flutterTts.speak(_secondTextController.text);
+    }
   }
 
   Future _stop() async {
@@ -55,6 +68,7 @@ class _HomePageState extends ConsumerState<HomePage> {
 
   @override
   Widget build(BuildContext context) {
+    // getLangs();
     double screenHeight = MediaQuery.of(context).size.height;
     int textFieldLineCount = screenHeight ~/ 40;
     return Scaffold(
@@ -62,11 +76,13 @@ class _HomePageState extends ConsumerState<HomePage> {
       body: SingleChildScrollView(
         child: Column(
           children: [
-            Text("${ref.watch(langCodeProvider)} text"),
+            Text("${ref.watch(firstLangCodeProvider)} text"),
+            Text("${ref.watch(secondLangCodeProvider)} text"),
+
             // Text field
             Row(
               children: [
-                // Text field
+                // first
                 Expanded(
                   child: Padding(
                     padding: const EdgeInsets.all(8.0),
@@ -93,7 +109,7 @@ class _HomePageState extends ConsumerState<HomePage> {
                               },
                               onSubmitted: (value) async {
                                 // _textController.clear();
-                                _speak();
+                                _speak(1);
                               },
                             ),
                             Positioned(
@@ -104,7 +120,7 @@ class _HomePageState extends ConsumerState<HomePage> {
                                   Icons.volume_up,
                                 ),
                                 onPressed: () async {
-                                  _speak();
+                                  _speak(1);
                                 },
                               ),
                             )
@@ -115,6 +131,7 @@ class _HomePageState extends ConsumerState<HomePage> {
                   ),
                 ),
 
+                // second
                 Expanded(
                   child: Padding(
                     padding: const EdgeInsets.all(8.0),
@@ -126,22 +143,37 @@ class _HomePageState extends ConsumerState<HomePage> {
                       ),
                       child: Padding(
                         padding: const EdgeInsets.only(left: 10),
-                        child: TextField(
-                          maxLines: textFieldLineCount,
-                          minLines: textFieldLineCount,
-                          controller: _secondTextController,
-                          textAlignVertical: TextAlignVertical.center,
-                          decoration: const InputDecoration(
-                            hintText: "Write message...",
-                            border: InputBorder.none,
-                          ),
-                          onChanged: (value) {
-                            // _text = value.toString();
-                          },
-                          onSubmitted: (value) async {
-                            // _textController.clear();
-                            // _speak();
-                          },
+                        child: Stack(
+                          children: [
+                            TextField(
+                              maxLines: textFieldLineCount,
+                              minLines: textFieldLineCount,
+                              controller: _secondTextController,
+                              decoration: const InputDecoration(
+                                hintText: "Write message...",
+                                border: InputBorder.none,
+                              ),
+                              onChanged: (value) {
+                                _text = value.toString();
+                              },
+                              onSubmitted: (value) async {
+                                // _textController.clear();
+                                _speak(2);
+                              },
+                            ),
+                            Positioned(
+                              bottom: 0,
+                              right: 0,
+                              child: IconButton(
+                                icon: const Icon(
+                                  Icons.volume_up,
+                                ),
+                                onPressed: () async {
+                                  _speak(2);
+                                },
+                              ),
+                            )
+                          ],
                         ),
                       ),
                     ),
@@ -150,23 +182,36 @@ class _HomePageState extends ConsumerState<HomePage> {
               ],
             ),
 
+            // change icon
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceEvenly,
               children: [
-                ChangeLanguageButton(languages: languages),
+                ChangeLanguageButton(buttonNumber: 1),
 
                 // ilerde buraya basinca diller degissin
                 const Icon(Icons.keyboard_double_arrow_right_outlined),
-                ChangeLanguageButton(languages: languages),
+                ChangeLanguageButton(
+                  buttonNumber: 2,
+                ),
               ],
             ),
 
+            ElevatedButton(
+              onPressed: () async {
+                var translatedText = await translator
+                    .translate(_firstTextController.text, from: "tr", to: 'en');
+                print(translatedText);
+              },
+              child: const Text("Çevir"),
+            )
+            /*
             // speak-stop button
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceEvenly,
               children: [
                 ElevatedButton(
-                  onPressed: () {
+                  onPressed: () async {
+                    //flutterTts.awaitSpeakCompletion(true);
                     _speak();
                   },
                   child: const Text("Konuş"),
@@ -281,9 +326,15 @@ class _HomePageState extends ConsumerState<HomePage> {
                 ],
               ),
             ),
+            */
           ],
         ),
       ),
     );
+  }
+
+  getLangs() async {
+    var langs = await flutterTts.getLanguages;
+    print(langs);
   }
 }

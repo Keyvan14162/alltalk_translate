@@ -39,6 +39,7 @@ dependencies:
   flutter_tts: ^3.5.3
   country_icons: ^2.0.2
   hooks_riverpod: ^2.0.2
+  translator: ^0.1.7
 
 dev_dependencies:
   flutter_test:
