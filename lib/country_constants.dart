@@ -1,5 +1,5 @@
 const List<String> countryCodes = [
-  "ko-KR",
+  //"ko-KR",
   "ru-RU",
   "tr-TR",
   "en-US",

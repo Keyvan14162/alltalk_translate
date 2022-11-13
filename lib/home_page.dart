@@ -13,22 +13,24 @@ class HomePage extends StatefulHookConsumerWidget {
 }
 
 class _HomePageState extends ConsumerState<HomePage> {
+  final translator = GoogleTranslator();
   FlutterTts flutterTts = FlutterTts();
 
-  @override
-  void initState() {
-    super.initState();
-  }
+  double volume = 1.0;
+  double pitch = 1.0;
+  double speechRate = 0.5;
 
   @override
   Widget build(BuildContext context) {
     // getLangs();
+    double screenHeight = MediaQuery.of(context).size.height;
+    int textFieldLineCount = screenHeight ~/ 40;
     return Scaffold(
       appBar: AppBar(title: const Text("AllTalk Translate")),
       body: SingleChildScrollView(
         child: Column(
           children: [
-            Text("${ref.watch(firstLangCodeProvider)} text"),
+            Text("${ref.watch(mainLangCodeProvider)} text"),
             Container(
               height: MediaQuery.of(context).size.height,
               child: ListView.builder(
@@ -37,8 +39,7 @@ class _HomePageState extends ConsumerState<HomePage> {
                 itemCount: 1,
                 itemBuilder: (context, index) {
                   return Row(
-                    children: const [
-                      TranslateCard(),
+                    children: [
                       TranslateCard(),
                       TranslateCard(),
                       TranslateCard(),

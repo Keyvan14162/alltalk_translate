@@ -1,8 +1,5 @@
 import 'package:alltalk_translate/providers.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/src/widgets/container.dart';
-import 'package:flutter/src/widgets/framework.dart';
 import 'package:flutter_tts/flutter_tts.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:translator/translator.dart';
@@ -30,12 +27,12 @@ class _TranslateCardState extends ConsumerState<TranslateCard> {
   double speechRate = 0.5;
   List<String>? languages;
 
-  String _text = "";
-
   @override
   void initState() {
     super.initState();
+
     _textController = TextEditingController();
+
     init();
     initSetting();
   }
@@ -72,6 +69,7 @@ class _TranslateCardState extends ConsumerState<TranslateCard> {
   Widget build(BuildContext context) {
     double screenHeight = MediaQuery.of(context).size.height;
     int textFieldLineCount = screenHeight ~/ 40;
+    _textController.text = ref.read(mainTextProvider.notifier).state;
     return Column(
       children: [
         Padding(
@@ -95,7 +93,8 @@ class _TranslateCardState extends ConsumerState<TranslateCard> {
                       border: InputBorder.none,
                     ),
                     onChanged: (value) {
-                      _text = value.toString();
+                      ref.read(mainTextProvider.notifier).state =
+                          value.toString();
                     },
                     onSubmitted: (value) async {
                       // _textController.clear();
@@ -121,15 +120,9 @@ class _TranslateCardState extends ConsumerState<TranslateCard> {
         ),
         Row(
           children: [
-            // ChangeLanguageButton(buttonNumber: 1),
             Container(
               padding: const EdgeInsets.only(right: 14),
               child: PopupMenuButton(
-                // shape: const RoundedRectangleBorder(
-                //   borderRadius: BorderRadius.all(
-                //     Radius.circular(8),
-                //   ),
-                // ),
                 itemBuilder: (context) => createPopupMenuItems(),
                 child: ClipRRect(
                   borderRadius: BorderRadius.circular(8.0),
@@ -146,9 +139,26 @@ class _TranslateCardState extends ConsumerState<TranslateCard> {
               ),
             ),
             ElevatedButton(
-              onPressed: () {},
+              onPressed: () async {
+                print(selectedCountryAbbreviation + "---------");
+                ref.read(mainLangCodeAbbreviationProvider.notifier).state =
+                    selectedCountryAbbreviation == "us"
+                        ? "en"
+                        : selectedCountryAbbreviation;
+                print("---------" + selectedCountryAbbreviation);
+                var translatedText = await translator.translate(
+                  _textController.text,
+                  // from: selectedCountryAbbreviation == "us"
+                  //  ? "en"
+                  //   : selectedCountryAbbreviation,
+                  to: ref.watch(mainLangCodeAbbreviationProvider),
+                );
+                print(selectedCountryAbbreviation);
+                print(ref.watch(mainLangCodeAbbreviationProvider));
+                print(translatedText);
+              },
               child: Text("Çevir"),
-            )
+            ),
           ],
         ),
       ],
@@ -160,13 +170,14 @@ class _TranslateCardState extends ConsumerState<TranslateCard> {
     // widget.languages?
     myLanguages.asMap().forEach((index, element) {
       List<String> countryNameList = element.toString().split("-");
-      print(countryNameList);
+      // print(countryNameList);
       String countryAbbreviation = "";
       if (countryNameList.length == 1) {
         countryAbbreviation = countryNameList[0];
       } else if (countryNameList.length == 2) {
         countryAbbreviation = countryNameList[1].toLowerCase();
       }
+
       // print(countryAbbreviation);
 
       popupMenuItemList.add(
