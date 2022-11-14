@@ -1,6 +1,8 @@
 import 'package:alltalk_translate/providers.dart';
 import 'package:alltalk_translate/widgets/translate_card.dart';
+import 'package:auto_animated/auto_animated.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_staggered_animations/flutter_staggered_animations.dart';
 import 'package:flutter_tts/flutter_tts.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:shimmer/shimmer.dart';
@@ -18,24 +20,23 @@ class _HomePageState extends ConsumerState<HomePage> {
   FlutterTts flutterTts = FlutterTts();
   final TextEditingController _textController = TextEditingController();
 
+  final _scrollController = ScrollController();
+  final _gridViewKey = GlobalKey();
+
   double volume = 1.0;
   double pitch = 1.0;
   double speechRate = 0.5;
-  TranslateCard translateCard1 = TranslateCard();
-  TranslateCard translateCard2 = TranslateCard();
-  TranslateCard translateCard3 = TranslateCard();
+
+  /*
+  List<TranslateCard> translateCardList = [
+    TranslateCard(cardKey: UniqueKey()),
+    TranslateCard(cardKey: UniqueKey()),
+  ];*/
 
   @override
   Widget build(BuildContext context) {
     // getLangs();
-    List<TranslateCard> translateCardList = [
-      translateCard1,
-      translateCard2,
-      translateCard3,
-    ];
 
-    double screenHeight = MediaQuery.of(context).size.height;
-    int textFieldLineCount = screenHeight ~/ 40;
     return Scaffold(
       appBar: AppBar(title: const Text("AllTalk Translate")),
       body: SingleChildScrollView(
@@ -50,20 +51,7 @@ class _HomePageState extends ConsumerState<HomePage> {
               mainAxisSpacing: 10,
               crossAxisCount: 2,
               shrinkWrap: true,
-              children: [
-                translateCard1,
-                //Text(translateCard1.selectedCountryAbbreviation),
-                translateCard2,
-                // Text(translateCard2.selectedCountryAbbreviation),
-                translateCard3,
-                ElevatedButton(
-                  onPressed: () {},
-                  style: ElevatedButton.styleFrom(
-                    backgroundColor: Theme.of(context).primaryColor,
-                  ),
-                  child: const Icon(Icons.add, color: Colors.white),
-                )
-              ],
+              children: createGridViewItems(),
             ),
             TextField(
               controller: _textController,
@@ -72,9 +60,9 @@ class _HomePageState extends ConsumerState<HomePage> {
             ),
             ElevatedButton(
               onPressed: () {
-                translateCardList.forEach((translateCard) {
-                  translateCard.myText = _textController.text;
-                });
+                //   for (var translateCard in translateCardList) {
+                //   translateCard.myText = _textController.text;
+                //}
                 ref.read(mainTextProvider.notifier).state =
                     _textController.text;
               },
@@ -84,6 +72,102 @@ class _HomePageState extends ConsumerState<HomePage> {
         ),
       ),
     );
+  }
+
+  List<Widget> createGridViewItems() {
+    List<Widget> items = [];
+    for (var card in ref.watch(translateCardListProvider)) {
+      items.add(
+        Dismissible(
+          background: Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: const [
+              Icon(
+                Icons.delete,
+                color: Colors.red,
+              ),
+              Icon(
+                Icons.delete,
+                color: Colors.red,
+              ),
+            ],
+          ),
+          key: card.cardKey,
+          onDismissed: (direction) {
+            setState(() {
+              ref.watch(translateCardListProvider).removeWhere(
+                    (element) => element.cardKey == card.cardKey,
+                  );
+            });
+          },
+          child: card,
+        ),
+      );
+    }
+    List<Widget> list = List.generate(
+      ref.read(translateCardListProvider.notifier).state.length,
+      (index) {
+        return Dismissible(
+          key:
+              ref.read(translateCardListProvider.notifier).state[index].cardKey,
+          onDismissed: (direction) {
+            setState(() {
+              ref.watch(translateCardListProvider).removeWhere(
+                    (element) =>
+                        element.cardKey ==
+                        ref
+                            .read(translateCardListProvider.notifier)
+                            .state[index]
+                            .cardKey,
+                  );
+            });
+          },
+          child: ref.read(translateCardListProvider.notifier).state[index],
+        );
+      },
+    );
+
+    list.add(
+      ElevatedButton(
+        onPressed: () {
+          //setState(() {
+          //translateCardList.add(TranslateCard());
+          // });
+          //translateCardList.add(TranslateCard());
+          ref
+              .watch(translateCardListProvider)
+              .add(TranslateCard(cardKey: UniqueKey()));
+          setState(() {});
+        },
+        style: ElevatedButton.styleFrom(
+          backgroundColor: Theme.of(context).primaryColor,
+        ),
+        child: const Icon(Icons.add, color: Colors.white),
+      ),
+    );
+
+    /*
+    items.add(
+      ElevatedButton(
+        onPressed: () {
+          //setState(() {
+          //translateCardList.add(TranslateCard());
+          // });
+          //translateCardList.add(TranslateCard());
+          ref
+              .watch(translateCardListProvider)
+              .add(TranslateCard(cardKey: UniqueKey()));
+          setState(() {});
+        },
+        style: ElevatedButton.styleFrom(
+          backgroundColor: Theme.of(context).primaryColor,
+        ),
+        child: const Icon(Icons.add, color: Colors.white),
+      ),
+    );
+*/
+    return list;
+    return items;
   }
 
   getLangs() async {

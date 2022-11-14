@@ -7,9 +7,10 @@ import 'package:translator/translator.dart';
 import 'package:alltalk_translate/country_constants.dart' as country_constants;
 
 class TranslateCard extends StatefulHookConsumerWidget {
-  TranslateCard({super.key});
+  TranslateCard({required this.cardKey, super.key});
   String selectedCountryAbbreviation = "tr";
   String myText = "";
+  final UniqueKey cardKey;
 
   @override
   ConsumerState<TranslateCard> createState() => _TranslateCardState();
@@ -64,8 +65,6 @@ class _TranslateCardState extends ConsumerState<TranslateCard> {
 
   @override
   Widget build(BuildContext context) {
-    double screenHeight = MediaQuery.of(context).size.height;
-    int textFieldLineCount = screenHeight ~/ 40;
     // translateText();
     return FutureBuilder(
       future: ref.watch(mainTextProvider).translate(
@@ -75,7 +74,73 @@ class _TranslateCardState extends ConsumerState<TranslateCard> {
           ),
       builder: (context, snapshot) {
         if (snapshot.hasData) {
-          return Stack(
+          return Container(
+            decoration: BoxDecoration(
+              color: Theme.of(context).primaryColor.withOpacity(0.1),
+            ),
+            child: Column(
+              children: [
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    // change language
+                    Flexible(
+                      child: PopupMenuButton(
+                        itemBuilder: (context) => createPopupMenuItems(),
+                        child: ClipRRect(
+                          borderRadius: BorderRadius.circular(8.0),
+                          child: Image.asset(
+                            'icons/flags/png/${widget.selectedCountryAbbreviation}.png',
+                            package: 'country_icons',
+                            errorBuilder: (context, error, stackTrace) {
+                              return const SizedBox();
+                            },
+                            height: flagImageHeight,
+                            width: flagImageHeight * 1.5,
+                          ),
+                        ),
+                      ),
+                    ),
+                    // speak
+                    Flexible(
+                      child: IconButton(
+                        icon: const Icon(
+                          Icons.volume_up,
+                        ),
+                        onPressed: () async {
+                          _speak(snapshot.data.toString());
+                        },
+                      ),
+                    ),
+                    // copy text
+                    Flexible(
+                      child: IconButton(
+                        icon: const Icon(
+                          Icons.copy,
+                        ),
+                        onPressed: () {},
+                      ),
+                    ),
+                  ],
+                ),
+                Flexible(
+                  child: Container(
+                    //height: 300,
+                    //width: MediaQuery.of(context).size.width / 2,
+                    child: SingleChildScrollView(
+                      child: Padding(
+                        padding: const EdgeInsets.all(2),
+                        child: Text(
+                          snapshot.data.toString(),
+                        ),
+                      ),
+                    ),
+                  ),
+                ),
+              ],
+            ),
+          );
+          /*Stack(
             children: [
               Container(
                 height: 300,
@@ -85,7 +150,11 @@ class _TranslateCardState extends ConsumerState<TranslateCard> {
                 ),
                 child: Padding(
                   padding: const EdgeInsets.all(8.0),
-                  child: Text(snapshot.data.toString()),
+                  child: Text(
+                    maxLines: 10,
+                    overflow: TextOverflow.fade,
+                    snapshot.data.toString(),
+                  ),
                 ),
               ),
               Positioned(
@@ -121,6 +190,8 @@ class _TranslateCardState extends ConsumerState<TranslateCard> {
               ),
             ],
           );
+        
+        */
         } else {
           return SizedBox(
             height: 300,
@@ -151,26 +222,13 @@ class _TranslateCardState extends ConsumerState<TranslateCard> {
         countryAbbreviation = countryNameList[1].toLowerCase();
       }
 
-      // print(countryAbbreviation);
-
       popupMenuItemList.add(
         PopupMenuItem(
           onTap: () async {
             setState(() {
               selectedCountry = myLanguages[index];
               widget.selectedCountryAbbreviation = countryAbbreviation;
-              // ref.read(mainTextProvider.notifier).state = countryAbbreviation;
             });
-            /*
-            selectedCountryAbbreviation = countryAbbreviation;
-            if (widget.buttonNumber == 1) {
-              ref.read(firstLangCodeProvider.notifier).state =
-                  element.toString();
-            } else {
-              ref.read(secondLangCodeProvider.notifier).state =
-                  element.toString();
-            }
-            */
           },
           child: Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -196,9 +254,6 @@ class _TranslateCardState extends ConsumerState<TranslateCard> {
   translateMainText() async {
     var translatedText = await translator.translate(
       ref.watch(mainTextProvider),
-      // from: selectedCountryAbbreviation == "us"
-      //  ? "en"
-      //   : selectedCountryAbbreviation,
       to: widget.selectedCountryAbbreviation == "us"
           ? "en"
           : widget.selectedCountryAbbreviation,
