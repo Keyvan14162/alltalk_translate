@@ -2,21 +2,22 @@ import 'package:alltalk_translate/providers.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_tts/flutter_tts.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
+import 'package:shimmer/shimmer.dart';
 import 'package:translator/translator.dart';
 import 'package:alltalk_translate/country_constants.dart' as country_constants;
 
 class TranslateCard extends StatefulHookConsumerWidget {
-  const TranslateCard({super.key});
+  TranslateCard({super.key});
+  String selectedCountryAbbreviation = "tr";
+  String myText = "";
 
   @override
   ConsumerState<TranslateCard> createState() => _TranslateCardState();
 }
 
 class _TranslateCardState extends ConsumerState<TranslateCard> {
-  late TextEditingController _textController;
   final translator = GoogleTranslator();
   FlutterTts flutterTts = FlutterTts();
-  String selectedCountryAbbreviation = "tr";
   String selectedCountry = "tr-TR";
 
   final double flagImageHeight = 36;
@@ -30,10 +31,7 @@ class _TranslateCardState extends ConsumerState<TranslateCard> {
   @override
   void initState() {
     super.initState();
-
-    _textController = TextEditingController();
-
-    init();
+    // init();
     initSetting();
   }
 
@@ -51,14 +49,13 @@ class _TranslateCardState extends ConsumerState<TranslateCard> {
     await flutterTts.setLanguage(selectedCountry);
   }
 
-  Future _speak() async {
+  Future _speak(String text) async {
     await initSetting();
-    // var x = await flutterTts.speak(_firstTextController.text);
+    var x = await flutterTts.speak(text);
     // print(x); konusursa 1 konusmazsa 0
     //await flutterTts
     //   .setLanguage(ref.read(firstLangCodeProvider.notifier).state);
     // await flutterTts.setLanguage(selectedCountryAbbreviation);
-    await flutterTts.speak(_textController.text);
   }
 
   Future _stop() async {
@@ -69,99 +66,75 @@ class _TranslateCardState extends ConsumerState<TranslateCard> {
   Widget build(BuildContext context) {
     double screenHeight = MediaQuery.of(context).size.height;
     int textFieldLineCount = screenHeight ~/ 40;
-    _textController.text = ref.read(mainTextProvider.notifier).state;
-    return Column(
-      children: [
-        Padding(
-          padding: const EdgeInsets.all(8.0),
-          child: Container(
-            width: MediaQuery.of(context).size.width / 2,
-            decoration: BoxDecoration(
-              borderRadius: const BorderRadius.all(Radius.circular(8)),
-              color: Theme.of(context).primaryColor.withOpacity(0.1),
-            ),
-            child: Padding(
-              padding: const EdgeInsets.only(left: 10),
-              child: Stack(
-                children: [
-                  TextField(
-                    maxLines: textFieldLineCount,
-                    minLines: textFieldLineCount,
-                    controller: _textController,
-                    decoration: const InputDecoration(
-                      hintText: "Write message...",
-                      border: InputBorder.none,
+    // translateText();
+    return FutureBuilder(
+      future: ref.watch(mainTextProvider).translate(
+            to: widget.selectedCountryAbbreviation == "us"
+                ? "en"
+                : widget.selectedCountryAbbreviation,
+          ),
+      builder: (context, snapshot) {
+        if (snapshot.hasData) {
+          return Stack(
+            children: [
+              Container(
+                height: 300,
+                width: MediaQuery.of(context).size.width / 2,
+                decoration: BoxDecoration(
+                  color: Theme.of(context).primaryColor.withOpacity(0.1),
+                ),
+                child: Padding(
+                  padding: const EdgeInsets.all(8.0),
+                  child: Text(snapshot.data.toString()),
+                ),
+              ),
+              Positioned(
+                bottom: 0,
+                right: 0,
+                child: Row(
+                  children: [
+                    PopupMenuButton(
+                      itemBuilder: (context) => createPopupMenuItems(),
+                      child: ClipRRect(
+                        borderRadius: BorderRadius.circular(8.0),
+                        child: Image.asset(
+                          'icons/flags/png/${widget.selectedCountryAbbreviation}.png',
+                          package: 'country_icons',
+                          errorBuilder: (context, error, stackTrace) {
+                            return const SizedBox();
+                          },
+                          height: flagImageHeight,
+                          width: flagImageHeight * 1.5,
+                        ),
+                      ),
                     ),
-                    onChanged: (value) {
-                      ref.read(mainTextProvider.notifier).state =
-                          value.toString();
-                    },
-                    onSubmitted: (value) async {
-                      // _textController.clear();
-                      _speak();
-                    },
-                  ),
-                  Positioned(
-                    bottom: 0,
-                    right: 0,
-                    child: IconButton(
+                    IconButton(
                       icon: const Icon(
                         Icons.volume_up,
                       ),
                       onPressed: () async {
-                        _speak();
+                        _speak(snapshot.data.toString());
                       },
                     ),
-                  )
-                ],
-              ),
-            ),
-          ),
-        ),
-        Row(
-          children: [
-            Container(
-              padding: const EdgeInsets.only(right: 14),
-              child: PopupMenuButton(
-                itemBuilder: (context) => createPopupMenuItems(),
-                child: ClipRRect(
-                  borderRadius: BorderRadius.circular(8.0),
-                  child: Image.asset(
-                    'icons/flags/png/$selectedCountryAbbreviation.png',
-                    package: 'country_icons',
-                    errorBuilder: (context, error, stackTrace) {
-                      return const SizedBox();
-                    },
-                    height: flagImageHeight,
-                    width: flagImageHeight * 1.5,
-                  ),
+                  ],
                 ),
               ),
+            ],
+          );
+        } else {
+          return SizedBox(
+            height: 300,
+            child: Shimmer.fromColors(
+              baseColor: Theme.of(context).primaryColor.withOpacity(0.9),
+              highlightColor: Theme.of(context).primaryColor.withOpacity(0.2),
+              child: Container(
+                height: 300,
+                color: Theme.of(context).primaryColor.withOpacity(0.1),
+              ),
             ),
-            ElevatedButton(
-              onPressed: () async {
-                print(selectedCountryAbbreviation + "---------");
-                ref.read(mainLangCodeAbbreviationProvider.notifier).state =
-                    selectedCountryAbbreviation == "us"
-                        ? "en"
-                        : selectedCountryAbbreviation;
-                print("---------" + selectedCountryAbbreviation);
-                var translatedText = await translator.translate(
-                  _textController.text,
-                  // from: selectedCountryAbbreviation == "us"
-                  //  ? "en"
-                  //   : selectedCountryAbbreviation,
-                  to: ref.watch(mainLangCodeAbbreviationProvider),
-                );
-                print(selectedCountryAbbreviation);
-                print(ref.watch(mainLangCodeAbbreviationProvider));
-                print(translatedText);
-              },
-              child: Text("Çevir"),
-            ),
-          ],
-        ),
-      ],
+          );
+        }
+      },
     );
   }
 
@@ -185,7 +158,8 @@ class _TranslateCardState extends ConsumerState<TranslateCard> {
           onTap: () async {
             setState(() {
               selectedCountry = myLanguages[index];
-              selectedCountryAbbreviation = countryAbbreviation;
+              widget.selectedCountryAbbreviation = countryAbbreviation;
+              // ref.read(mainTextProvider.notifier).state = countryAbbreviation;
             });
             /*
             selectedCountryAbbreviation = countryAbbreviation;
@@ -217,5 +191,18 @@ class _TranslateCardState extends ConsumerState<TranslateCard> {
       );
     });
     return popupMenuItemList;
+  }
+
+  translateMainText() async {
+    var translatedText = await translator.translate(
+      ref.watch(mainTextProvider),
+      // from: selectedCountryAbbreviation == "us"
+      //  ? "en"
+      //   : selectedCountryAbbreviation,
+      to: widget.selectedCountryAbbreviation == "us"
+          ? "en"
+          : widget.selectedCountryAbbreviation,
+    );
+    return translatedText.text;
   }
 }
