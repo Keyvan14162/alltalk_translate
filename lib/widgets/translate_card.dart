@@ -75,6 +75,8 @@ class _TranslateCardState extends ConsumerState<TranslateCard> {
       selectedCountry = "ur-PK";
     } else if (widget.selectedCountryAbbreviation == "in") {
       selectedCountry = "hi-IN";
+    } else if (widget.selectedCountryAbbreviation == "jp") {
+      selectedCountry = "ja-JP";
     } else {
       selectedCountry =
           "${widget.selectedCountryAbbreviation}-${widget.selectedCountryAbbreviation.toUpperCase()}";

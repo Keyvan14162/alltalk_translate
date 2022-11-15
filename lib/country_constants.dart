@@ -5,4 +5,10 @@ const List<String> countryCodes = [
   "en-US",
   "ur-PK",
   "hi-IN",
+  "hu-HU",
+  "fr-FR",
+  "de-DE",
+  "es-ES",
+  "ro-RO",
+  "ja-JP",
 ];

@@ -1,5 +1,6 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.ismailkeyvan.alltalk_translate">
+    <uses-permission android:name="android.permission.INTERNET" />
    <application
         android:label="alltalk_translate"
         android:name="${applicationName}"
