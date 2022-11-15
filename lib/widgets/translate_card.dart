@@ -7,8 +7,11 @@ import 'package:translator/translator.dart';
 import 'package:alltalk_translate/country_constants.dart' as country_constants;
 
 class TranslateCard extends StatefulHookConsumerWidget {
-  TranslateCard({required this.cardKey, super.key});
-  String selectedCountryAbbreviation = "tr";
+  TranslateCard(
+      {required this.cardKey,
+      required this.selectedCountryAbbreviation,
+      super.key});
+  String selectedCountryAbbreviation;
   String myText = "";
   final UniqueKey cardKey;
 
@@ -45,8 +48,6 @@ class _TranslateCardState extends ConsumerState<TranslateCard> {
     await flutterTts.setVolume(volume);
     await flutterTts.setPitch(pitch);
     await flutterTts.setSpeechRate(speechRate);
-    // await flutterTts
-    //     .setLanguage(ref.read(firstLangCodeProvider.notifier).state);
     await flutterTts.setLanguage(selectedCountry);
   }
 
@@ -54,9 +55,7 @@ class _TranslateCardState extends ConsumerState<TranslateCard> {
     await initSetting();
     var x = await flutterTts.speak(text);
     // print(x); konusursa 1 konusmazsa 0
-    //await flutterTts
-    //   .setLanguage(ref.read(firstLangCodeProvider.notifier).state);
-    // await flutterTts.setLanguage(selectedCountryAbbreviation);
+    // await flutterTts.setLanguage(selectedCountry);
   }
 
   Future _stop() async {
@@ -65,7 +64,13 @@ class _TranslateCardState extends ConsumerState<TranslateCard> {
 
   @override
   Widget build(BuildContext context) {
-    // translateText();
+    // ozel durumlaricin else if ekle
+    if (widget.selectedCountryAbbreviation == "us") {
+      selectedCountry = "en-US";
+    } else {
+      selectedCountry =
+          "${widget.selectedCountryAbbreviation}-${widget.selectedCountryAbbreviation.toUpperCase()}";
+    }
     return FutureBuilder(
       future: ref.watch(mainTextProvider).translate(
             to: widget.selectedCountryAbbreviation == "us"
@@ -75,6 +80,142 @@ class _TranslateCardState extends ConsumerState<TranslateCard> {
       builder: (context, snapshot) {
         if (snapshot.hasData) {
           return Container(
+            height: 230,
+            child: Stack(
+              children: [
+                // back container
+                Positioned(
+                  top: 35,
+                  left: 20,
+                  child: Material(
+                    child: Container(
+                      height: 180.0,
+                      width: MediaQuery.of(context).size.width * 0.9,
+                      decoration: BoxDecoration(
+                        color: Colors.white,
+                        borderRadius: BorderRadius.circular(0.0),
+                        boxShadow: [
+                          BoxShadow(
+                            color: Colors.grey.withOpacity(0.3),
+                            offset: const Offset(-10.0, 10.0),
+                            blurRadius: 20.0,
+                            spreadRadius: 4.0,
+                          ),
+                        ],
+                      ),
+                    ),
+                  ),
+                ),
+                // lang change
+                Positioned(
+                  top: 0,
+                  left: 30,
+                  child: Card(
+                    elevation: 10.0,
+                    shadowColor: Colors.grey.withOpacity(0.5),
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(15.0),
+                    ),
+                    child: Container(
+                      height: 150,
+                      width: 200,
+                      decoration: BoxDecoration(
+                        borderRadius: BorderRadius.circular(10.0),
+                      ),
+                      child: PopupMenuButton(
+                        itemBuilder: (context) => createPopupMenuItems(),
+                        child: ClipRRect(
+                          borderRadius: BorderRadius.circular(8.0),
+                          child: Image.asset(
+                            'icons/flags/png/${widget.selectedCountryAbbreviation}.png',
+                            package: 'country_icons',
+                            errorBuilder: (context, error, stackTrace) {
+                              return const SizedBox();
+                            },
+                            height: 300,
+                            width: 150,
+                            fit: BoxFit.cover,
+                          ),
+                        ),
+                      ),
+                    ),
+                  ),
+                ),
+                // header and text
+                Positioned(
+                  top: 45,
+                  left: 240,
+                  child: Container(
+                    height: 160,
+                    width: 150,
+                    child: Column(
+                      children: [
+                        Text(
+                          "Language",
+                          style: TextStyle(
+                            fontSize: 20,
+                            color: Color(0xFF363f93),
+                            fontWeight: FontWeight.bold,
+                          ),
+                        ),
+                        const Divider(
+                          color: Colors.black,
+                        ),
+                        Flexible(
+                          child: SingleChildScrollView(
+                            child: Text(
+                              snapshot.data.toString(),
+                            ),
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
+                ),
+                // icons
+                Positioned(
+                    bottom: 25,
+                    left: 40,
+                    child: Container(
+                      width: 200,
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          // speak
+                          Flexible(
+                            child: IconButton(
+                              icon: const Icon(
+                                Icons.volume_up,
+                              ),
+                              onPressed: () async {
+                                _speak(snapshot.data.toString());
+                              },
+                            ),
+                          ), // stop
+                          IconButton(
+                            onPressed: () {
+                              _stop();
+                            },
+                            icon: Icon(Icons.stop),
+                          ),
+                          // copy text
+                          Flexible(
+                            child: IconButton(
+                              icon: const Icon(
+                                Icons.copy,
+                              ),
+                              onPressed: () {
+                                print(snapshot.data.toString());
+                              },
+                            ),
+                          ),
+                        ],
+                      ),
+                    )),
+              ],
+            ),
+          );
+          /* Container(
             decoration: BoxDecoration(
               color: Theme.of(context).primaryColor.withOpacity(0.1),
             ),
@@ -140,68 +281,82 @@ class _TranslateCardState extends ConsumerState<TranslateCard> {
               ],
             ),
           );
-          /*Stack(
-            children: [
-              Container(
-                height: 300,
-                width: MediaQuery.of(context).size.width / 2,
-                decoration: BoxDecoration(
-                  color: Theme.of(context).primaryColor.withOpacity(0.1),
-                ),
-                child: Padding(
-                  padding: const EdgeInsets.all(8.0),
-                  child: Text(
-                    maxLines: 10,
-                    overflow: TextOverflow.fade,
-                    snapshot.data.toString(),
-                  ),
-                ),
-              ),
-              Positioned(
-                bottom: 0,
-                right: 0,
-                child: Row(
-                  children: [
-                    PopupMenuButton(
-                      itemBuilder: (context) => createPopupMenuItems(),
-                      child: ClipRRect(
-                        borderRadius: BorderRadius.circular(8.0),
-                        child: Image.asset(
-                          'icons/flags/png/${widget.selectedCountryAbbreviation}.png',
-                          package: 'country_icons',
-                          errorBuilder: (context, error, stackTrace) {
-                            return const SizedBox();
-                          },
-                          height: flagImageHeight,
-                          width: flagImageHeight * 1.5,
+        */
+        } else {
+          return Container(
+            height: 230,
+            child: Stack(
+              children: [
+                // back container
+                Positioned(
+                  top: 35,
+                  left: 20,
+                  child: Material(
+                    child: Container(
+                      height: 180.0,
+                      width: MediaQuery.of(context).size.width * 0.9,
+                      decoration: BoxDecoration(
+                        color: Colors.white,
+                        borderRadius: BorderRadius.circular(0.0),
+                        boxShadow: [
+                          BoxShadow(
+                            color: Colors.grey.withOpacity(0.3),
+                            offset: const Offset(-10.0, 10.0),
+                            blurRadius: 20.0,
+                            spreadRadius: 4.0,
+                          ),
+                        ],
+                      ),
+                      child: Shimmer.fromColors(
+                        baseColor:
+                            Theme.of(context).primaryColor.withOpacity(0.9),
+                        highlightColor:
+                            Theme.of(context).primaryColor.withOpacity(0.2),
+                        child: Container(
+                          color:
+                              Theme.of(context).primaryColor.withOpacity(0.1),
                         ),
                       ),
                     ),
-                    IconButton(
-                      icon: const Icon(
-                        Icons.volume_up,
-                      ),
-                      onPressed: () async {
-                        _speak(snapshot.data.toString());
-                      },
-                    ),
-                  ],
+                  ),
                 ),
-              ),
-            ],
-          );
-        
-        */
-        } else {
-          return SizedBox(
-            height: 300,
-            child: Shimmer.fromColors(
-              baseColor: Theme.of(context).primaryColor.withOpacity(0.9),
-              highlightColor: Theme.of(context).primaryColor.withOpacity(0.2),
-              child: Container(
-                height: 300,
-                color: Theme.of(context).primaryColor.withOpacity(0.1),
-              ),
+                // lang change
+                Positioned(
+                  top: 0,
+                  left: 30,
+                  child: Card(
+                    elevation: 10.0,
+                    shadowColor: Colors.grey.withOpacity(0.5),
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(15.0),
+                    ),
+                    child: Container(
+                      height: 150,
+                      width: 200,
+                      decoration: BoxDecoration(
+                        borderRadius: BorderRadius.circular(10.0),
+                      ),
+                      child: PopupMenuButton(
+                        itemBuilder: (context) => createPopupMenuItems(),
+                        child: ClipRRect(
+                          borderRadius: BorderRadius.circular(8.0),
+                          child: Shimmer.fromColors(
+                            baseColor:
+                                Theme.of(context).primaryColor.withOpacity(0.9),
+                            highlightColor:
+                                Theme.of(context).primaryColor.withOpacity(0.2),
+                            child: Container(
+                              color: Theme.of(context)
+                                  .primaryColor
+                                  .withOpacity(0.1),
+                            ),
+                          ),
+                        ),
+                      ),
+                    ),
+                  ),
+                ),
+              ],
             ),
           );
         }
@@ -225,10 +380,14 @@ class _TranslateCardState extends ConsumerState<TranslateCard> {
       popupMenuItemList.add(
         PopupMenuItem(
           onTap: () async {
-            setState(() {
-              selectedCountry = myLanguages[index];
-              widget.selectedCountryAbbreviation = countryAbbreviation;
-            });
+            if (!isLanguageSelectedBefore(widget.selectedCountryAbbreviation)) {
+              setState(() {
+                selectedCountry = myLanguages[index];
+                widget.selectedCountryAbbreviation = countryAbbreviation;
+              });
+            } else {
+              print("Language already added");
+            }
           },
           child: Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -251,13 +410,12 @@ class _TranslateCardState extends ConsumerState<TranslateCard> {
     return popupMenuItemList;
   }
 
-  translateMainText() async {
-    var translatedText = await translator.translate(
-      ref.watch(mainTextProvider),
-      to: widget.selectedCountryAbbreviation == "us"
-          ? "en"
-          : widget.selectedCountryAbbreviation,
-    );
-    return translatedText.text;
+  bool isLanguageSelectedBefore(String selectedCountryAbbreviation) {
+    for (var card in ref.read(translateCardListProvider.notifier).state) {
+      if (card.selectedCountryAbbreviation == selectedCountryAbbreviation) {
+        return true;
+      }
+    }
+    return false;
   }
 }
