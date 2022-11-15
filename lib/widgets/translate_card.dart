@@ -1,4 +1,5 @@
 import 'package:alltalk_translate/providers.dart';
+import 'package:animated_icon_button/animated_icon_button.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_tts/flutter_tts.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
@@ -174,39 +175,86 @@ class _TranslateCardState extends ConsumerState<TranslateCard> {
                 ),
                 // icons
                 Positioned(
-                    bottom: 25,
-                    left: 40,
+                    bottom: 15,
+                    left: 30,
                     child: Container(
-                      width: 200,
+                      width: 210,
                       child: Row(
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
                           // speak
                           Flexible(
-                            child: IconButton(
-                              icon: const Icon(
-                                Icons.volume_up,
-                              ),
-                              onPressed: () async {
-                                _speak(snapshot.data.toString());
-                              },
+                            child: AnimatedIconButton(
+                              icons: [
+                                AnimatedIconItem(
+                                  icon: const Icon(
+                                    Icons.volume_up,
+                                    color: Colors.black,
+                                  ),
+                                  onPressed: () async {
+                                    _speak(snapshot.data.toString());
+                                  },
+                                ),
+                                AnimatedIconItem(
+                                  icon: const Icon(
+                                    Icons.volume_up,
+                                    color: Colors.black,
+                                  ),
+                                  onPressed: () async {
+                                    _speak(snapshot.data.toString());
+                                  },
+                                ),
+                              ],
                             ),
-                          ), // stop
-                          IconButton(
-                            onPressed: () {
-                              _stop();
-                            },
-                            icon: Icon(Icons.stop),
+                          ),
+                          // stop
+                          Flexible(
+                            child: AnimatedIconButton(
+                              icons: [
+                                AnimatedIconItem(
+                                  icon: const Icon(
+                                    Icons.stop,
+                                    color: Colors.black,
+                                  ),
+                                  onPressed: () async {
+                                    _stop();
+                                  },
+                                ),
+                                AnimatedIconItem(
+                                  icon: const Icon(
+                                    Icons.stop,
+                                    color: Colors.black,
+                                  ),
+                                  onPressed: () async {
+                                    _stop();
+                                  },
+                                ),
+                              ],
+                            ),
                           ),
                           // copy text
                           Flexible(
-                            child: IconButton(
-                              icon: const Icon(
-                                Icons.copy,
-                              ),
-                              onPressed: () {
-                                print(snapshot.data.toString());
-                              },
+                            child: AnimatedIconButton(
+                              icons: [
+                                AnimatedIconItem(
+                                  icon: const Icon(
+                                    Icons.copy,
+                                    color: Colors.black,
+                                  ),
+                                  onPressed: () {
+                                    print(snapshot.data.toString());
+                                  },
+                                ),
+                                AnimatedIconItem(
+                                  icon: const Icon(
+                                    Icons.copy,
+                                    color: Colors.black,
+                                  ),
+                                  onPressed: () {
+                                    print(snapshot.data.toString());
+                                  },
+                                ),
+                              ],
                             ),
                           ),
                         ],
@@ -215,73 +263,6 @@ class _TranslateCardState extends ConsumerState<TranslateCard> {
               ],
             ),
           );
-          /* Container(
-            decoration: BoxDecoration(
-              color: Theme.of(context).primaryColor.withOpacity(0.1),
-            ),
-            child: Column(
-              children: [
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    // change language
-                    Flexible(
-                      child: PopupMenuButton(
-                        itemBuilder: (context) => createPopupMenuItems(),
-                        child: ClipRRect(
-                          borderRadius: BorderRadius.circular(8.0),
-                          child: Image.asset(
-                            'icons/flags/png/${widget.selectedCountryAbbreviation}.png',
-                            package: 'country_icons',
-                            errorBuilder: (context, error, stackTrace) {
-                              return const SizedBox();
-                            },
-                            height: flagImageHeight,
-                            width: flagImageHeight * 1.5,
-                          ),
-                        ),
-                      ),
-                    ),
-                    // speak
-                    Flexible(
-                      child: IconButton(
-                        icon: const Icon(
-                          Icons.volume_up,
-                        ),
-                        onPressed: () async {
-                          _speak(snapshot.data.toString());
-                        },
-                      ),
-                    ),
-                    // copy text
-                    Flexible(
-                      child: IconButton(
-                        icon: const Icon(
-                          Icons.copy,
-                        ),
-                        onPressed: () {},
-                      ),
-                    ),
-                  ],
-                ),
-                Flexible(
-                  child: Container(
-                    //height: 300,
-                    //width: MediaQuery.of(context).size.width / 2,
-                    child: SingleChildScrollView(
-                      child: Padding(
-                        padding: const EdgeInsets.all(2),
-                        child: Text(
-                          snapshot.data.toString(),
-                        ),
-                      ),
-                    ),
-                  ),
-                ),
-              ],
-            ),
-          );
-        */
         } else {
           return Container(
             height: 230,

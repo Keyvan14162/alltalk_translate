@@ -145,92 +145,94 @@ class _HomePageState extends ConsumerState<HomePage>
           ];
         },
         body: SingleChildScrollView(
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: [
-              // input area
-              /*
-              Container(
-                height: height / 4,
-                decoration: BoxDecoration(
-                  borderRadius: const BorderRadius.only(
-                    bottomRight: Radius.circular(50),
-                  ),
-                  boxShadow: [
-                    BoxShadow(
-                      color: Theme.of(context).primaryColor,
-                      //offset: Offset(-10.0, 10.0),
-                      blurRadius: 20,
-                      spreadRadius: 4.0,
+          child: Container(
+            color: Colors.white,
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                // input area
+                /*
+                Container(
+                  height: height / 4,
+                  decoration: BoxDecoration(
+                    borderRadius: const BorderRadius.only(
+                      bottomRight: Radius.circular(50),
                     ),
-                  ],
-                  color: Theme.of(context).primaryColor,
-                ),
-                child: Stack(
-                  children: [
-                    Positioned(
-                      bottom: 20,
-                      left: 0,
-                      child: Container(
-                        height: height / 6,
-                        width: width * 0.9,
-                        decoration: const BoxDecoration(
-                          color: Colors.white,
-                          borderRadius: BorderRadius.only(
-                            bottomRight: Radius.circular(50),
-                            topRight: Radius.circular(50),
+                    boxShadow: [
+                      BoxShadow(
+                        color: Theme.of(context).primaryColor,
+                        //offset: Offset(-10.0, 10.0),
+                        blurRadius: 20,
+                        spreadRadius: 4.0,
+                      ),
+                    ],
+                    color: Theme.of(context).primaryColor,
+                  ),
+                  child: Stack(
+                    children: [
+                      Positioned(
+                        bottom: 20,
+                        left: 0,
+                        child: Container(
+                          height: height / 6,
+                          width: width * 0.9,
+                          decoration: const BoxDecoration(
+                            color: Colors.white,
+                            borderRadius: BorderRadius.only(
+                              bottomRight: Radius.circular(50),
+                              topRight: Radius.circular(50),
+                            ),
                           ),
-                        ),
-                        child: TextField(
-                          // minLines: 1,
-                          // maxLines: 10,
-                          style: const TextStyle(fontSize: 17),
-                          decoration: const InputDecoration(
-                            hintStyle: TextStyle(fontSize: 17),
-                            hintText: 'Enter text to translate',
-                            suffixIcon: Icon(Icons.translate),
-                            border: InputBorder.none,
-                            contentPadding: EdgeInsets.all(20),
+                          child: TextField(
+                            // minLines: 1,
+                            // maxLines: 10,
+                            style: const TextStyle(fontSize: 17),
+                            decoration: const InputDecoration(
+                              hintStyle: TextStyle(fontSize: 17),
+                              hintText: 'Enter text to translate',
+                              suffixIcon: Icon(Icons.translate),
+                              border: InputBorder.none,
+                              contentPadding: EdgeInsets.all(20),
+                            ),
+                            controller: _textController,
+                            onChanged: (value) {
+                              if (value.isNotEmpty) {
+                                ref.read(mainTextProvider.notifier).state =
+                                    _textController.text;
+                              }
+                            },
                           ),
-                          controller: _textController,
-                          onChanged: (value) {
-                            if (value.isNotEmpty) {
-                              ref.read(mainTextProvider.notifier).state =
-                                  _textController.text;
-                            }
-                          },
                         ),
                       ),
-                    ),
-                  ],
+                    ],
+                  ),
                 ),
-              ),
  */
-              SizedBox(
-                height: height * 0.05,
-              ),
-              ListView.builder(
-                primary: false,
-                shrinkWrap: true,
-                itemCount:
-                    ref.read(translateCardListProvider.notifier).state.length +
-                        1,
-                itemBuilder: (context, index) {
-                  return createGridViewItems()[index];
-                },
-              ),
-              // cevir
-              ElevatedButton(
-                onPressed: () {
-                  ref.read(mainTextProvider.notifier).state =
-                      _textController.text;
-                },
-                child: const Text("Çevir"),
-              ),
-              const SizedBox(
-                height: 200,
-              ),
-            ],
+                SizedBox(
+                  height: height * 0.05,
+                ),
+                ListView.builder(
+                  primary: false,
+                  shrinkWrap: true,
+                  itemCount:
+                      ref.read(translateCardListProvider.notifier).state.length,
+                  itemBuilder: (context, index) {
+                    return createGridViewItems()[index];
+                  },
+                ),
+                // cevir
+                ElevatedButton(
+                  onPressed: () {
+                    ref.read(mainTextProvider.notifier).state =
+                        _textController.text;
+                  },
+                  child: const Text("Çevir"),
+                ),
+                const SizedBox(
+                  height: 200,
+                ),
+              ],
+            ),
           ),
         ),
       ),
@@ -240,9 +242,9 @@ class _HomePageState extends ConsumerState<HomePage>
   AppBar myAppbar(double height, double width, BuildContext context) {
     return AppBar(
       elevation: 0,
-
       backgroundColor: Colors.white,
-      toolbarHeight: 100,
+      toolbarHeight: 80, // 100
+
       actions: [
         Column(
           children: [
@@ -256,10 +258,10 @@ class _HomePageState extends ConsumerState<HomePage>
                 ),
                 boxShadow: [
                   BoxShadow(
-                    color: Colors.grey.withOpacity(0.3),
-                    offset: const Offset(-10.0, 10.0),
-                    blurRadius: 20,
-                    spreadRadius: 4.0,
+                    color: Colors.grey.withOpacity(0.7),
+                    //offset: const Offset(-10.0, 10.0),
+                    blurRadius: 4,
+                    spreadRadius: 1.0,
                   ),
                 ],
                 color: Colors.white,
@@ -333,8 +335,6 @@ class _HomePageState extends ConsumerState<HomePage>
         );
       },
     );
-
-    list.add(addLangWidget(context));
 
     return list;
   }
@@ -563,33 +563,50 @@ class _HomePageState extends ConsumerState<HomePage>
                   Flexible(
                     child: Padding(
                       padding: const EdgeInsets.all(10.0),
-                      child: Column(
-                        mainAxisAlignment: MainAxisAlignment.spaceAround,
-                        crossAxisAlignment: CrossAxisAlignment.end,
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        crossAxisAlignment: CrossAxisAlignment.center,
                         children: [
-                          isLanguageSelectedBefore(selectedCountryAbbreviation)
-                              ? const Text(
-                                  "Language is already added.",
-                                  textAlign: TextAlign.center,
-                                  style: TextStyle(
-                                    color: Colors.red,
-                                    fontSize: 18,
-                                  ),
-                                )
-                              : const Text(
-                                  "Language is ready to add.",
-                                  textAlign: TextAlign.center,
-                                  style: TextStyle(
-                                    color: Colors.lightGreen,
-                                    fontSize: 18,
-                                  ),
-                                ),
+                          Flexible(
+                            child: Text(
+                              "Choose the language that will be added.",
+                              textAlign: TextAlign.start,
+                              style: TextStyle(
+                                color: Theme.of(context).primaryColor,
+                                fontSize: 14,
+                              ),
+                            ),
+                          ),
+                          const SizedBox(
+                            width: 10,
+                          ),
+                          Flexible(
+                            child: Text(
+                              "Add a new language.",
+                              textAlign: TextAlign.end,
+                              style: TextStyle(
+                                color: Theme.of(context).primaryColor,
+                                fontSize: 14,
+                              ),
+                            ),
+                          ),
                         ],
                       ),
                     ),
                   ),
                   isLanguageSelectedBefore(selectedCountryAbbreviation)
-                      ? const SizedBox()
+                      ? Padding(
+                          padding: const EdgeInsets.all(8.0),
+                          child: IconButton(
+                            onPressed: () {},
+                            isSelected: false,
+                            icon: const Icon(
+                              Icons.add,
+                              size: 36,
+                              color: Colors.black,
+                            ),
+                          ),
+                        )
                       : Padding(
                           padding: const EdgeInsets.all(8.0),
                           child: IconButton(
