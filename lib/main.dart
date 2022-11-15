@@ -24,8 +24,10 @@ class MyApp extends StatelessWidget {
       onGenerateRoute: RouteGenerator.routeGenrator,
       title: 'AllTalk Translate',
       theme: ThemeData(
+        //colorSchemeSeed: Colors.red,
         primarySwatch: Colors.teal,
-        // primaryColor: const Color(0xFF3B4257),
+        primaryColor: const Color(0xFF3B4257),
+        secondaryHeaderColor: Colors.yellow,
       ),
     );
   }

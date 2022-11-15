@@ -6,6 +6,9 @@ final mainTextProvider = StateProvider<String>((ref) {
   return "merhaba";
 });
 
+// eger en-US tarzi ise buraya 2. yi yaz
+// burdan sonra country constants a da ekle
+// sonra da helpers-getCountryFullName ekle ulke ismini
 final translateCardListProvider = StateProvider<List<TranslateCard>>((ref) {
   List<TranslateCard> translateCardList = [
     TranslateCard(
@@ -19,6 +22,18 @@ final translateCardListProvider = StateProvider<List<TranslateCard>>((ref) {
     TranslateCard(
       cardKey: UniqueKey(),
       selectedCountryAbbreviation: "ru",
+    ),
+    TranslateCard(
+      cardKey: UniqueKey(),
+      selectedCountryAbbreviation: "kr",
+    ),
+    TranslateCard(
+      cardKey: UniqueKey(),
+      selectedCountryAbbreviation: "pk",
+    ),
+    TranslateCard(
+      cardKey: UniqueKey(),
+      selectedCountryAbbreviation: "in",
     ),
   ];
   return translateCardList;
