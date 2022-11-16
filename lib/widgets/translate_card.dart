@@ -63,9 +63,14 @@ class _TranslateCardState extends ConsumerState<TranslateCard> {
     await flutterTts.stop();
   }
 
+  double myBlurRadius = 10.0;
+  double mySPreadRadius = 1.0;
+
   @override
   Widget build(BuildContext context) {
     // ozel durumlaricin else if ekle
+    double width = MediaQuery.of(context).size.width;
+    double height = MediaQuery.of(context).size.height;
 
     if (widget.selectedCountryAbbreviation == "us") {
       selectedCountry = "en-US";
@@ -91,210 +96,206 @@ class _TranslateCardState extends ConsumerState<TranslateCard> {
           ),
       builder: (context, snapshot) {
         if (snapshot.hasData) {
-          return Padding(
-            padding: const EdgeInsets.all(8.0),
-            child: Container(
-              height: 230,
-              child: Stack(
-                children: [
-                  // back container
-                  Positioned(
-                    top: 35,
-                    left: 20,
-                    child: Material(
-                      child: Container(
-                        height: 180.0,
-                        width: MediaQuery.of(context).size.width * 0.9,
-                        decoration: BoxDecoration(
-                          color: Colors.white,
-                          borderRadius: const BorderRadius.only(
-                            bottomLeft: Radius.circular(50),
-                          ),
-                          boxShadow: [
-                            BoxShadow(
-                              color: Colors.grey.withOpacity(0.6),
-                              // offset: const Offset(-10.0, 10.0),
-                              blurRadius: 20.0,
-                              spreadRadius: 4.0,
-                            ),
-                          ],
-                          image: DecorationImage(
-                            fit: BoxFit.cover,
-                            colorFilter: ColorFilter.mode(
-                              Colors.black.withOpacity(0.2),
-                              BlendMode.dstATop,
-                            ),
-                            image: AssetImage(
-                              "icons/flags/png/${widget.selectedCountryAbbreviation}.png",
-                              package: 'country_icons',
-                            ),
-                          ),
-                        ),
-                      ),
-                    ),
-                  ),
-                  // lang change
-                  Positioned(
-                    top: 10,
-                    left: 0,
-                    child: Card(
-                      elevation: 10.0,
-                      shadowColor: Colors.grey.withOpacity(0.5),
-                      shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(15.0),
-                      ),
-                      child: Container(
-                        height: 120,
-                        width: 160,
-                        decoration: BoxDecoration(
-                          borderRadius: BorderRadius.circular(10.0),
-                          boxShadow: [
-                            BoxShadow(
-                              color: Colors.black.withOpacity(0.4),
-                              // offset: const Offset(-10.0, 10.0),
-                              blurRadius: 10.0,
-                              spreadRadius: 2.0,
-                            ),
-                          ],
-                        ),
-                        child: PopupMenuButton(
-                          itemBuilder: (context) => createPopupMenuItems(),
-                          child: ClipRRect(
-                            borderRadius: BorderRadius.circular(8.0),
-                            child: Image.asset(
-                              'icons/flags/png/${widget.selectedCountryAbbreviation}.png',
-                              package: 'country_icons',
-                              errorBuilder: (context, error, stackTrace) {
-                                return const SizedBox();
-                              },
-                              height: 300,
-                              width: 150,
-                              fit: BoxFit.cover,
-                            ),
-                          ),
-                        ),
-                      ),
-                    ),
-                  ),
-                  // header and text
-                  Positioned(
-                    top: 45,
-                    left: 180,
+          return Container(
+            height: height / 3.2, // 230
+            child: Stack(
+              children: [
+                // background
+                Positioned(
+                  top: height / 21, // 35
+                  left: width / 20, // 20
+                  child: Material(
+                    // back flag image
                     child: Container(
-                      height: 160,
-                      width: 200,
-                      child: Column(
-                        children: [
-                          Shimmer.fromColors(
-                            direction: ShimmerDirection.ltr,
-                            baseColor: Colors.red,
-                            highlightColor: Colors.yellow,
-                            period: const Duration(milliseconds: 3000),
-                            child: Text(
-                              Helpers.getCountryFullName(
-                                widget.selectedCountryAbbreviation,
-                              ),
-                              style: TextStyle(
-                                fontSize: 24,
-                                color: Colors.red.withOpacity(0.7),
-                                fontWeight: FontWeight.bold,
-                              ),
+                      height: height / 4.1, // 180
+                      width: width * 0.9,
+                      decoration: BoxDecoration(
+                        color: Colors.white,
+                        borderRadius: const BorderRadius.only(
+                          bottomLeft: Radius.circular(50),
+                        ),
+                        boxShadow: [
+                          BoxShadow(
+                            color: Colors.grey.withOpacity(0.6),
+                            offset: const Offset(0, 10.0),
+                            blurRadius: myBlurRadius,
+                            spreadRadius: mySPreadRadius,
+                          ),
+                        ],
+                        image: DecorationImage(
+                          fit: BoxFit.cover,
+                          colorFilter: ColorFilter.mode(
+                            Colors.black.withOpacity(0.2),
+                            BlendMode.dstATop,
+                          ),
+                          image: AssetImage(
+                            "icons/flags/png/${widget.selectedCountryAbbreviation}.png",
+                            package: 'country_icons',
+                          ),
+                        ),
+                      ),
+                    ),
+                  ),
+                ),
+                // lang change
+                Positioned(
+                  top: 10,
+                  left: 0,
+                  child: Card(
+                    elevation: 10.0,
+                    shadowColor: Colors.grey.withOpacity(0.5),
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(15.0),
+                    ),
+                    child: Container(
+                      height: 120, //height / 6.1
+                      width: 160, //(height / 6.1) * (4 / 3)
+                      decoration: BoxDecoration(
+                        borderRadius: BorderRadius.circular(10.0),
+                        boxShadow: [
+                          BoxShadow(
+                            color: Colors.black.withOpacity(0.4),
+                            offset: const Offset(0, 10.0),
+                            blurRadius: myBlurRadius,
+                            spreadRadius: mySPreadRadius,
+                          ),
+                        ],
+                      ),
+                      child: PopupMenuButton(
+                        itemBuilder: (context) => createPopupMenuItems(),
+                        child: ClipRRect(
+                          borderRadius: BorderRadius.circular(8.0),
+                          child: Image.asset(
+                            'icons/flags/png/${widget.selectedCountryAbbreviation}.png',
+                            package: 'country_icons',
+                            errorBuilder: (context, error, stackTrace) {
+                              return const SizedBox();
+                            },
+                            fit: BoxFit.cover,
+                          ),
+                        ),
+                      ),
+                    ),
+                  ),
+                ),
+                // header and text
+                Positioned(
+                  top: height / 20, // 45
+                  left: width / 2.3, // 180
+                  child: Container(
+                    height: height / 4.4, // 160
+                    width: width / 2, // 200
+                    child: Column(
+                      children: [
+                        Shimmer.fromColors(
+                          direction: ShimmerDirection.ltr,
+                          baseColor: Colors.red,
+                          highlightColor: Colors.yellow,
+                          period: const Duration(milliseconds: 3000),
+                          child: Text(
+                            Helpers.getCountryFullName(
+                              widget.selectedCountryAbbreviation,
+                            ),
+                            style: TextStyle(
+                              fontSize: 24,
+                              color: Colors.red.withOpacity(0.7),
+                              fontWeight: FontWeight.bold,
                             ),
                           ),
-                          const Divider(
-                            color: Colors.black,
+                        ),
+                        const Divider(
+                          color: Colors.black,
+                        ),
+                        Flexible(
+                          child: SingleChildScrollView(
+                            child: Text(
+                              snapshot.data.toString(),
+                            ),
                           ),
+                        ),
+                      ],
+                    ),
+                  ),
+                ),
+                // icons
+                Positioned(
+                    bottom: height / 30, // 25
+                    left: width / 19, // 20
+                    child: Container(
+                      width: width / 2.6, // 160
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          // speak
                           Flexible(
-                            child: SingleChildScrollView(
-                              child: Text(
-                                snapshot.data.toString(),
-                              ),
+                            child: AnimatedIconButton(
+                              icons: const [
+                                AnimatedIconItem(
+                                  icon: Icon(
+                                    Icons.volume_up,
+                                    color: Colors.black,
+                                  ),
+                                ),
+                              ],
+                              onPressed: () async {
+                                _speak(snapshot.data.toString());
+                              },
+                            ),
+                          ),
+                          // stop
+                          Flexible(
+                            child: AnimatedIconButton(
+                              icons: [
+                                AnimatedIconItem(
+                                  icon: const Icon(
+                                    Icons.stop,
+                                    color: Colors.black,
+                                  ),
+                                  onPressed: () async {
+                                    _stop();
+                                  },
+                                ),
+                                AnimatedIconItem(
+                                  icon: const Icon(
+                                    Icons.stop,
+                                    color: Colors.black,
+                                  ),
+                                  onPressed: () async {
+                                    _stop();
+                                  },
+                                ),
+                              ],
+                            ),
+                          ),
+                          // copy text
+                          Flexible(
+                            child: AnimatedIconButton(
+                              icons: [
+                                AnimatedIconItem(
+                                  icon: const Icon(
+                                    Icons.copy,
+                                    color: Colors.black,
+                                  ),
+                                  onPressed: () {
+                                    print(snapshot.data.toString());
+                                  },
+                                ),
+                                AnimatedIconItem(
+                                  icon: const Icon(
+                                    Icons.copy,
+                                    color: Colors.black,
+                                  ),
+                                  onPressed: () {
+                                    print(snapshot.data.toString());
+                                  },
+                                ),
+                              ],
                             ),
                           ),
                         ],
                       ),
-                    ),
-                  ),
-                  // icons
-                  Positioned(
-                      bottom: 25,
-                      left: 20,
-                      child: Container(
-                        width: 160,
-                        child: Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                          children: [
-                            // speak
-                            Flexible(
-                              child: AnimatedIconButton(
-                                icons: const [
-                                  AnimatedIconItem(
-                                    icon: Icon(
-                                      Icons.volume_up,
-                                      color: Colors.black,
-                                    ),
-                                  ),
-                                ],
-                                onPressed: () async {
-                                  _speak(snapshot.data.toString());
-                                },
-                              ),
-                            ),
-                            // stop
-                            Flexible(
-                              child: AnimatedIconButton(
-                                icons: [
-                                  AnimatedIconItem(
-                                    icon: const Icon(
-                                      Icons.stop,
-                                      color: Colors.black,
-                                    ),
-                                    onPressed: () async {
-                                      _stop();
-                                    },
-                                  ),
-                                  AnimatedIconItem(
-                                    icon: const Icon(
-                                      Icons.stop,
-                                      color: Colors.black,
-                                    ),
-                                    onPressed: () async {
-                                      _stop();
-                                    },
-                                  ),
-                                ],
-                              ),
-                            ),
-                            // copy text
-                            Flexible(
-                              child: AnimatedIconButton(
-                                icons: [
-                                  AnimatedIconItem(
-                                    icon: const Icon(
-                                      Icons.copy,
-                                      color: Colors.black,
-                                    ),
-                                    onPressed: () {
-                                      print(snapshot.data.toString());
-                                    },
-                                  ),
-                                  AnimatedIconItem(
-                                    icon: const Icon(
-                                      Icons.copy,
-                                      color: Colors.black,
-                                    ),
-                                    onPressed: () {
-                                      print(snapshot.data.toString());
-                                    },
-                                  ),
-                                ],
-                              ),
-                            ),
-                          ],
-                        ),
-                      )),
-                ],
-              ),
+                    )),
+              ],
             ),
           );
         } else {

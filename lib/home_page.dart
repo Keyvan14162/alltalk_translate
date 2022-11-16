@@ -35,29 +35,35 @@ class _HomePageState extends ConsumerState<HomePage>
   Widget build(BuildContext context) {
     double width = MediaQuery.of(context).size.width;
     double height = MediaQuery.of(context).size.height;
+    double addLangHeight = height / 8;
 
     return Scaffold(
       appBar: myAppbar(height, width, context),
-      body: Container(
-        color: firstColor,
-        child: NestedScrollView(
-          headerSliverBuilder: (context, innerBoxIsScrolled) {
-            return <Widget>[
-              SliverAppBar(
-                backgroundColor: Colors.white,
-                toolbarHeight: 90,
-                actions: [
-                  SingleChildScrollView(child: addLangWidget(context)),
-                ],
-              ),
-            ];
-          },
-          body: SingleChildScrollView(
+      body: NestedScrollView(
+        clipBehavior: Clip.none,
+        headerSliverBuilder: (context, innerBoxIsScrolled) {
+          return [
+            // add lang
+            SliverAppBar(
+              backgroundColor: Colors.white,
+              toolbarHeight: addLangHeight + 20,
+              actions: [
+                addLangWidget(
+                  context,
+                  addLangHeight,
+                ),
+              ],
+            ),
+          ];
+        },
+        body: Container(
+          color: Colors.white,
+          child: SingleChildScrollView(
             child: Column(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
                 SizedBox(
-                  height: height * 0.05,
+                  height: height * 0.02,
                 ),
                 ListView.builder(
                   primary: false,
@@ -76,9 +82,6 @@ class _HomePageState extends ConsumerState<HomePage>
                   },
                   child: const Text("Çevir"),
                 ),
-                const SizedBox(
-                  height: 200,
-                ),
               ],
             ),
           ),
@@ -92,7 +95,7 @@ class _HomePageState extends ConsumerState<HomePage>
       elevation: 0,
 
       backgroundColor: firstColor,
-      toolbarHeight: 80, // 100
+      toolbarHeight: height / 8, // 100
 
       actions: [
         Column(
@@ -166,18 +169,15 @@ class _HomePageState extends ConsumerState<HomePage>
           key:
               ref.read(translateCardListProvider.notifier).state[index].cardKey,
           onDismissed: (direction) {
-            setState(
-              () {
-                ref.watch(translateCardListProvider).removeWhere(
-                      (element) =>
-                          element.cardKey ==
-                          ref
-                              .read(translateCardListProvider.notifier)
-                              .state[index]
-                              .cardKey,
-                    );
-              },
-            );
+            // set state
+            ref.watch(translateCardListProvider).removeWhere(
+                  (element) =>
+                      element.cardKey ==
+                      ref
+                          .read(translateCardListProvider.notifier)
+                          .state[index]
+                          .cardKey,
+                );
           },
           child: ref.read(translateCardListProvider.notifier).state[index],
         );
@@ -235,13 +235,13 @@ class _HomePageState extends ConsumerState<HomePage>
     return popupMenuItemList;
   }
 
-  Column addLangWidget(BuildContext context) {
+  Column addLangWidget(BuildContext context, double addLangHeight) {
     return Column(
       children: [
         Center(
           child: Material(
             child: Container(
-              height: 80.0,
+              height: addLangHeight,
               width: MediaQuery.of(context).size.width,
               decoration: BoxDecoration(
                 borderRadius: const BorderRadius.only(
@@ -261,8 +261,9 @@ class _HomePageState extends ConsumerState<HomePage>
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
                   // select new ... text
-                  const Flexible(
-                    child: Text(
+                  Container(
+                    width: MediaQuery.of(context).size.width / 3,
+                    child: const Text(
                       "Select new language will be added:",
                       textAlign: TextAlign.center,
                       style: TextStyle(
@@ -271,17 +272,20 @@ class _HomePageState extends ConsumerState<HomePage>
                       ),
                     ),
                   ),
+                  const SizedBox(
+                    width: 10,
+                  ),
                   // choose lang
                   Card(
-                    margin: EdgeInsets.all(0),
+                    margin: const EdgeInsets.all(0),
                     elevation: 10.0,
                     shadowColor: secondColor.withOpacity(0.5),
                     shape: RoundedRectangleBorder(
                       borderRadius: BorderRadius.circular(15.0),
                     ),
                     child: Container(
-                      height: 60,
-                      width: 80,
+                      height: 45,
+                      width: 60,
                       decoration: BoxDecoration(
                         borderRadius: BorderRadius.circular(10.0),
                         color: secondColor,
@@ -334,17 +338,9 @@ class _HomePageState extends ConsumerState<HomePage>
                                           size: 36,
                                           color: Colors.red.withOpacity(0.7),
                                         ),
-                                        onPressed: () {},
-                                      ),
-                                      AnimatedIconItem(
-                                        icon: Icon(
-                                          Icons.add,
-                                          size: 36,
-                                          color: Colors.red.withOpacity(0.7),
-                                        ),
-                                        onPressed: () {},
                                       ),
                                     ],
+                                    onPressed: () {},
                                   ),
                                 )
                               : Padding(
@@ -357,53 +353,27 @@ class _HomePageState extends ConsumerState<HomePage>
                                           size: 36,
                                           color: Colors.red.withOpacity(0.7),
                                         ),
-                                        onPressed: () async {
-                                          setState(
-                                            () {
-                                              if (!isLanguageSelectedBefore(
-                                                  selectedCountryAbbreviation)) {
-                                                ref
-                                                    .watch(
-                                                        translateCardListProvider)
-                                                    .add(
-                                                      TranslateCard(
-                                                        cardKey: UniqueKey(),
-                                                        selectedCountryAbbreviation:
-                                                            selectedCountryAbbreviation,
-                                                      ),
-                                                    );
-                                              }
-                                            },
-                                          );
-                                        },
-                                      ),
-                                      AnimatedIconItem(
-                                        icon: Icon(
-                                          Icons.add,
-                                          size: 36,
-                                          color: Colors.red.withOpacity(0.7),
-                                        ),
-                                        onPressed: () async {
-                                          setState(
-                                            () {
-                                              if (!isLanguageSelectedBefore(
-                                                  selectedCountryAbbreviation)) {
-                                                ref
-                                                    .watch(
-                                                        translateCardListProvider)
-                                                    .add(
-                                                      TranslateCard(
-                                                        cardKey: UniqueKey(),
-                                                        selectedCountryAbbreviation:
-                                                            selectedCountryAbbreviation,
-                                                      ),
-                                                    );
-                                              }
-                                            },
-                                          );
-                                        },
                                       ),
                                     ],
+                                    onPressed: () async {
+                                      setState(
+                                        () {
+                                          if (!isLanguageSelectedBefore(
+                                              selectedCountryAbbreviation)) {
+                                            ref
+                                                .watch(
+                                                    translateCardListProvider)
+                                                .add(
+                                                  TranslateCard(
+                                                    cardKey: UniqueKey(),
+                                                    selectedCountryAbbreviation:
+                                                        selectedCountryAbbreviation,
+                                                  ),
+                                                );
+                                          }
+                                        },
+                                      );
+                                    },
                                   ),
                                 ),
                         ],
