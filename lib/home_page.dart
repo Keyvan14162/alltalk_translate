@@ -23,8 +23,8 @@ class _HomePageState extends ConsumerState<HomePage>
   Color firstColor = Colors.white;
   Color secondColor = Color.fromARGB(255, 49, 33, 33);
   Color thirdColor = Color.fromARGB(255, 255, 231, 76);
-  double myBlurRadius = 10.0;
-  double mySPreadRadius = 1.0;
+  double myBlurRadius = 4.0;
+  double mySPreadRadius = 4.0;
 
   @override
   void initState() {
@@ -95,7 +95,7 @@ class _HomePageState extends ConsumerState<HomePage>
       elevation: 0,
 
       backgroundColor: firstColor,
-      toolbarHeight: height / 8, // 100
+      toolbarHeight: height / 9, // 100
 
       actions: [
         Column(
@@ -169,7 +169,7 @@ class _HomePageState extends ConsumerState<HomePage>
           key:
               ref.read(translateCardListProvider.notifier).state[index].cardKey,
           onDismissed: (direction) {
-            // set state
+            // SSSSSSSEEEEEEETTTTT SSSSSSTTTTTAAAATTTTEEEE
             ref.watch(translateCardListProvider).removeWhere(
                   (element) =>
                       element.cardKey ==
@@ -255,132 +255,138 @@ class _HomePageState extends ConsumerState<HomePage>
                   ),
                 ],
                 // color: Colors.white,
-                color: firstColor,
+                color: Colors.red,
               ),
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  // select new ... text
-                  Container(
-                    width: MediaQuery.of(context).size.width / 3,
-                    child: const Text(
-                      "Select new language will be added:",
-                      textAlign: TextAlign.center,
-                      style: TextStyle(
-                        color: Colors.black,
-                        fontSize: 14,
+              child: Container(
+                //color: Colors.white,
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    // select new ... text
+                    Container(
+                      width: MediaQuery.of(context).size.width / 3,
+                      child: const Text(
+                        "Select new language will be added:",
+                        textAlign: TextAlign.center,
+                        style: TextStyle(
+                          color: Colors.black,
+                          fontSize: 14,
+                        ),
                       ),
                     ),
-                  ),
-                  const SizedBox(
-                    width: 10,
-                  ),
-                  // choose lang
-                  Card(
-                    margin: const EdgeInsets.all(0),
-                    elevation: 10.0,
-                    shadowColor: secondColor.withOpacity(0.5),
-                    shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(15.0),
+                    const SizedBox(
+                      width: 10,
                     ),
-                    child: Container(
-                      height: 45,
-                      width: 60,
-                      decoration: BoxDecoration(
-                        borderRadius: BorderRadius.circular(10.0),
-                        color: secondColor,
+                    // choose lang
+                    Card(
+                      margin: const EdgeInsets.all(0),
+                      elevation: 10.0,
+                      shadowColor: secondColor.withOpacity(0.5),
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(15.0),
                       ),
-                      child: PopupMenuButton(
-                        itemBuilder: (context) => createPopupMenuItems(),
-                        child: ClipRRect(
-                          borderRadius: BorderRadius.circular(8.0),
-                          child: Image.asset(
-                            'icons/flags/png/$selectedCountryAbbreviation.png',
-                            package: 'country_icons',
-                            errorBuilder: (context, error, stackTrace) {
-                              return const SizedBox();
-                            },
-                            fit: BoxFit.cover,
+                      child: Container(
+                        height: 45,
+                        width: 60,
+                        decoration: BoxDecoration(
+                          borderRadius: BorderRadius.circular(10.0),
+                          color: secondColor,
+                        ),
+                        child: PopupMenuButton(
+                          itemBuilder: (context) => createPopupMenuItems(),
+                          child: ClipRRect(
+                            borderRadius: BorderRadius.circular(8.0),
+                            child: Image.asset(
+                              'icons/flags/png/$selectedCountryAbbreviation.png',
+                              package: 'country_icons',
+                              errorBuilder: (context, error, stackTrace) {
+                                return const SizedBox();
+                              },
+                              fit: BoxFit.cover,
+                            ),
                           ),
                         ),
                       ),
                     ),
-                  ),
-                  // add new lang ,button
-                  Flexible(
-                    child: Padding(
-                      padding: const EdgeInsets.fromLTRB(10, 10, 10, 10),
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        crossAxisAlignment: CrossAxisAlignment.center,
-                        children: [
-                          Flexible(
-                            child: Text(
-                              "Add a new language.",
-                              textAlign: TextAlign.end,
-                              style: TextStyle(
-                                color: isLanguageSelectedBefore(
-                                        selectedCountryAbbreviation)
-                                    ? Colors.red
-                                    : Colors.black,
-                                fontSize: 14,
+                    // add new lang ,button
+                    Flexible(
+                      child: Padding(
+                        padding: const EdgeInsets.fromLTRB(10, 10, 10, 10),
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          crossAxisAlignment: CrossAxisAlignment.center,
+                          children: [
+                            // add new lang text
+                            Flexible(
+                              child: Text(
+                                "Add a new language.",
+                                textAlign: TextAlign.end,
+                                style: TextStyle(
+                                  color: isLanguageSelectedBefore(
+                                          selectedCountryAbbreviation)
+                                      ? Colors.red
+                                      : Colors.black,
+                                  fontSize: 14,
+                                ),
                               ),
                             ),
-                          ),
-                          isLanguageSelectedBefore(selectedCountryAbbreviation)
-                              ? Padding(
-                                  padding: const EdgeInsets.all(8.0),
-                                  child: AnimatedIconButton(
-                                    icons: [
-                                      AnimatedIconItem(
-                                        icon: Icon(
-                                          Icons.add,
-                                          size: 36,
-                                          color: Colors.red.withOpacity(0.7),
+                            // add iconbutton
+                            isLanguageSelectedBefore(
+                                    selectedCountryAbbreviation)
+                                ? Padding(
+                                    padding: const EdgeInsets.all(8.0),
+                                    child: AnimatedIconButton(
+                                      icons: [
+                                        AnimatedIconItem(
+                                          icon: Icon(
+                                            Icons.add,
+                                            size: 36,
+                                            color: Colors.red.withOpacity(0.7),
+                                          ),
                                         ),
-                                      ),
-                                    ],
-                                    onPressed: () {},
-                                  ),
-                                )
-                              : Padding(
-                                  padding: const EdgeInsets.all(8.0),
-                                  child: AnimatedIconButton(
-                                    icons: [
-                                      AnimatedIconItem(
-                                        icon: Icon(
-                                          Icons.add,
-                                          size: 36,
-                                          color: Colors.red.withOpacity(0.7),
+                                      ],
+                                      onPressed: () {},
+                                    ),
+                                  )
+                                : Padding(
+                                    padding: const EdgeInsets.all(8.0),
+                                    child: AnimatedIconButton(
+                                      icons: [
+                                        AnimatedIconItem(
+                                          icon: Icon(
+                                            Icons.add,
+                                            size: 36,
+                                            color: Colors.red.withOpacity(0.7),
+                                          ),
                                         ),
-                                      ),
-                                    ],
-                                    onPressed: () async {
-                                      setState(
-                                        () {
-                                          if (!isLanguageSelectedBefore(
-                                              selectedCountryAbbreviation)) {
-                                            ref
-                                                .watch(
-                                                    translateCardListProvider)
-                                                .add(
-                                                  TranslateCard(
-                                                    cardKey: UniqueKey(),
-                                                    selectedCountryAbbreviation:
-                                                        selectedCountryAbbreviation,
-                                                  ),
-                                                );
-                                          }
-                                        },
-                                      );
-                                    },
+                                      ],
+                                      onPressed: () async {
+                                        setState(
+                                          () {
+                                            if (!isLanguageSelectedBefore(
+                                                selectedCountryAbbreviation)) {
+                                              ref
+                                                  .watch(
+                                                      translateCardListProvider)
+                                                  .add(
+                                                    TranslateCard(
+                                                      cardKey: UniqueKey(),
+                                                      selectedCountryAbbreviation:
+                                                          selectedCountryAbbreviation,
+                                                    ),
+                                                  );
+                                            }
+                                          },
+                                        );
+                                      },
+                                    ),
                                   ),
-                                ),
-                        ],
+                          ],
+                        ),
                       ),
                     ),
-                  ),
-                ],
+                  ],
+                ),
               ),
             ),
           ),
