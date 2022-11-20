@@ -13,6 +13,27 @@ class HomePage extends StatefulHookConsumerWidget {
   ConsumerState<HomePage> createState() => _HomePageState();
 }
 
+class Item {
+  Item({
+    required this.expandedValue,
+    required this.headerValue,
+    this.isExpanded = false,
+  });
+
+  String expandedValue;
+  String headerValue;
+  bool isExpanded;
+}
+
+List<Item> generateItems(int numberOfItems) {
+  return List<Item>.generate(numberOfItems, (int index) {
+    return Item(
+      headerValue: 'Panel $index',
+      expandedValue: 'This is item number $index',
+    );
+  });
+}
+
 class _HomePageState extends ConsumerState<HomePage>
     with SingleTickerProviderStateMixin {
   final TextEditingController _textController = TextEditingController();
@@ -24,12 +45,14 @@ class _HomePageState extends ConsumerState<HomePage>
   Color secondColor = Color.fromARGB(255, 49, 33, 33);
   Color thirdColor = Color.fromARGB(255, 255, 231, 76);
   double myBlurRadius = 4.0;
-  double mySPreadRadius = 4.0;
+  double mySPreadRadius = 1;
 
   @override
   void initState() {
     super.initState();
   }
+
+  final List<Item> _data = generateItems(8);
 
   @override
   Widget build(BuildContext context) {
@@ -65,6 +88,7 @@ class _HomePageState extends ConsumerState<HomePage>
                 SizedBox(
                   height: height * 0.02,
                 ),
+
                 ListView.builder(
                   primary: false,
                   shrinkWrap: true,
@@ -179,7 +203,20 @@ class _HomePageState extends ConsumerState<HomePage>
                           .cardKey,
                 );
           },
-          child: ref.read(translateCardListProvider.notifier).state[index],
+          child: Container(
+            decoration: BoxDecoration(
+              boxShadow: [
+                BoxShadow(
+                  color: Colors.grey.withOpacity(1),
+                  blurStyle: BlurStyle.normal,
+                  offset: const Offset(0, -1),
+                  blurRadius: myBlurRadius,
+                  spreadRadius: mySPreadRadius,
+                ),
+              ],
+            ),
+            child: ref.read(translateCardListProvider.notifier).state[index],
+          ),
         );
       },
     );
@@ -255,7 +292,7 @@ class _HomePageState extends ConsumerState<HomePage>
                   ),
                 ],
                 // color: Colors.white,
-                color: Colors.red,
+                color: Colors.white,
               ),
               child: Container(
                 //color: Colors.white,

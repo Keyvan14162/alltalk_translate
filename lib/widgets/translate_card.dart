@@ -1,7 +1,9 @@
+import 'package:alltalk_translate/all_talk_icons_icons.dart';
 import 'package:alltalk_translate/helpers.dart';
 import 'package:alltalk_translate/providers.dart';
 import 'package:animated_icon_button/animated_icon_button.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_tts/flutter_tts.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:shimmer/shimmer.dart';
@@ -33,10 +35,12 @@ class _TranslateCardState extends ConsumerState<TranslateCard> {
   double pitch = 1.0;
   double speechRate = 0.5;
   List<String>? languages;
+  bool myIsExpanded = false;
 
   @override
   void initState() {
     super.initState();
+
     // init();
     initSetting();
   }
@@ -63,7 +67,7 @@ class _TranslateCardState extends ConsumerState<TranslateCard> {
     await flutterTts.stop();
   }
 
-  double myBlurRadius = 10.0;
+  double myBlurRadius = 4.0;
   double mySPreadRadius = 1.0;
 
   @override
@@ -86,309 +90,316 @@ class _TranslateCardState extends ConsumerState<TranslateCard> {
       selectedCountry =
           "${widget.selectedCountryAbbreviation}-${widget.selectedCountryAbbreviation.toUpperCase()}";
     }
-    print(selectedCountry);
     return FutureBuilder(
       future: ref.watch(mainTextProvider).translate(
-            //to: widget.selectedCountryAbbreviation == "us"
-            //  ? "en"
-            //: widget.selectedCountryAbbreviation,
             to: selectedCountry.split("-")[0].toLowerCase(),
           ),
       builder: (context, snapshot) {
         if (snapshot.hasData) {
-          return Container(
-            height: height / 3.2, // 230
-            child: Stack(
-              children: [
-                // background
-                Positioned(
-                  top: height / 21, // 35
-                  left: width / 20, // 20
-                  child: Material(
-                    // back flag image
-                    child: Container(
-                      height: height / 4.1, // 180
-                      width: width * 0.9,
-                      decoration: BoxDecoration(
-                        color: Colors.white,
-                        borderRadius: const BorderRadius.only(
-                          bottomLeft: Radius.circular(50),
-                        ),
-                        boxShadow: [
-                          BoxShadow(
-                            color: Colors.grey.withOpacity(0.6),
-                            offset: const Offset(0, 10.0),
-                            blurRadius: myBlurRadius,
-                            spreadRadius: mySPreadRadius,
-                          ),
-                        ],
-                        image: DecorationImage(
-                          fit: BoxFit.cover,
-                          colorFilter: ColorFilter.mode(
-                            Colors.black.withOpacity(0.2),
-                            BlendMode.dstATop,
-                          ),
-                          image: AssetImage(
-                            "icons/flags/png/${widget.selectedCountryAbbreviation}.png",
-                            package: 'country_icons',
-                          ),
-                        ),
-                      ),
-                    ),
+          return ExpansionPanelList(
+            elevation: 0,
+            dividerColor: Colors.white,
+            expandedHeaderPadding: const EdgeInsets.all(8.0),
+            expansionCallback: (panelIndex, isExpanded) {
+              setState(() {
+                myIsExpanded = !isExpanded;
+              });
+            },
+            children: [
+              getExpansionPanelListItems(
+                snapshot.data.toString(),
+                width,
+                height,
+              ),
+            ],
+          );
+        } else {
+          // shimmer
+          return expansionPanelItemShimmer(height);
+        }
+      },
+    );
+  }
+
+  Container expansionPanelItemShimmer(double height) {
+    return Container(
+      color: Colors.white,
+      child: Shimmer.fromColors(
+        baseColor: Colors.grey.withOpacity(0.4),
+        highlightColor: Colors.grey.withOpacity(0.9),
+        direction: ShimmerDirection.ltr,
+        child: Row(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          children: [
+            Card(
+              elevation: 0,
+              shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(15.0),
+              ),
+              child: Container(
+                height: height / 11,
+                width: (height / 11) * 1.5,
+                decoration: BoxDecoration(
+                  borderRadius: BorderRadius.circular(10.0),
+                ),
+                child: PopupMenuButton(
+                  itemBuilder: (context) => createPopupMenuItems(),
+                  child: ClipRRect(
+                    borderRadius: BorderRadius.circular(8.0),
+                    child: const SizedBox(),
                   ),
                 ),
-                // lang change
-                Positioned(
-                  top: 10,
-                  left: 0,
-                  child: Card(
-                    elevation: 10.0,
-                    shadowColor: Colors.grey.withOpacity(0.5),
-                    shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(15.0),
-                    ),
-                    child: Container(
-                      height: 120, //height / 6.1
-                      width: 160, //(height / 6.1) * (4 / 3)
-                      decoration: BoxDecoration(
-                        borderRadius: BorderRadius.circular(10.0),
-                        boxShadow: [
-                          BoxShadow(
-                            color: Colors.black.withOpacity(0.4),
-                            offset: const Offset(0, 10.0),
-                            blurRadius: myBlurRadius,
-                            spreadRadius: mySPreadRadius,
-                          ),
-                        ],
-                      ),
-                      child: PopupMenuButton(
-                        itemBuilder: (context) => createPopupMenuItems(),
-                        child: ClipRRect(
-                          borderRadius: BorderRadius.circular(8.0),
-                          child: Image.asset(
-                            'icons/flags/png/${widget.selectedCountryAbbreviation}.png',
-                            package: 'country_icons',
-                            errorBuilder: (context, error, stackTrace) {
-                              return const SizedBox();
-                            },
-                            fit: BoxFit.cover,
-                          ),
-                        ),
-                      ),
-                    ),
-                  ),
+              ),
+            ),
+            Expanded(
+              child: Text(
+                Helpers.getCountryFullName(
+                  widget.selectedCountryAbbreviation,
                 ),
-                // header and text
-                Positioned(
-                  top: height / 20, // 45
-                  left: width / 2.3, // 180
-                  child: Container(
-                    height: height / 4.4, // 160
-                    width: width / 2, // 200
-                    child: Column(
-                      children: [
-                        Shimmer.fromColors(
-                          direction: ShimmerDirection.ltr,
-                          baseColor: Colors.red,
-                          highlightColor: Colors.yellow,
-                          period: const Duration(milliseconds: 3000),
-                          child: Text(
-                            Helpers.getCountryFullName(
-                              widget.selectedCountryAbbreviation,
-                            ),
-                            style: TextStyle(
-                              fontSize: 24,
-                              color: Colors.red.withOpacity(0.7),
-                              fontWeight: FontWeight.bold,
-                            ),
-                          ),
-                        ),
-                        const Divider(
-                          color: Colors.black,
-                        ),
-                        Flexible(
-                          child: SingleChildScrollView(
-                            child: Text(
-                              snapshot.data.toString(),
-                            ),
+                style: const TextStyle(
+                  fontSize: 24,
+                  fontWeight: FontWeight.bold,
+                ),
+              ),
+            ),
+            Flexible(
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.end,
+                children: [
+                  Flexible(
+                    child: AnimatedIconButton(
+                      icons: const [
+                        AnimatedIconItem(
+                          icon: Icon(
+                            Icons.volume_up,
+                            color: Colors.black,
                           ),
                         ),
                       ],
                     ),
                   ),
-                ),
-                // icons
-                Positioned(
-                    bottom: height / 30, // 25
-                    left: width / 19, // 20
-                    child: Container(
-                      width: width / 2.6, // 160
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: [
-                          // speak
-                          Flexible(
-                            child: AnimatedIconButton(
-                              icons: const [
-                                AnimatedIconItem(
-                                  icon: Icon(
-                                    Icons.volume_up,
-                                    color: Colors.black,
-                                  ),
-                                ),
-                              ],
-                              onPressed: () async {
-                                _speak(snapshot.data.toString());
-                              },
-                            ),
-                          ),
-                          // stop
-                          Flexible(
-                            child: AnimatedIconButton(
-                              icons: [
-                                AnimatedIconItem(
-                                  icon: const Icon(
-                                    Icons.stop,
-                                    color: Colors.black,
-                                  ),
-                                  onPressed: () async {
-                                    _stop();
-                                  },
-                                ),
-                                AnimatedIconItem(
-                                  icon: const Icon(
-                                    Icons.stop,
-                                    color: Colors.black,
-                                  ),
-                                  onPressed: () async {
-                                    _stop();
-                                  },
-                                ),
-                              ],
-                            ),
-                          ),
-                          // copy text
-                          Flexible(
-                            child: AnimatedIconButton(
-                              icons: [
-                                AnimatedIconItem(
-                                  icon: const Icon(
-                                    Icons.copy,
-                                    color: Colors.black,
-                                  ),
-                                  onPressed: () {
-                                    print(snapshot.data.toString());
-                                  },
-                                ),
-                                AnimatedIconItem(
-                                  icon: const Icon(
-                                    Icons.copy,
-                                    color: Colors.black,
-                                  ),
-                                  onPressed: () {
-                                    print(snapshot.data.toString());
-                                  },
-                                ),
-                              ],
-                            ),
-                          ),
-                        ],
-                      ),
-                    )),
-              ],
-            ),
-          );
-        } else {
-          // shimmer
-          return Padding(
-            padding: const EdgeInsets.all(8.0),
-            child: Container(
-              height: 230,
-              child: Stack(
-                children: [
-                  // back container
-                  Positioned(
-                    top: 35,
-                    left: 20,
-                    child: Material(
-                      child: Container(
-                        height: 180.0,
-                        width: MediaQuery.of(context).size.width * 0.9,
-                        decoration: BoxDecoration(
-                          color: Colors.white,
-                          borderRadius: const BorderRadius.only(
-                            bottomLeft: Radius.circular(50),
-                          ),
-                          boxShadow: [
-                            BoxShadow(
-                              color: Colors.grey.withOpacity(0.6),
-                              // offset: const Offset(-10.0, 10.0),
-                              blurRadius: 20.0,
-                              spreadRadius: 4.0,
-                            ),
-                          ],
-                        ),
-                        child: Shimmer.fromColors(
-                          baseColor:
-                              Theme.of(context).primaryColor.withOpacity(0.9),
-                          highlightColor:
-                              Theme.of(context).primaryColor.withOpacity(0.2),
-                          child: Container(
-                            color:
-                                Theme.of(context).primaryColor.withOpacity(0.1),
+                  Flexible(
+                    child: AnimatedIconButton(
+                      icons: const [
+                        AnimatedIconItem(
+                          icon: Icon(
+                            Icons.stop,
+                            color: Colors.black,
                           ),
                         ),
-                      ),
+                      ],
                     ),
                   ),
-                  // lang change
-                  Positioned(
-                    top: 10,
-                    left: 0,
-                    child: Card(
-                      elevation: 10.0,
-                      shadowColor: Colors.grey.withOpacity(0.5),
-                      shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(15.0),
-                      ),
-                      child: Container(
-                        height: 120,
-                        width: 160,
-                        decoration: BoxDecoration(
-                          borderRadius: BorderRadius.circular(10.0),
-                        ),
-                        child: PopupMenuButton(
-                          itemBuilder: (context) => createPopupMenuItems(),
-                          child: ClipRRect(
-                            borderRadius: BorderRadius.circular(8.0),
-                            child: Container(
-                              width: 200,
-                              height: 150,
-                              child: Shimmer.fromColors(
-                                baseColor: Theme.of(context)
-                                    .primaryColor
-                                    .withOpacity(0.9),
-                                highlightColor: Theme.of(context)
-                                    .primaryColor
-                                    .withOpacity(0.2),
-                                child: Container(
-                                  color: Theme.of(context)
-                                      .primaryColor
-                                      .withOpacity(0.1),
-                                ),
-                              ),
-                            ),
+                  // copy text
+                  Flexible(
+                    child: AnimatedIconButton(
+                      icons: const [
+                        AnimatedIconItem(
+                          icon: Icon(
+                            Icons.copy,
+                            color: Colors.black,
                           ),
                         ),
-                      ),
+                      ],
                     ),
                   ),
                 ],
               ),
             ),
-          );
-        }
-      },
+            SizedBox(
+              height: height / 7,
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+
+  getExpansionPanelListItems(String text, double width, double height) {
+    return ExpansionPanel(
+      canTapOnHeader: true,
+      isExpanded: myIsExpanded,
+      //backgroundColor: flagDominantColor,
+      headerBuilder: (context, isExpanded) => Row(
+        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+        children: [
+          // lang change
+          Card(
+            elevation: 0,
+            shadowColor: Colors.grey.withOpacity(0.5),
+            shape: RoundedRectangleBorder(
+              borderRadius: BorderRadius.circular(15.0),
+            ),
+            child: Container(
+              height: height / 11,
+              width: (height / 11) * 1.5,
+              decoration: BoxDecoration(
+                borderRadius: BorderRadius.circular(10.0),
+                boxShadow: [
+                  BoxShadow(
+                    color: Colors.black.withOpacity(0.4),
+                    // offset: const Offset(0, 10.0),
+                    blurRadius: 4,
+                    spreadRadius: 1,
+                  ),
+                ],
+              ),
+              child: PopupMenuButton(
+                itemBuilder: (context) => createPopupMenuItems(),
+                child: ClipRRect(
+                  borderRadius: BorderRadius.circular(8.0),
+                  child: Image.asset(
+                    'icons/flags/png/${widget.selectedCountryAbbreviation}.png',
+                    package: 'country_icons',
+                    errorBuilder: (context, error, stackTrace) {
+                      return const SizedBox();
+                    },
+                    fit: BoxFit.cover,
+                  ),
+                ),
+              ),
+            ),
+          ),
+          // header
+          Expanded(
+            child: Shimmer.fromColors(
+              direction: ShimmerDirection.ltr,
+              baseColor: Colors.red,
+              highlightColor: Colors.yellow,
+              period: const Duration(milliseconds: 3000),
+              child: Text(
+                Helpers.getCountryFullName(
+                  widget.selectedCountryAbbreviation,
+                ),
+                style: TextStyle(
+                  fontSize: 24,
+                  color: Colors.red.withOpacity(0.7),
+                  fontWeight: FontWeight.bold,
+                ),
+              ),
+            ),
+          ),
+          // icons
+          Flexible(
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.end,
+              children: [
+                // speak
+                Flexible(
+                  child: Shimmer.fromColors(
+                    direction: ShimmerDirection.ltr,
+                    baseColor: Colors.black,
+                    highlightColor: Colors.white,
+                    period: const Duration(milliseconds: 3000),
+                    loop: 1,
+                    child: AnimatedIconButton(
+                      icons: const [
+                        AnimatedIconItem(
+                          icon: Icon(
+                            AllTalkIcons.sound,
+                          ),
+                        ),
+                      ],
+                      onPressed: () async {
+                        _speak(text); // snapshot.data.tostring
+                      },
+                    ),
+                  ),
+                ),
+                // stop
+                Flexible(
+                  child: Shimmer.fromColors(
+                    direction: ShimmerDirection.ltr,
+                    baseColor: Colors.black,
+                    highlightColor: Colors.white,
+                    period: const Duration(milliseconds: 3000),
+                    loop: 1,
+                    child: AnimatedIconButton(
+                      icons: const [
+                        AnimatedIconItem(
+                          icon: Icon(
+                            AllTalkIcons.stop,
+                          ),
+                        ),
+                      ],
+                      onPressed: () async {
+                        _stop();
+                      },
+                    ),
+                  ),
+                ),
+                // copy text
+                Flexible(
+                  child: Shimmer.fromColors(
+                    direction: ShimmerDirection.ltr,
+                    baseColor: Colors.black,
+                    highlightColor: Colors.white,
+                    period: const Duration(milliseconds: 3000),
+                    loop: 1,
+                    child: AnimatedIconButton(
+                      icons: const [
+                        AnimatedIconItem(
+                          icon: Icon(
+                            AllTalkIcons.tag,
+                          ),
+                        ),
+                      ],
+                      onPressed: () async {
+                        print(text);
+                      },
+                    ),
+                  ),
+                ),
+              ],
+            ),
+          ),
+          SizedBox(
+            height: height / 7,
+          ),
+        ],
+      ),
+      body: Container(
+        height: width * 0.6, // 180
+        width: width,
+        decoration: BoxDecoration(
+          image: DecorationImage(
+            fit: BoxFit.cover,
+            colorFilter: ColorFilter.mode(
+              Colors.black.withOpacity(1),
+              BlendMode.dstATop,
+            ),
+            image: AssetImage(
+              "icons/flags/png/${widget.selectedCountryAbbreviation}.png",
+              package: 'country_icons',
+            ),
+          ),
+        ),
+        child: Scrollbar(
+          child: SingleChildScrollView(
+            child: Padding(
+              padding: const EdgeInsets.all(10.0),
+              child: Container(
+                padding: EdgeInsets.all(8.0),
+                decoration: BoxDecoration(
+                  color: Colors.white.withOpacity(0.8),
+                  borderRadius: BorderRadius.only(
+                    topRight: Radius.circular(12),
+                    bottomLeft: Radius.circular(12),
+                  ),
+                ),
+                child: Text(
+                  text,
+                  style: TextStyle(
+                    color: Colors.grey[800],
+                    fontWeight: FontWeight.w400,
+                    fontSize: 24,
+                  ),
+                ),
+              ),
+            ),
+          ),
+        ),
+      ),
     );
   }
 
