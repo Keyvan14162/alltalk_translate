@@ -162,7 +162,7 @@ class _HomePageState extends ConsumerState<HomePage>
                       color: Colors.grey.withOpacity(0.9),
                     ),
                     hintText: 'Enter text to translate',
-                    suffixIcon: Icon(
+                    suffixIcon: const Icon(
                       Icons.translate,
                       color: Colors.green,
                     ),
