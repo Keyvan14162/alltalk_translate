@@ -296,7 +296,7 @@ class _TranslateCardState extends ConsumerState<TranslateCard> {
                       icons: const [
                         AnimatedIconItem(
                           icon: Icon(
-                            AllTalkIcons.sound,
+                            AllTalkIcons.volume_high,
                           ),
                         ),
                       ],
@@ -318,7 +318,7 @@ class _TranslateCardState extends ConsumerState<TranslateCard> {
                       icons: const [
                         AnimatedIconItem(
                           icon: Icon(
-                            AllTalkIcons.stop,
+                            AllTalkIcons.pause_outline,
                           ),
                         ),
                       ],
@@ -340,7 +340,7 @@ class _TranslateCardState extends ConsumerState<TranslateCard> {
                       icons: const [
                         AnimatedIconItem(
                           icon: Icon(
-                            AllTalkIcons.tag,
+                            AllTalkIcons.bookmark,
                           ),
                         ),
                       ],

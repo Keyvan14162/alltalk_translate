@@ -12,10 +12,10 @@
 ///       - asset: fonts/AllTalkIcons.ttf
 ///
 /// 
-/// * Entypo, Copyright (C) 2012 by Daniel Bruce
-///         Author:    Daniel Bruce
+/// * Typicons, (c) Stephen Hutchings 2012
+///         Author:    Stephen Hutchings
 ///         License:   SIL (http://scripts.sil.org/OFL)
-///         Homepage:  http://www.entypo.com
+///         Homepage:  http://typicons.com/
 ///
 import 'package:flutter/widgets.dart';
 
@@ -25,26 +25,25 @@ class AllTalkIcons {
   static const _kFontFam = 'AllTalkIcons';
   static const String? _kFontPkg = null;
 
-  static const IconData sound = IconData(0xe800, fontFamily: _kFontFam, fontPackage: _kFontPkg);
-  static const IconData stop = IconData(0xe801, fontFamily: _kFontFam, fontPackage: _kFontPkg);
-  static const IconData trash = IconData(0xe802, fontFamily: _kFontFam, fontPackage: _kFontPkg);
-  static const IconData rss = IconData(0xe803, fontFamily: _kFontFam, fontPackage: _kFontPkg);
-  static const IconData cog = IconData(0xe804, fontFamily: _kFontFam, fontPackage: _kFontPkg);
-  static const IconData alert = IconData(0xe805, fontFamily: _kFontFam, fontPackage: _kFontPkg);
-  static const IconData dot_3 = IconData(0xe806, fontFamily: _kFontFam, fontPackage: _kFontPkg);
-  static const IconData share = IconData(0xe807, fontFamily: _kFontFam, fontPackage: _kFontPkg);
-  static const IconData tag = IconData(0xe808, fontFamily: _kFontFam, fontPackage: _kFontPkg);
-  static const IconData info = IconData(0xe809, fontFamily: _kFontFam, fontPackage: _kFontPkg);
-  static const IconData users = IconData(0xe80a, fontFamily: _kFontFam, fontPackage: _kFontPkg);
-  static const IconData note = IconData(0xe80b, fontFamily: _kFontFam, fontPackage: _kFontPkg);
-  static const IconData note_beamed = IconData(0xe80c, fontFamily: _kFontFam, fontPackage: _kFontPkg);
-  static const IconData user = IconData(0xe80d, fontFamily: _kFontFam, fontPackage: _kFontPkg);
-  static const IconData popup = IconData(0xe80e, fontFamily: _kFontFam, fontPackage: _kFontPkg);
-  static const IconData signal = IconData(0xe80f, fontFamily: _kFontFam, fontPackage: _kFontPkg);
-  static const IconData globe = IconData(0xe810, fontFamily: _kFontFam, fontPackage: _kFontPkg);
-  static const IconData moon = IconData(0xe811, fontFamily: _kFontFam, fontPackage: _kFontPkg);
-  static const IconData megaphone = IconData(0xe812, fontFamily: _kFontFam, fontPackage: _kFontPkg);
-  static const IconData github = IconData(0xf300, fontFamily: _kFontFam, fontPackage: _kFontPkg);
-  static const IconData linkedin = IconData(0xf318, fontFamily: _kFontFam, fontPackage: _kFontPkg);
-  static const IconData instagram = IconData(0xf32d, fontFamily: _kFontFam, fontPackage: _kFontPkg);
+  static const IconData volume_high = IconData(0xe800, fontFamily: _kFontFam, fontPackage: _kFontPkg);
+  static const IconData music_outline = IconData(0xe801, fontFamily: _kFontFam, fontPackage: _kFontPkg);
+  static const IconData users_outline = IconData(0xe802, fontFamily: _kFontFam, fontPackage: _kFontPkg);
+  static const IconData th_list_outline = IconData(0xe803, fontFamily: _kFontFam, fontPackage: _kFontPkg);
+  static const IconData bookmark = IconData(0xe804, fontFamily: _kFontFam, fontPackage: _kFontPkg);
+  static const IconData info_outline = IconData(0xe805, fontFamily: _kFontFam, fontPackage: _kFontPkg);
+  static const IconData cancel_alt = IconData(0xe806, fontFamily: _kFontFam, fontPackage: _kFontPkg);
+  static const IconData pause_outline = IconData(0xe807, fontFamily: _kFontFam, fontPackage: _kFontPkg);
+  static const IconData sun = IconData(0xe808, fontFamily: _kFontFam, fontPackage: _kFontPkg);
+  static const IconData sun_filled = IconData(0xe809, fontFamily: _kFontFam, fontPackage: _kFontPkg);
+  static const IconData linkedin = IconData(0xe80a, fontFamily: _kFontFam, fontPackage: _kFontPkg);
+  static const IconData github = IconData(0xe80b, fontFamily: _kFontFam, fontPackage: _kFontPkg);
+  static const IconData wifi_outline = IconData(0xe80c, fontFamily: _kFontFam, fontPackage: _kFontPkg);
+  static const IconData arrows_cw_outline = IconData(0xe80d, fontFamily: _kFontFam, fontPackage: _kFontPkg);
+  static const IconData block_outline = IconData(0xe80e, fontFamily: _kFontFam, fontPackage: _kFontPkg);
+  static const IconData cog_outline = IconData(0xe80f, fontFamily: _kFontFam, fontPackage: _kFontPkg);
+  static const IconData menu_outline = IconData(0xe810, fontFamily: _kFontFam, fontPackage: _kFontPkg);
+  static const IconData doc_add = IconData(0xe811, fontFamily: _kFontFam, fontPackage: _kFontPkg);
+  static const IconData home_outline = IconData(0xe812, fontFamily: _kFontFam, fontPackage: _kFontPkg);
+  static const IconData attention = IconData(0xe813, fontFamily: _kFontFam, fontPackage: _kFontPkg);
+  static const IconData globe_outline = IconData(0xe814, fontFamily: _kFontFam, fontPackage: _kFontPkg);
 }
