@@ -6,7 +6,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_zoom_drawer/flutter_zoom_drawer.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:alltalk_translate/country_constants.dart' as country_constants;
-import 'package:shimmer/shimmer.dart';
 
 class HomePage extends StatefulHookConsumerWidget {
   const HomePage({Key? key}) : super(key: key);
@@ -41,11 +40,6 @@ class _HomePageState extends ConsumerState<HomePage>
   final TextEditingController _textController = TextEditingController();
   String selectedCountryAbbreviation = "tr";
 
-  // Color firstColor = Color.fromARGB(255, 1, 24, 55);
-  // Color secondColor = Color.fromARGB(255, 255, 89, 100);
-  Color firstColor = Colors.white;
-  Color secondColor = Color.fromARGB(255, 49, 33, 33);
-  Color thirdColor = Color.fromARGB(255, 255, 231, 76);
   double myBlurRadius = 4.0;
   double mySPreadRadius = 1;
 
@@ -124,7 +118,7 @@ class _HomePageState extends ConsumerState<HomePage>
     return AppBar(
       elevation: 0,
 
-      backgroundColor: firstColor,
+      backgroundColor: Colors.white,
       toolbarHeight: height / 9, // 100
 
       actions: [
@@ -209,14 +203,7 @@ class _HomePageState extends ConsumerState<HomePage>
                                 _textController.text;
                           }
                         },
-                        onChanged: (value) {
-                          /*
-                        if (value.isNotEmpty) {
-                          ref.read(mainTextProvider.notifier).state =
-                              _textController.text;
-                        }
-                        */
-                        },
+                        onChanged: (value) {},
                       ),
                     ),
                   ],
@@ -270,7 +257,7 @@ class _HomePageState extends ConsumerState<HomePage>
                     ref.read(translateCardListProvider.notifier).state[index],
               ),
             ),
-            SizedBox(
+            const SizedBox(
               height: 0,
             )
           ],
@@ -356,7 +343,7 @@ class _HomePageState extends ConsumerState<HomePage>
                       child: Card(
                         margin: const EdgeInsets.all(0),
                         elevation: 0,
-                        shadowColor: secondColor.withOpacity(0.5),
+                        shadowColor: Colors.grey.withOpacity(0.5),
                         shape: RoundedRectangleBorder(
                           borderRadius: BorderRadius.circular(4.0),
                         ),
@@ -365,7 +352,7 @@ class _HomePageState extends ConsumerState<HomePage>
                           width: 60,
                           decoration: BoxDecoration(
                             borderRadius: BorderRadius.circular(4.0),
-                            color: secondColor,
+                            color: Colors.grey,
                           ),
                           child: PopupMenuButton(
                             itemBuilder: (context) => createPopupMenuItems(),

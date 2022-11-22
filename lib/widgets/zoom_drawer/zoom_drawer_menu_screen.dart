@@ -1,10 +1,7 @@
 import 'package:alltalk_translate/all_talk_icons_icons.dart';
 import 'package:alltalk_translate/providers.dart';
 import 'package:animated_icon_button/animated_icon_button.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/src/widgets/container.dart';
-import 'package:flutter/src/widgets/framework.dart';
 import 'package:flutter_fluid_slider_nnbd/flutter_fluid_slider_nnbd.dart';
 import 'package:flutter_tts/flutter_tts.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
@@ -44,11 +41,9 @@ class _ZoomDrawerMenuScreenState extends ConsumerState<ZoomDrawerMenuScreen> {
                   child: CircleAvatar(
                     radius: 52,
                     backgroundColor: Theme.of(context).primaryColor,
-                    child: CircleAvatar(
+                    child: const CircleAvatar(
                       radius: 50,
-                      backgroundImage: NetworkImage(
-                        "https://github.com/Keyvan14162.png",
-                      ),
+                      backgroundImage: AssetImage("assets/logo/logo.png"),
                     ),
                   ),
                 ),

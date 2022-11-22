@@ -3,7 +3,6 @@ import 'package:alltalk_translate/helpers.dart';
 import 'package:alltalk_translate/providers.dart';
 import 'package:animated_icon_button/animated_icon_button.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 import 'package:flutter_tts/flutter_tts.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:shimmer/shimmer.dart';
@@ -41,13 +40,7 @@ class _TranslateCardState extends ConsumerState<TranslateCard> {
   void initState() {
     super.initState();
 
-    // init();
     initSetting();
-  }
-
-  void init() async {
-    languages = List<String>.from(await flutterTts.getLanguages);
-    setState(() {});
   }
 
   initSetting() async {
@@ -55,9 +48,6 @@ class _TranslateCardState extends ConsumerState<TranslateCard> {
     await flutterTts.setPitch(ref.read(pitchProvider.notifier).state);
     await flutterTts.setSpeechRate(ref.read(speechRateProvider.notifier).state);
     await flutterTts.setLanguage(selectedCountry);
-    print("Volume : ${ref.read(volumeProvider.notifier).state}");
-    print("Pitch : ${ref.read(pitchProvider.notifier).state}");
-    print("SpeechRate : ${ref.read(speechRateProvider.notifier).state}");
   }
 
   Future _speak(String text) async {
@@ -137,83 +127,124 @@ class _TranslateCardState extends ConsumerState<TranslateCard> {
         child: Row(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
+            // lang change
             Card(
               elevation: 0,
+              shadowColor: Colors.grey.withOpacity(0.5),
               shape: RoundedRectangleBorder(
-                borderRadius: BorderRadius.circular(15.0),
+                borderRadius: BorderRadius.circular(4.0),
               ),
               child: Container(
-                height: height / 11,
-                width: (height / 11) * 1.5,
+                height: height / 18,
+                width: (height / 18) * 1.5,
                 decoration: BoxDecoration(
-                  borderRadius: BorderRadius.circular(10.0),
+                  borderRadius: BorderRadius.circular(4.0),
                 ),
                 child: PopupMenuButton(
                   itemBuilder: (context) => createPopupMenuItems(),
                   child: ClipRRect(
-                    borderRadius: BorderRadius.circular(8.0),
-                    child: const SizedBox(),
+                    borderRadius: BorderRadius.circular(4.0),
+                    child: Image.asset(
+                      'icons/flags/png/${widget.selectedCountryAbbreviation}.png',
+                      package: 'country_icons',
+                      errorBuilder: (context, error, stackTrace) {
+                        return const SizedBox();
+                      },
+                      fit: BoxFit.cover,
+                    ),
                   ),
                 ),
               ),
             ),
+            // header
             Expanded(
-              child: Text(
-                Helpers.getCountryFullName(
-                  widget.selectedCountryAbbreviation,
-                ),
-                style: const TextStyle(
-                  fontSize: 24,
-                  fontWeight: FontWeight.bold,
+              child: Shimmer.fromColors(
+                direction: ShimmerDirection.ltr,
+                baseColor: Colors.red,
+                highlightColor: Colors.yellow,
+                period: const Duration(milliseconds: 3000),
+                child: Text(
+                  Helpers.getCountryFullName(
+                    widget.selectedCountryAbbreviation,
+                  ),
+                  style: TextStyle(
+                    fontSize: headerSize,
+                    color: Colors.red.withOpacity(0.7),
+                    fontWeight: FontWeight.bold,
+                  ),
                 ),
               ),
             ),
+            // icons
             Flexible(
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.end,
                 children: [
+                  // speak
                   Flexible(
-                    child: AnimatedIconButton(
-                      icons: const [
-                        AnimatedIconItem(
-                          icon: Icon(
-                            Icons.volume_up,
-                            color: Colors.black,
+                    child: Shimmer.fromColors(
+                      direction: ShimmerDirection.ltr,
+                      baseColor: Colors.black,
+                      highlightColor: Colors.white,
+                      period: const Duration(milliseconds: 3000),
+                      loop: 1,
+                      child: AnimatedIconButton(
+                        icons: [
+                          AnimatedIconItem(
+                            icon: Icon(
+                              AllTalkIcons.volume_high,
+                              size: headerSize,
+                            ),
                           ),
-                        ),
-                      ],
+                        ],
+                      ),
                     ),
                   ),
+                  // stop
                   Flexible(
-                    child: AnimatedIconButton(
-                      icons: const [
-                        AnimatedIconItem(
-                          icon: Icon(
-                            Icons.stop,
-                            color: Colors.black,
+                    child: Shimmer.fromColors(
+                      direction: ShimmerDirection.ltr,
+                      baseColor: Colors.black,
+                      highlightColor: Colors.white,
+                      period: const Duration(milliseconds: 3000),
+                      loop: 1,
+                      child: AnimatedIconButton(
+                        icons: [
+                          AnimatedIconItem(
+                            icon: Icon(
+                              AllTalkIcons.pause_outline,
+                              size: headerSize,
+                            ),
                           ),
-                        ),
-                      ],
+                        ],
+                      ),
                     ),
                   ),
                   // copy text
                   Flexible(
-                    child: AnimatedIconButton(
-                      icons: const [
-                        AnimatedIconItem(
-                          icon: Icon(
-                            Icons.copy,
-                            color: Colors.black,
+                    child: Shimmer.fromColors(
+                      direction: ShimmerDirection.ltr,
+                      baseColor: Colors.black,
+                      highlightColor: Colors.white,
+                      period: const Duration(milliseconds: 3000),
+                      loop: 1,
+                      child: AnimatedIconButton(
+                        icons: [
+                          AnimatedIconItem(
+                            icon: Icon(
+                              AllTalkIcons.bookmark,
+                              size: headerSize,
+                            ),
                           ),
-                        ),
-                      ],
+                        ],
+                      ),
                     ),
                   ),
                 ],
               ),
             ),
             SizedBox(
-              height: height / 7,
+              height: height / 12,
             ),
           ],
         ),
@@ -241,15 +272,6 @@ class _TranslateCardState extends ConsumerState<TranslateCard> {
               width: (height / 18) * 1.5,
               decoration: BoxDecoration(
                 borderRadius: BorderRadius.circular(4.0),
-                /*
-                boxShadow: [
-                  BoxShadow(
-                    color: Colors.black.withOpacity(0.4),
-                    // offset: const Offset(0, 10.0),
-                    blurRadius: 4,
-                    spreadRadius: 1,
-                  ),
-                ],*/
               ),
               child: PopupMenuButton(
                 itemBuilder: (context) => createPopupMenuItems(),
