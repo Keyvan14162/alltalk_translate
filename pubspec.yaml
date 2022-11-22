@@ -43,6 +43,7 @@ dependencies:
   shimmer: ^2.0.0
   animated_icon_button: ^1.0.2
   window_manager: ^0.2.7
+  flutter_zoom_drawer: ^3.0.3
 
 dev_dependencies:
   flutter_test:

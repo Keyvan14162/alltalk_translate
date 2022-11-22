@@ -62,3 +62,15 @@ final translateCardListProvider = StateProvider<List<TranslateCard>>((ref) {
   ];
   return translateCardList;
 });
+
+final volumeProvider = StateProvider<double>((ref) {
+  return 1.0;
+});
+
+final pitchProvider = StateProvider<double>((ref) {
+  return 1.0;
+});
+
+final speechRateProvider = StateProvider<double>((ref) {
+  return 0.5;
+});

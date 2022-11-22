@@ -1,5 +1,6 @@
 import 'package:alltalk_translate/home_page.dart';
 import 'package:alltalk_translate/main.dart';
+import 'package:alltalk_translate/widgets/zoom_drawer/zoom_drawer_screen.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
@@ -19,7 +20,8 @@ class RouteGenerator {
   static Route<dynamic>? routeGenrator(RouteSettings settings) {
     switch (settings.name) {
       case "/":
-        return _generateRoute(HomePage(), settings);
+        return _generateRoute(ZoomDrawerScreen(), settings);
+      // home page
 
       /*
       case "/detailPage":

@@ -3,6 +3,7 @@ import 'package:alltalk_translate/providers.dart';
 import 'package:alltalk_translate/widgets/translate_card.dart';
 import 'package:animated_icon_button/animated_icon_button.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_zoom_drawer/flutter_zoom_drawer.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:alltalk_translate/country_constants.dart' as country_constants;
 import 'package:shimmer/shimmer.dart';
@@ -127,94 +128,101 @@ class _HomePageState extends ConsumerState<HomePage>
       toolbarHeight: height / 9, // 100
 
       actions: [
-        Column(
-          children: [
-            Container(
-              height: height / 10,
-              width: width,
-              alignment: Alignment.center,
-              decoration: BoxDecoration(
-                borderRadius: const BorderRadius.only(
-                  bottomRight: Radius.circular(50),
-                ),
-                boxShadow: [
-                  BoxShadow(
-                    color: Colors.grey.withOpacity(0.7),
-                    //offset: const Offset(-10.0, 10.0),
-                    blurRadius: myBlurRadius,
-                    spreadRadius: mySPreadRadius,
+        Flexible(
+          child: Column(
+            children: [
+              Container(
+                height: height / 10,
+                width: width,
+                alignment: Alignment.center,
+                decoration: BoxDecoration(
+                  borderRadius: const BorderRadius.only(
+                    bottomRight: Radius.circular(50),
                   ),
-                ],
-                color: Colors.white,
-              ),
-              // menu button and textfield
-              child: Row(
-                children: [
-                  Icon(
-                    AllTalkIcons.menu_outline,
-                    color: Colors.red,
-                  ),
-                  Container(
-                    width: width * 0.9,
-                    decoration: BoxDecoration(
-                      color: Colors.black.withOpacity(0.1),
-                      borderRadius: const BorderRadius.all(
-                        Radius.circular(50),
-                      ),
+                  boxShadow: [
+                    BoxShadow(
+                      color: Colors.grey.withOpacity(0.7),
+                      //offset: const Offset(-10.0, 10.0),
+                      blurRadius: myBlurRadius,
+                      spreadRadius: mySPreadRadius,
                     ),
-                    child: TextField(
-                      maxLines: 1,
-                      style: const TextStyle(
-                        fontSize: 17,
+                  ],
+                  color: Colors.white,
+                ),
+                // menu button and textfield
+                child: Row(
+                  children: [
+                    IconButton(
+                      onPressed: () {
+                        ZoomDrawer.of(context)!.toggle();
+                      },
+                      icon: Icon(
+                        AllTalkIcons.home_outline,
                         color: Colors.black,
                       ),
-                      decoration: InputDecoration(
-                        hintStyle: TextStyle(
-                          fontSize: 17,
-                          color: Colors.grey.withOpacity(0.9),
+                    ),
+                    Container(
+                      width: width * 0.8,
+                      decoration: BoxDecoration(
+                        color: Colors.black.withOpacity(0.1),
+                        borderRadius: const BorderRadius.all(
+                          Radius.circular(50),
                         ),
-                        hintText: 'Enter text to translate',
-                        suffixIcon: AnimatedIconButton(
-                          icons: [
-                            AnimatedIconItem(
-                              icon: Icon(
-                                AllTalkIcons.ok,
-                                // size: 24,
-                                color: Colors.cyan,
-                              ),
-                            ),
-                          ],
-                          onPressed: () {
-                            if (_textController.text.isNotEmpty) {
-                              ref.read(mainTextProvider.notifier).state =
-                                  _textController.text;
-                            }
-                          },
-                        ),
-                        border: InputBorder.none,
-                        contentPadding: const EdgeInsets.all(20),
                       ),
-                      controller: _textController,
-                      onSubmitted: (value) {
+                      child: TextField(
+                        maxLines: 1,
+                        style: const TextStyle(
+                          fontSize: 17,
+                          color: Colors.black,
+                        ),
+                        decoration: InputDecoration(
+                          hintStyle: TextStyle(
+                            fontSize: 17,
+                            color: Colors.grey.withOpacity(0.9),
+                          ),
+                          hintText: 'Enter text to translate',
+                          suffixIcon: AnimatedIconButton(
+                            icons: [
+                              AnimatedIconItem(
+                                icon: Icon(
+                                  AllTalkIcons.ok,
+                                  // size: 24,
+                                  color: Colors.cyan,
+                                ),
+                              ),
+                            ],
+                            onPressed: () {
+                              if (_textController.text.isNotEmpty) {
+                                ref.read(mainTextProvider.notifier).state =
+                                    _textController.text;
+                              }
+                            },
+                          ),
+                          border: InputBorder.none,
+                          contentPadding: const EdgeInsets.all(20),
+                        ),
+                        controller: _textController,
+                        onSubmitted: (value) {
+                          if (value.isNotEmpty) {
+                            ref.read(mainTextProvider.notifier).state =
+                                _textController.text;
+                          }
+                        },
+                        onChanged: (value) {
+                          /*
                         if (value.isNotEmpty) {
                           ref.read(mainTextProvider.notifier).state =
                               _textController.text;
                         }
-                      },
-                      onChanged: (value) {
-                        /*
-                      if (value.isNotEmpty) {
-                        ref.read(mainTextProvider.notifier).state =
-                            _textController.text;
-                      }
-                      */
-                      },
+                        */
+                        },
+                      ),
                     ),
-                  ),
-                ],
+                  ],
+                ),
               ),
-            ),
-          ],
+            ],
+          ),
         ),
       ],
     );
@@ -320,75 +328,76 @@ class _HomePageState extends ConsumerState<HomePage>
     return popupMenuItemList;
   }
 
-  Column addLangWidget(BuildContext context, double addLangHeight) {
-    return Column(
-      children: [
-        Center(
-          child: Material(
-            child: Container(
-              height: addLangHeight,
-              width: MediaQuery.of(context).size.width,
-              decoration: BoxDecoration(
-                boxShadow: [
-                  BoxShadow(
-                    color: Colors.grey.withOpacity(0.7),
-                    blurRadius: myBlurRadius,
-                    spreadRadius: mySPreadRadius,
-                  ),
-                ],
-                color: Colors.white,
-              ),
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceAround,
-                children: [
-                  // choose lang
-                  Flexible(
-                    child: Card(
-                      margin: const EdgeInsets.all(0),
-                      elevation: 0,
-                      shadowColor: secondColor.withOpacity(0.5),
-                      shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(4.0),
-                      ),
-                      child: Container(
-                        height: 45,
-                        width: 60,
-                        decoration: BoxDecoration(
+  addLangWidget(BuildContext context, double addLangHeight) {
+    return Flexible(
+      child: Column(
+        children: [
+          Center(
+            child: Material(
+              child: Container(
+                height: addLangHeight,
+                width: MediaQuery.of(context).size.width,
+                decoration: BoxDecoration(
+                  boxShadow: [
+                    BoxShadow(
+                      color: Colors.grey.withOpacity(0.7),
+                      blurRadius: myBlurRadius,
+                      spreadRadius: mySPreadRadius,
+                    ),
+                  ],
+                  color: Colors.white,
+                ),
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceAround,
+                  children: [
+                    // choose lang
+                    Flexible(
+                      child: Card(
+                        margin: const EdgeInsets.all(0),
+                        elevation: 0,
+                        shadowColor: secondColor.withOpacity(0.5),
+                        shape: RoundedRectangleBorder(
                           borderRadius: BorderRadius.circular(4.0),
-                          color: secondColor,
                         ),
-                        child: PopupMenuButton(
-                          itemBuilder: (context) => createPopupMenuItems(),
-                          child: ClipRRect(
+                        child: Container(
+                          height: 45,
+                          width: 60,
+                          decoration: BoxDecoration(
                             borderRadius: BorderRadius.circular(4.0),
-                            child: Image.asset(
-                              'icons/flags/png/$selectedCountryAbbreviation.png',
-                              package: 'country_icons',
-                              errorBuilder: (context, error, stackTrace) {
-                                return const SizedBox();
-                              },
-                              fit: BoxFit.cover,
+                            color: secondColor,
+                          ),
+                          child: PopupMenuButton(
+                            itemBuilder: (context) => createPopupMenuItems(),
+                            child: ClipRRect(
+                              borderRadius: BorderRadius.circular(4.0),
+                              child: Image.asset(
+                                'icons/flags/png/$selectedCountryAbbreviation.png',
+                                package: 'country_icons',
+                                errorBuilder: (context, error, stackTrace) {
+                                  return const SizedBox();
+                                },
+                                fit: BoxFit.cover,
+                              ),
                             ),
                           ),
                         ),
                       ),
                     ),
-                  ),
 
-                  // text and button
-                  Row(
-                    children: [
-                      ElevatedButton(
-                        style: ElevatedButton.styleFrom(
-                          elevation: 0,
-                          backgroundColor: Colors.white,
-                          foregroundColor: Colors.black,
-                        ),
-                        onPressed: () async {
-                          isLanguageSelectedBefore(selectedCountryAbbreviation)
-                              ? () {}
-                              : setState(
-                                  () {
+                    // text and button
+                    Row(
+                      children: [
+                        ElevatedButton(
+                          style: ElevatedButton.styleFrom(
+                            elevation: 0,
+                            backgroundColor: Colors.white,
+                            foregroundColor: Colors.black,
+                          ),
+                          onPressed: () async {
+                            isLanguageSelectedBefore(
+                                    selectedCountryAbbreviation)
+                                ? () {}
+                                : setState(() {
                                     if (!isLanguageSelectedBefore(
                                         selectedCountryAbbreviation)) {
                                       ref.watch(translateCardListProvider).add(
@@ -399,60 +408,60 @@ class _HomePageState extends ConsumerState<HomePage>
                                             ),
                                           );
                                     }
-                                  },
-                                );
-                        },
-                        child: Row(
-                          children: [
-                            const Text(
-                              "Add Selected Language",
-                              style: TextStyle(fontSize: 16),
-                            ),
-                            // icon
-                            AnimatedIconButton(
-                              icons: [
-                                AnimatedIconItem(
-                                  icon: Icon(
-                                    AllTalkIcons.plus,
-                                    size: 24,
-                                    color: Colors.red,
+                                  });
+                          },
+                          child: Row(
+                            children: [
+                              const Text(
+                                "Add Selected Language",
+                                style: TextStyle(fontSize: 16),
+                              ),
+                              // icon
+                              AnimatedIconButton(
+                                icons: [
+                                  AnimatedIconItem(
+                                    icon: Icon(
+                                      AllTalkIcons.plus,
+                                      size: 24,
+                                      color: Colors.red,
+                                    ),
                                   ),
-                                ),
-                              ],
-                              onPressed: () {
-                                isLanguageSelectedBefore(
-                                        selectedCountryAbbreviation)
-                                    ? () {}
-                                    : setState(
-                                        () {
-                                          if (!isLanguageSelectedBefore(
-                                              selectedCountryAbbreviation)) {
-                                            ref
-                                                .watch(
-                                                    translateCardListProvider)
-                                                .add(
-                                                  TranslateCard(
-                                                    cardKey: UniqueKey(),
-                                                    selectedCountryAbbreviation:
-                                                        selectedCountryAbbreviation,
-                                                  ),
-                                                );
-                                          }
-                                        },
-                                      );
-                              },
-                            ),
-                          ],
+                                ],
+                                onPressed: () {
+                                  isLanguageSelectedBefore(
+                                          selectedCountryAbbreviation)
+                                      ? () {}
+                                      : setState(
+                                          () {
+                                            if (!isLanguageSelectedBefore(
+                                                selectedCountryAbbreviation)) {
+                                              ref
+                                                  .watch(
+                                                      translateCardListProvider)
+                                                  .add(
+                                                    TranslateCard(
+                                                      cardKey: UniqueKey(),
+                                                      selectedCountryAbbreviation:
+                                                          selectedCountryAbbreviation,
+                                                    ),
+                                                  );
+                                            }
+                                          },
+                                        );
+                                },
+                              ),
+                            ],
+                          ),
                         ),
-                      ),
-                    ],
-                  ),
-                ],
+                      ],
+                    ),
+                  ],
+                ),
               ),
             ),
           ),
-        ),
-      ],
+        ],
+      ),
     );
   }
 }

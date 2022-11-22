@@ -51,10 +51,13 @@ class _TranslateCardState extends ConsumerState<TranslateCard> {
   }
 
   initSetting() async {
-    await flutterTts.setVolume(volume);
-    await flutterTts.setPitch(pitch);
-    await flutterTts.setSpeechRate(speechRate);
+    await flutterTts.setVolume(ref.read(volumeProvider.notifier).state);
+    await flutterTts.setPitch(ref.read(pitchProvider.notifier).state);
+    await flutterTts.setSpeechRate(ref.read(speechRateProvider.notifier).state);
     await flutterTts.setLanguage(selectedCountry);
+    print("Volume : ${ref.read(volumeProvider.notifier).state}");
+    print("Pitch : ${ref.read(pitchProvider.notifier).state}");
+    print("SpeechRate : ${ref.read(speechRateProvider.notifier).state}");
   }
 
   Future _speak(String text) async {
