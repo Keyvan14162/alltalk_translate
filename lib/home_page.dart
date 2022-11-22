@@ -1,3 +1,4 @@
+import 'package:alltalk_translate/all_talk_icons_icons.dart';
 import 'package:alltalk_translate/providers.dart';
 import 'package:alltalk_translate/widgets/translate_card.dart';
 import 'package:animated_icon_button/animated_icon_button.dart';
@@ -58,7 +59,7 @@ class _HomePageState extends ConsumerState<HomePage>
   Widget build(BuildContext context) {
     double width = MediaQuery.of(context).size.width;
     double height = MediaQuery.of(context).size.height;
-    double addLangHeight = height / 8;
+    double addLangHeight = height / 14;
 
     return Scaffold(
       appBar: myAppbar(height, width, context),
@@ -81,32 +82,36 @@ class _HomePageState extends ConsumerState<HomePage>
         },
         body: Container(
           color: Colors.white,
-          child: SingleChildScrollView(
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                SizedBox(
-                  height: height * 0.02,
-                ),
+          child: Scrollbar(
+            child: SingleChildScrollView(
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  SizedBox(
+                    height: height * 0.02,
+                  ),
 
-                ListView.builder(
-                  primary: false,
-                  shrinkWrap: true,
-                  itemCount:
-                      ref.read(translateCardListProvider.notifier).state.length,
-                  itemBuilder: (context, index) {
-                    return createGridViewItems()[index];
-                  },
-                ),
-                // cevir
-                ElevatedButton(
-                  onPressed: () {
-                    ref.read(mainTextProvider.notifier).state =
-                        _textController.text;
-                  },
-                  child: const Text("Çevir"),
-                ),
-              ],
+                  ListView.builder(
+                    primary: false,
+                    shrinkWrap: true,
+                    itemCount: ref
+                        .read(translateCardListProvider.notifier)
+                        .state
+                        .length,
+                    itemBuilder: (context, index) {
+                      return createGridViewItems()[index];
+                    },
+                  ),
+                  // cevir
+                  ElevatedButton(
+                    onPressed: () {
+                      ref.read(mainTextProvider.notifier).state =
+                          _textController.text;
+                    },
+                    child: const Text("Çevir"),
+                  ),
+                ],
+              ),
             ),
           ),
         ),
@@ -142,41 +147,71 @@ class _HomePageState extends ConsumerState<HomePage>
                 ],
                 color: Colors.white,
               ),
-              child: Container(
-                width: width * 0.9,
-                decoration: BoxDecoration(
-                  color: Colors.black.withOpacity(0.1),
-                  borderRadius: const BorderRadius.all(
-                    Radius.circular(50),
+              // menu button and textfield
+              child: Row(
+                children: [
+                  Icon(
+                    AllTalkIcons.menu_outline,
+                    color: Colors.red,
                   ),
-                ),
-                child: TextField(
-                  maxLines: 1,
-                  style: const TextStyle(
-                    fontSize: 17,
-                    color: Colors.black,
-                  ),
-                  decoration: InputDecoration(
-                    hintStyle: TextStyle(
-                      fontSize: 17,
-                      color: Colors.grey.withOpacity(0.9),
+                  Container(
+                    width: width * 0.9,
+                    decoration: BoxDecoration(
+                      color: Colors.black.withOpacity(0.1),
+                      borderRadius: const BorderRadius.all(
+                        Radius.circular(50),
+                      ),
                     ),
-                    hintText: 'Enter text to translate',
-                    suffixIcon: const Icon(
-                      Icons.translate,
-                      color: Colors.green,
+                    child: TextField(
+                      maxLines: 1,
+                      style: const TextStyle(
+                        fontSize: 17,
+                        color: Colors.black,
+                      ),
+                      decoration: InputDecoration(
+                        hintStyle: TextStyle(
+                          fontSize: 17,
+                          color: Colors.grey.withOpacity(0.9),
+                        ),
+                        hintText: 'Enter text to translate',
+                        suffixIcon: AnimatedIconButton(
+                          icons: [
+                            AnimatedIconItem(
+                              icon: Icon(
+                                AllTalkIcons.ok,
+                                // size: 24,
+                                color: Colors.cyan,
+                              ),
+                            ),
+                          ],
+                          onPressed: () {
+                            if (_textController.text.isNotEmpty) {
+                              ref.read(mainTextProvider.notifier).state =
+                                  _textController.text;
+                            }
+                          },
+                        ),
+                        border: InputBorder.none,
+                        contentPadding: const EdgeInsets.all(20),
+                      ),
+                      controller: _textController,
+                      onSubmitted: (value) {
+                        if (value.isNotEmpty) {
+                          ref.read(mainTextProvider.notifier).state =
+                              _textController.text;
+                        }
+                      },
+                      onChanged: (value) {
+                        /*
+                      if (value.isNotEmpty) {
+                        ref.read(mainTextProvider.notifier).state =
+                            _textController.text;
+                      }
+                      */
+                      },
                     ),
-                    border: InputBorder.none,
-                    contentPadding: const EdgeInsets.all(20),
                   ),
-                  controller: _textController,
-                  onChanged: (value) {
-                    if (value.isNotEmpty) {
-                      ref.read(mainTextProvider.notifier).state =
-                          _textController.text;
-                    }
-                  },
-                ),
+                ],
               ),
             ),
           ],
@@ -294,9 +329,6 @@ class _HomePageState extends ConsumerState<HomePage>
               height: addLangHeight,
               width: MediaQuery.of(context).size.width,
               decoration: BoxDecoration(
-                borderRadius: const BorderRadius.only(
-                  bottomRight: Radius.circular(50),
-                ),
                 boxShadow: [
                   BoxShadow(
                     color: Colors.grey.withOpacity(0.7),
@@ -304,48 +336,31 @@ class _HomePageState extends ConsumerState<HomePage>
                     spreadRadius: mySPreadRadius,
                   ),
                 ],
-                // color: Colors.white,
                 color: Colors.white,
               ),
-              child: Container(
-                //color: Colors.white,
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    // select new ... text
-                    Container(
-                      width: MediaQuery.of(context).size.width / 3,
-                      child: const Text(
-                        "Select new language will be added:",
-                        textAlign: TextAlign.center,
-                        style: TextStyle(
-                          color: Colors.black,
-                          fontSize: 14,
-                        ),
-                      ),
-                    ),
-                    const SizedBox(
-                      width: 10,
-                    ),
-                    // choose lang
-                    Card(
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceAround,
+                children: [
+                  // choose lang
+                  Flexible(
+                    child: Card(
                       margin: const EdgeInsets.all(0),
-                      elevation: 10.0,
+                      elevation: 0,
                       shadowColor: secondColor.withOpacity(0.5),
                       shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(15.0),
+                        borderRadius: BorderRadius.circular(4.0),
                       ),
                       child: Container(
                         height: 45,
                         width: 60,
                         decoration: BoxDecoration(
-                          borderRadius: BorderRadius.circular(10.0),
+                          borderRadius: BorderRadius.circular(4.0),
                           color: secondColor,
                         ),
                         child: PopupMenuButton(
                           itemBuilder: (context) => createPopupMenuItems(),
                           child: ClipRRect(
-                            borderRadius: BorderRadius.circular(8.0),
+                            borderRadius: BorderRadius.circular(4.0),
                             child: Image.asset(
                               'icons/flags/png/$selectedCountryAbbreviation.png',
                               package: 'country_icons',
@@ -358,85 +373,81 @@ class _HomePageState extends ConsumerState<HomePage>
                         ),
                       ),
                     ),
-                    // add new lang ,button
-                    Flexible(
-                      child: Padding(
-                        padding: const EdgeInsets.fromLTRB(10, 10, 10, 10),
+                  ),
+
+                  // text and button
+                  Row(
+                    children: [
+                      ElevatedButton(
+                        style: ElevatedButton.styleFrom(
+                          elevation: 0,
+                          backgroundColor: Colors.white,
+                          foregroundColor: Colors.black,
+                        ),
+                        onPressed: () async {
+                          isLanguageSelectedBefore(selectedCountryAbbreviation)
+                              ? () {}
+                              : setState(
+                                  () {
+                                    if (!isLanguageSelectedBefore(
+                                        selectedCountryAbbreviation)) {
+                                      ref.watch(translateCardListProvider).add(
+                                            TranslateCard(
+                                              cardKey: UniqueKey(),
+                                              selectedCountryAbbreviation:
+                                                  selectedCountryAbbreviation,
+                                            ),
+                                          );
+                                    }
+                                  },
+                                );
+                        },
                         child: Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                          crossAxisAlignment: CrossAxisAlignment.center,
                           children: [
-                            // add new lang text
-                            Flexible(
-                              child: Text(
-                                "Add a new language.",
-                                textAlign: TextAlign.end,
-                                style: TextStyle(
-                                  color: isLanguageSelectedBefore(
-                                          selectedCountryAbbreviation)
-                                      ? Colors.red
-                                      : Colors.black,
-                                  fontSize: 14,
-                                ),
-                              ),
+                            const Text(
+                              "Add Selected Language",
+                              style: TextStyle(fontSize: 16),
                             ),
-                            // add iconbutton
-                            isLanguageSelectedBefore(
-                                    selectedCountryAbbreviation)
-                                ? Padding(
-                                    padding: const EdgeInsets.all(8.0),
-                                    child: AnimatedIconButton(
-                                      icons: [
-                                        AnimatedIconItem(
-                                          icon: Icon(
-                                            Icons.add,
-                                            size: 36,
-                                            color: Colors.red.withOpacity(0.7),
-                                          ),
-                                        ),
-                                      ],
-                                      onPressed: () {},
-                                    ),
-                                  )
-                                : Padding(
-                                    padding: const EdgeInsets.all(8.0),
-                                    child: AnimatedIconButton(
-                                      icons: [
-                                        AnimatedIconItem(
-                                          icon: Icon(
-                                            Icons.add,
-                                            size: 36,
-                                            color: Colors.red.withOpacity(0.7),
-                                          ),
-                                        ),
-                                      ],
-                                      onPressed: () async {
-                                        setState(
-                                          () {
-                                            if (!isLanguageSelectedBefore(
-                                                selectedCountryAbbreviation)) {
-                                              ref
-                                                  .watch(
-                                                      translateCardListProvider)
-                                                  .add(
-                                                    TranslateCard(
-                                                      cardKey: UniqueKey(),
-                                                      selectedCountryAbbreviation:
-                                                          selectedCountryAbbreviation,
-                                                    ),
-                                                  );
-                                            }
-                                          },
-                                        );
-                                      },
-                                    ),
+                            // icon
+                            AnimatedIconButton(
+                              icons: [
+                                AnimatedIconItem(
+                                  icon: Icon(
+                                    AllTalkIcons.plus,
+                                    size: 24,
+                                    color: Colors.red,
                                   ),
+                                ),
+                              ],
+                              onPressed: () {
+                                isLanguageSelectedBefore(
+                                        selectedCountryAbbreviation)
+                                    ? () {}
+                                    : setState(
+                                        () {
+                                          if (!isLanguageSelectedBefore(
+                                              selectedCountryAbbreviation)) {
+                                            ref
+                                                .watch(
+                                                    translateCardListProvider)
+                                                .add(
+                                                  TranslateCard(
+                                                    cardKey: UniqueKey(),
+                                                    selectedCountryAbbreviation:
+                                                        selectedCountryAbbreviation,
+                                                  ),
+                                                );
+                                          }
+                                        },
+                                      );
+                              },
+                            ),
                           ],
                         ),
                       ),
-                    ),
-                  ],
-                ),
+                    ],
+                  ),
+                ],
               ),
             ),
           ),

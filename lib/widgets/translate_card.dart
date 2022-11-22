@@ -70,6 +70,9 @@ class _TranslateCardState extends ConsumerState<TranslateCard> {
   double myBlurRadius = 4.0;
   double mySPreadRadius = 1.0;
 
+  double headerSize = 20;
+  double fontsize = 18;
+
   @override
   Widget build(BuildContext context) {
     // ozel durumlaricin else if ekle
@@ -228,13 +231,14 @@ class _TranslateCardState extends ConsumerState<TranslateCard> {
             elevation: 0,
             shadowColor: Colors.grey.withOpacity(0.5),
             shape: RoundedRectangleBorder(
-              borderRadius: BorderRadius.circular(15.0),
+              borderRadius: BorderRadius.circular(4.0),
             ),
             child: Container(
               height: height / 18,
               width: (height / 18) * 1.5,
               decoration: BoxDecoration(
-                borderRadius: BorderRadius.circular(10.0),
+                borderRadius: BorderRadius.circular(4.0),
+                /*
                 boxShadow: [
                   BoxShadow(
                     color: Colors.black.withOpacity(0.4),
@@ -242,12 +246,12 @@ class _TranslateCardState extends ConsumerState<TranslateCard> {
                     blurRadius: 4,
                     spreadRadius: 1,
                   ),
-                ],
+                ],*/
               ),
               child: PopupMenuButton(
                 itemBuilder: (context) => createPopupMenuItems(),
                 child: ClipRRect(
-                  borderRadius: BorderRadius.circular(8.0),
+                  borderRadius: BorderRadius.circular(4.0),
                   child: Image.asset(
                     'icons/flags/png/${widget.selectedCountryAbbreviation}.png',
                     package: 'country_icons',
@@ -272,7 +276,7 @@ class _TranslateCardState extends ConsumerState<TranslateCard> {
                   widget.selectedCountryAbbreviation,
                 ),
                 style: TextStyle(
-                  fontSize: 24,
+                  fontSize: headerSize,
                   color: Colors.red.withOpacity(0.7),
                   fontWeight: FontWeight.bold,
                 ),
@@ -293,10 +297,11 @@ class _TranslateCardState extends ConsumerState<TranslateCard> {
                     period: const Duration(milliseconds: 3000),
                     loop: 1,
                     child: AnimatedIconButton(
-                      icons: const [
+                      icons: [
                         AnimatedIconItem(
                           icon: Icon(
                             AllTalkIcons.volume_high,
+                            size: headerSize,
                           ),
                         ),
                       ],
@@ -315,10 +320,11 @@ class _TranslateCardState extends ConsumerState<TranslateCard> {
                     period: const Duration(milliseconds: 3000),
                     loop: 1,
                     child: AnimatedIconButton(
-                      icons: const [
+                      icons: [
                         AnimatedIconItem(
                           icon: Icon(
                             AllTalkIcons.pause_outline,
+                            size: headerSize,
                           ),
                         ),
                       ],
@@ -337,10 +343,11 @@ class _TranslateCardState extends ConsumerState<TranslateCard> {
                     period: const Duration(milliseconds: 3000),
                     loop: 1,
                     child: AnimatedIconButton(
-                      icons: const [
+                      icons: [
                         AnimatedIconItem(
                           icon: Icon(
                             AllTalkIcons.bookmark,
+                            size: headerSize,
                           ),
                         ),
                       ],
@@ -380,10 +387,10 @@ class _TranslateCardState extends ConsumerState<TranslateCard> {
             child: Padding(
               padding: const EdgeInsets.all(10.0),
               child: Container(
-                padding: EdgeInsets.all(8.0),
+                padding: const EdgeInsets.all(8.0),
                 decoration: BoxDecoration(
                   color: Colors.white.withOpacity(0.8),
-                  borderRadius: BorderRadius.only(
+                  borderRadius: const BorderRadius.only(
                     topRight: Radius.circular(12),
                     bottomLeft: Radius.circular(12),
                   ),
@@ -393,7 +400,7 @@ class _TranslateCardState extends ConsumerState<TranslateCard> {
                   style: TextStyle(
                     color: Colors.grey[800],
                     fontWeight: FontWeight.w400,
-                    fontSize: 20,
+                    fontSize: fontsize,
                   ),
                 ),
               ),
