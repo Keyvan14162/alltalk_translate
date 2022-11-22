@@ -157,8 +157,9 @@ class _HomePageState extends ConsumerState<HomePage>
                         ZoomDrawer.of(context)!.toggle();
                       },
                       icon: Icon(
-                        AllTalkIcons.home_outline,
+                        AllTalkIcons.cog,
                         color: Colors.black,
+                        size: 32,
                       ),
                     ),
                     Container(

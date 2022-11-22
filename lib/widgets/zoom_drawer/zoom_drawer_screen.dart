@@ -21,16 +21,20 @@ class _ZoomDrawerScreenState extends State<ZoomDrawerScreen> {
     return Scaffold(
       body: ZoomDrawer(
         isRtl: false,
-        moveMenuScreen: false,
+        moveMenuScreen: true,
         androidCloseOnBackTap: true,
         mainScreenTapClose: true,
         controller: _drawerController,
         menuScreen: const ZoomDrawerMenuScreen(),
         mainScreen: const HomePage(),
-        menuBackgroundColor: Colors.grey.withOpacity(0.2),
+        menuBackgroundColor: Colors.white,
         borderRadius: 20.0,
         showShadow: false,
-        //menuScreenWidth: double.infinity,
+
+        slideWidth: MediaQuery.of(context).size.width * 0.65,
+        angle: -0.0,
+        menuScreenWidth: double.infinity,
+
         boxShadow: [
           BoxShadow(
             color: Colors.grey.withOpacity(0.4),
@@ -38,8 +42,7 @@ class _ZoomDrawerScreenState extends State<ZoomDrawerScreen> {
             spreadRadius: 1,
           ),
         ],
-        angle: 0.0,
-        //openCurve: Curves.fastOutSlowIn,
+        // openCurve: Curves.fastOutSlowIn,
         // closeCurve: Curves.fastLinearToSlowEaseIn,
         duration: const Duration(milliseconds: 400),
       ),
