@@ -82,9 +82,12 @@ flutter:
   # list giving the asset and other descriptors for the font. For
   # example:
   fonts:
-  - family:  AllTalkIcons
+  - family: AllTalkIcons
     fonts:
      - asset: assets/fonts/AllTalkIcons.ttf
+  - family: FredokaOne
+    fonts:
+     - asset: assets/fonts/FredokaOne-Regular.ttf
   #       - asset: fonts/Schyler-Italic.ttf
   #         style: italic
   #   - family: Trajan Pro

@@ -231,8 +231,8 @@ class _TranslateCardState extends ConsumerState<TranslateCard> {
               borderRadius: BorderRadius.circular(15.0),
             ),
             child: Container(
-              height: height / 11,
-              width: (height / 11) * 1.5,
+              height: height / 18,
+              width: (height / 18) * 1.5,
               decoration: BoxDecoration(
                 borderRadius: BorderRadius.circular(10.0),
                 boxShadow: [
@@ -354,10 +354,11 @@ class _TranslateCardState extends ConsumerState<TranslateCard> {
             ),
           ),
           SizedBox(
-            height: height / 7,
+            height: height / 12,
           ),
         ],
       ),
+      // text part
       body: Container(
         height: width * 0.6, // 180
         width: width,
@@ -392,7 +393,7 @@ class _TranslateCardState extends ConsumerState<TranslateCard> {
                   style: TextStyle(
                     color: Colors.grey[800],
                     fontWeight: FontWeight.w400,
-                    fontSize: 24,
+                    fontSize: 20,
                   ),
                 ),
               ),

@@ -189,34 +189,47 @@ class _HomePageState extends ConsumerState<HomePage>
     List<Widget> list = List.generate(
       ref.read(translateCardListProvider.notifier).state.length,
       (index) {
-        return Dismissible(
-          key:
-              ref.read(translateCardListProvider.notifier).state[index].cardKey,
-          onDismissed: (direction) {
-            // SSSSSSSEEEEEEETTTTT SSSSSSTTTTTAAAATTTTEEEE
-            ref.watch(translateCardListProvider).removeWhere(
-                  (element) =>
-                      element.cardKey ==
-                      ref
-                          .read(translateCardListProvider.notifier)
-                          .state[index]
-                          .cardKey,
-                );
-          },
-          child: Container(
-            decoration: BoxDecoration(
-              boxShadow: [
-                BoxShadow(
-                  color: Colors.grey.withOpacity(1),
-                  blurStyle: BlurStyle.normal,
-                  offset: const Offset(0, -1),
-                  blurRadius: myBlurRadius,
-                  spreadRadius: mySPreadRadius,
+        return Column(
+          children: [
+            Dismissible(
+              key: ref
+                  .read(translateCardListProvider.notifier)
+                  .state[index]
+                  .cardKey,
+              onDismissed: (direction) {
+                // SSSSSSSEEEEEEETTTTT SSSSSSTTTTTAAAATTTTEEEE
+                ref.watch(translateCardListProvider).removeWhere(
+                      (element) =>
+                          element.cardKey ==
+                          ref
+                              .read(translateCardListProvider.notifier)
+                              .state[index]
+                              .cardKey,
+                    );
+              },
+              child: Container(
+                decoration: BoxDecoration(
+                  color: Colors.red,
+                  borderRadius: BorderRadius.circular(
+                      MediaQuery.of(context).size.width / 20),
+                  boxShadow: [
+                    BoxShadow(
+                      color: Colors.grey.withOpacity(1),
+                      blurStyle: BlurStyle.normal,
+                      offset: const Offset(0, -1),
+                      blurRadius: myBlurRadius,
+                      spreadRadius: mySPreadRadius,
+                    ),
+                  ],
                 ),
-              ],
+                child:
+                    ref.read(translateCardListProvider.notifier).state[index],
+              ),
             ),
-            child: ref.read(translateCardListProvider.notifier).state[index],
-          ),
+            SizedBox(
+              height: 0,
+            )
+          ],
         );
       },
     );

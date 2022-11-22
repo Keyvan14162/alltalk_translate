@@ -28,6 +28,7 @@ class MyApp extends StatelessWidget {
         primarySwatch: Colors.teal,
         primaryColor: const Color(0xFF3B4257),
         secondaryHeaderColor: Colors.yellow,
+        fontFamily: "FredokaOne",
       ),
     );
   }
