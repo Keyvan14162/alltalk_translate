@@ -5,13 +5,13 @@ class Helpers {
       return "Turkey";
     } else if (countryAbbreviation == "ru") {
       return "Russian";
-    } else if (countryAbbreviation == "us") {
+    } else if (countryAbbreviation == "us" || countryAbbreviation == "en") {
       return "English-US";
-    } else if (countryAbbreviation == "kr") {
+    } else if (countryAbbreviation == "kr" || countryAbbreviation == "ko") {
       return "Korean";
-    } else if (countryAbbreviation == "pk") {
+    } else if (countryAbbreviation == "pk" || countryAbbreviation == "ur") {
       return "Urdu";
-    } else if (countryAbbreviation == "in") {
+    } else if (countryAbbreviation == "in" || countryAbbreviation == "hi") {
       return "Indiand";
     } else if (countryAbbreviation == "hu") {
       return "Hungarian";
@@ -23,7 +23,7 @@ class Helpers {
       return "Spanish";
     } else if (countryAbbreviation == "ro") {
       return "Romanian";
-    } else if (countryAbbreviation == "jp") {
+    } else if (countryAbbreviation == "jp" || countryAbbreviation == "ja") {
       return "Japanase";
     } else {
       return "Nope";

@@ -1,15 +1,18 @@
 import 'dart:async';
 
 import 'package:alltalk_translate/all_talk_icons_icons.dart';
+import 'package:alltalk_translate/color_consts.dart';
 import 'package:alltalk_translate/helpers.dart';
 import 'package:alltalk_translate/providers.dart';
 import 'package:alltalk_translate/widgets/my_drawer.dart';
 import 'package:alltalk_translate/widgets/translate_card.dart';
 import 'package:animated_icon_button/animated_icon_button.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_slidable/flutter_slidable.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:alltalk_translate/country_constants.dart' as country_constants;
 import 'package:internet_connection_checker/internet_connection_checker.dart';
+import 'package:share_plus/share_plus.dart';
 
 class HomePage extends StatefulHookConsumerWidget {
   const HomePage({Key? key}) : super(key: key);
@@ -28,15 +31,6 @@ class Item {
   String expandedValue;
   String headerValue;
   bool isExpanded;
-}
-
-List<Item> generateItems(int numberOfItems) {
-  return List<Item>.generate(numberOfItems, (int index) {
-    return Item(
-      headerValue: 'Panel $index',
-      expandedValue: 'This is item number $index',
-    );
-  });
 }
 
 class _HomePageState extends ConsumerState<HomePage>
@@ -66,13 +60,16 @@ class _HomePageState extends ConsumerState<HomePage>
     super.dispose();
   }
 
-  final List<Item> _data = generateItems(8);
+  late Color primaryColor;
+  late Color backgroundColor;
 
   @override
   Widget build(BuildContext context) {
     double width = MediaQuery.of(context).size.width;
     double height = MediaQuery.of(context).size.height;
     double addLangHeight = height / 14;
+    primaryColor = Theme.of(context).primaryColor;
+    backgroundColor = Theme.of(context).backgroundColor;
 
     connectionStatusSnackbar();
 
@@ -85,7 +82,7 @@ class _HomePageState extends ConsumerState<HomePage>
           return [
             // add lang
             SliverAppBar(
-              backgroundColor: Colors.white,
+              backgroundColor: primaryColor,
               toolbarHeight: addLangHeight + 20,
               actions: [
                 addLangWidget(
@@ -97,7 +94,7 @@ class _HomePageState extends ConsumerState<HomePage>
           ];
         },
         body: Container(
-          color: Colors.white,
+          color: primaryColor,
           child: Scrollbar(
             child: SingleChildScrollView(
               child: Column(
@@ -106,7 +103,6 @@ class _HomePageState extends ConsumerState<HomePage>
                   SizedBox(
                     height: height * 0.02,
                   ),
-
                   ListView.builder(
                     primary: false,
                     shrinkWrap: true,
@@ -117,14 +113,6 @@ class _HomePageState extends ConsumerState<HomePage>
                     itemBuilder: (context, index) {
                       return createGridViewItems()[index];
                     },
-                  ),
-                  // cevir
-                  ElevatedButton(
-                    onPressed: () {
-                      ref.read(mainTextProvider.notifier).state =
-                          _textController.text;
-                    },
-                    child: const Text("Çevir"),
                   ),
                 ],
               ),
@@ -163,15 +151,16 @@ class _HomePageState extends ConsumerState<HomePage>
   AppBar myAppbar(double height, double width, BuildContext context) {
     return AppBar(
       elevation: 0,
+      iconTheme: IconThemeData(color: backgroundColor),
 
-      backgroundColor: Colors.white,
+      backgroundColor: primaryColor,
       toolbarHeight: height / 9, // 100
       foregroundColor: Colors.black,
       title: Container(
         height: height / 10,
         alignment: Alignment.center,
-        decoration: const BoxDecoration(
-          color: Colors.white,
+        decoration: BoxDecoration(
+          color: primaryColor,
         ),
         // menu button and textfield
         child: Row(
@@ -186,14 +175,15 @@ class _HomePageState extends ConsumerState<HomePage>
                 ),
                 child: TextField(
                   maxLines: 1,
-                  style: const TextStyle(
+                  style: TextStyle(
                     fontSize: 17,
-                    color: Colors.black,
+                    color: backgroundColor,
                   ),
+                  cursorColor: backgroundColor,
                   decoration: InputDecoration(
                     hintStyle: TextStyle(
                       fontSize: 17,
-                      color: Colors.grey.withOpacity(0.9),
+                      color: backgroundColor.withOpacity(0.6),
                     ),
                     hintText: 'Enter text to translate',
                     suffixIcon: AnimatedIconButton(
@@ -201,7 +191,7 @@ class _HomePageState extends ConsumerState<HomePage>
                         AnimatedIconItem(
                           icon: Icon(
                             AllTalkIcons.ok,
-                            color: Colors.cyan,
+                            color: ColorConsts.myBlue,
                           ),
                         ),
                       ],
@@ -335,11 +325,12 @@ class _HomePageState extends ConsumerState<HomePage>
       (index) {
         return Column(
           children: [
-            Dismissible(
+            Slidable(
               key: ref
                   .read(translateCardListProvider.notifier)
                   .state[index]
                   .cardKey,
+              /*
               onDismissed: (direction) {
                 // SSSSSSSEEEEEEETTTTT SSSSSSTTTTTAAAATTTTEEEE
                 ref.watch(translateCardListProvider).removeWhere(
@@ -351,11 +342,60 @@ class _HomePageState extends ConsumerState<HomePage>
                               .cardKey,
                     );
               },
+              */
+
+              startActionPane: ActionPane(
+                motion: const ScrollMotion(),
+                dismissible: DismissiblePane(onDismissed: () {
+                  // SSSSSSSEEEEEEETTTTT SSSSSSTTTTTAAAATTTTEEEE
+                  ref.watch(translateCardListProvider).removeWhere(
+                        (element) =>
+                            element.cardKey ==
+                            ref
+                                .read(translateCardListProvider.notifier)
+                                .state[index]
+                                .cardKey,
+                      );
+                }),
+                children: [
+                  SlidableAction(
+                    onPressed: (context) {},
+                    backgroundColor: ColorConsts.myRed,
+                    foregroundColor: Colors.white,
+                    icon: Icons.delete,
+                    label: 'Delete',
+                  ),
+                ],
+              ),
+              endActionPane: ActionPane(
+                motion: const ScrollMotion(),
+                children: [
+                  SlidableAction(
+                    // An action can be bigger than the others.
+                    flex: 2,
+                    onPressed: (context) async {
+                      print("sddsdd");
+                      await shareText();
+                    },
+                    backgroundColor: ColorConsts.myYellow,
+                    foregroundColor: Colors.white,
+                    icon: Icons.share,
+                    label: 'Share',
+                  ),
+                  SlidableAction(
+                    onPressed: (context) {},
+                    backgroundColor: ColorConsts.myBlue,
+                    foregroundColor: Colors.white,
+                    icon: Icons.save,
+                    label: 'Save',
+                  ),
+                ],
+              ),
               child: Container(
                 decoration: BoxDecoration(
-                  color: Colors.red,
                   borderRadius: BorderRadius.circular(
-                      MediaQuery.of(context).size.width / 20),
+                    MediaQuery.of(context).size.width / 20,
+                  ),
                   boxShadow: [
                     BoxShadow(
                       color: Colors.grey.withOpacity(1),
@@ -446,7 +486,7 @@ class _HomePageState extends ConsumerState<HomePage>
                       spreadRadius: mySPreadRadius,
                     ),
                   ],
-                  color: Colors.white,
+                  color: primaryColor,
                 ),
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.spaceAround,
@@ -491,8 +531,8 @@ class _HomePageState extends ConsumerState<HomePage>
                         ElevatedButton(
                           style: ElevatedButton.styleFrom(
                             elevation: 0,
-                            backgroundColor: Colors.white,
-                            foregroundColor: Colors.black,
+                            backgroundColor: primaryColor,
+                            foregroundColor: backgroundColor,
                           ),
                           onPressed: () async {
                             isLanguageSelectedBefore(
@@ -524,7 +564,7 @@ class _HomePageState extends ConsumerState<HomePage>
                                     icon: Icon(
                                       AllTalkIcons.plus,
                                       size: 24,
-                                      color: Colors.red,
+                                      color: ColorConsts.myRed,
                                     ),
                                   ),
                                 ],
@@ -603,5 +643,13 @@ class _HomePageState extends ConsumerState<HomePage>
         ],
       ),
     );
+  }
+
+  shareText() async {
+    try {
+      await Share.share("text");
+    } catch (e) {
+      print(e);
+    }
   }
 }

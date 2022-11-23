@@ -1,6 +1,10 @@
 import 'package:alltalk_translate/all_talk_icons_icons.dart';
+import 'package:alltalk_translate/color_consts.dart';
+import 'package:alltalk_translate/main.dart';
 import 'package:alltalk_translate/providers.dart';
 import 'package:animated_icon_button/animated_icon_button.dart';
+import 'package:animated_switch/animated_switch.dart';
+import 'package:day_night_switcher/day_night_switcher.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_fluid_slider_nnbd/flutter_fluid_slider_nnbd.dart';
 import 'package:flutter_tts/flutter_tts.dart';
@@ -22,26 +26,68 @@ class _MyDrawer extends ConsumerState<MyDrawer> {
   @override
   Widget build(BuildContext context) {
     double height = MediaQuery.of(context).size.height;
+    Color primaryColor = Theme.of(context).primaryColor;
+    Color backgroundColor = Theme.of(context).backgroundColor;
+    Brightness brightness = Theme.of(context).brightness;
 
     return Drawer(
       child: Container(
+        color: Theme.of(context).primaryColor,
         padding: EdgeInsets.fromLTRB(8, height / 40, 0, 0),
         child: Column(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           crossAxisAlignment: CrossAxisAlignment.center,
           children: [
+            AnimatedIconButton(
+              icons: const [
+                AnimatedIconItem(
+                  icon: Icon(
+                    AllTalkIcons.sun,
+                  ),
+                ),
+                AnimatedIconItem(
+                  icon: Icon(
+                    AllTalkIcons.sun_filled,
+                  ),
+                ),
+              ],
+              onPressed: () {
+                if (brightness == Brightness.dark) {
+                  MyApp.of(context).changeTheme(ThemeMode.light);
+                } else {
+                  MyApp.of(context).changeTheme(ThemeMode.dark);
+                }
+              },
+            ),
+            IconButton(
+              onPressed: () {
+                if (brightness == Brightness.dark) {
+                  MyApp.of(context).changeTheme(ThemeMode.light);
+                } else {
+                  MyApp.of(context).changeTheme(ThemeMode.dark);
+                }
+              },
+              icon: brightness == Brightness.dark
+                  ? const Icon(
+                      AllTalkIcons.sun,
+                    )
+                  : const Icon(
+                      AllTalkIcons.sun_filled,
+                    ),
+            ),
+
             // profile
             Container(
               height: height / 6,
               child: Row(
                 children: [
                   // profile image
-                  CircleAvatar(
+                  const CircleAvatar(
                     maxRadius: 52,
                     child: CircleAvatar(
                       radius: 52,
-                      backgroundColor: Theme.of(context).primaryColor,
-                      child: const CircleAvatar(
+                      backgroundColor: ColorConsts.myBlue,
+                      child: CircleAvatar(
                         radius: 50,
                         backgroundImage: AssetImage("assets/logo/logo.png"),
                       ),
@@ -60,8 +106,7 @@ class _MyDrawer extends ConsumerState<MyDrawer> {
                         Text(
                           "AllTalk",
                           style: TextStyle(
-                            fontSize: headerSize,
-                          ),
+                              fontSize: headerSize, color: backgroundColor),
                         ),
 
                         // social media icons
@@ -70,7 +115,7 @@ class _MyDrawer extends ConsumerState<MyDrawer> {
                           children: [
                             // github
                             AnimatedIconButton(
-                              icons: [
+                              icons: const [
                                 AnimatedIconItem(
                                   icon: Icon(
                                     AllTalkIcons.github,
@@ -89,7 +134,7 @@ class _MyDrawer extends ConsumerState<MyDrawer> {
 
                             // linkedin
                             AnimatedIconButton(
-                              icons: [
+                              icons: const [
                                 AnimatedIconItem(
                                   icon: Icon(
                                     AllTalkIcons.linkedin,
@@ -109,7 +154,7 @@ class _MyDrawer extends ConsumerState<MyDrawer> {
 
                             // gmail
                             AnimatedIconButton(
-                              icons: [
+                              icons: const [
                                 AnimatedIconItem(
                                   icon: Icon(
                                     AllTalkIcons.mail,
@@ -144,6 +189,7 @@ class _MyDrawer extends ConsumerState<MyDrawer> {
                   "Volume",
                   style: TextStyle(
                     fontSize: soundSettingsTextSize,
+                    color: backgroundColor,
                   ),
                 ),
                 const SizedBox(
@@ -164,6 +210,7 @@ class _MyDrawer extends ConsumerState<MyDrawer> {
                   "Pitch",
                   style: TextStyle(
                     fontSize: soundSettingsTextSize,
+                    color: backgroundColor,
                   ),
                 ),
                 const SizedBox(
@@ -184,6 +231,7 @@ class _MyDrawer extends ConsumerState<MyDrawer> {
                   "SpeechRate",
                   style: TextStyle(
                     fontSize: soundSettingsTextSize,
+                    color: backgroundColor,
                   ),
                 ),
                 const SizedBox(
@@ -221,7 +269,10 @@ class _MyDrawer extends ConsumerState<MyDrawer> {
                     ),
                     Text(
                       "Reset",
-                      style: TextStyle(fontSize: soundSettingsTextSize),
+                      style: TextStyle(
+                        fontSize: soundSettingsTextSize,
+                        color: backgroundColor,
+                      ),
                     ),
                   ],
                 ),
@@ -250,15 +301,18 @@ class _MyDrawer extends ConsumerState<MyDrawer> {
       padding: const EdgeInsets.fromLTRB(0, 0, 18, 0),
       width: MediaQuery.of(context).size.width / 1.5,
       child: FluidSlider(
-        sliderColor: Colors.red.shade400,
-        thumbColor: Colors.white,
+        sliderColor: ColorConsts.myRed,
+        thumbColor: Theme.of(context).primaryColor,
+        labelsTextStyle: TextStyle(
+          color: Theme.of(context).backgroundColor,
+        ),
         showDecimalValue: true,
         start: Icon(
           icon,
           color: Colors.white,
         ),
-        min: 0.1,
-        max: 1.0,
+        min: min,
+        max: max,
         value: ref.read(notifier).state,
         onChanged: (value) {
           setState(() {
@@ -277,6 +331,8 @@ class About extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    Color primaryColor = Theme.of(context).primaryColor;
+    Color backgroundColor = Theme.of(context).backgroundColor;
     return Padding(
       padding: const EdgeInsets.all(8.0),
       child: Row(
@@ -294,7 +350,7 @@ class About extends StatelessWidget {
                       ),
                     ),
                     content: const Text(
-                      "Sa! \n\n İyi alışverişler dileriz...",
+                      "Sa! \n\n Klilcdaroglu aday olmasin.",
                     ),
                     actions: [
                       TextButton(
@@ -309,16 +365,16 @@ class About extends StatelessWidget {
               );
             },
             child: Row(
-              children: const [
+              children: [
                 Icon(
                   AllTalkIcons.info_outline,
-                  color: Colors.black,
+                  color: backgroundColor,
                   size: 14,
                 ),
                 Text(
                   "About",
                   style: TextStyle(
-                    color: Colors.black,
+                    color: backgroundColor,
                     decoration: TextDecoration.underline,
                     decorationThickness: 1.6,
                     fontSize: 10,

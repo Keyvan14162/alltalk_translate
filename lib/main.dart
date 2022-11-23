@@ -9,8 +9,20 @@ void main() {
   runApp(const ProviderScope(child: MyApp()));
 }
 
-class MyApp extends StatelessWidget {
+class MyApp extends StatefulWidget {
   const MyApp({Key? key}) : super(key: key);
+
+  @override
+  State<MyApp> createState() => _MyAppState();
+
+  /// ↓↓ ADDED FOR THEME CHANGE
+  /// InheritedWidget style accessor to our State object.
+  static _MyAppState of(BuildContext context) =>
+      context.findAncestorStateOfType<_MyAppState>()!;
+}
+
+class _MyAppState extends State<MyApp> {
+  ThemeMode _themeMode = ThemeMode.system;
 
   @override
   Widget build(BuildContext context) {
@@ -18,14 +30,40 @@ class MyApp extends StatelessWidget {
       debugShowCheckedModeBanner: false,
       onGenerateRoute: RouteGenerator.routeGenrator,
       title: 'AllTalk Translate',
+      // light theme
       theme: ThemeData(
+        brightness: Brightness.light,
         primarySwatch: Colors.teal,
-        primaryColor: Color.fromARGB(255, 225, 92, 99),
-        // Color.fromARGB(255, 30, 166, 188)
-        // Color.fromARGB(255, 255, 192, 90)
-        secondaryHeaderColor: Colors.yellow,
+
+        // main background etc. color
+        primaryColor: Colors.white,
+
+        // dark text, icon etc. color
+        backgroundColor: Color.fromARGB(255, 58, 50, 43),
+
         fontFamily: "FredokaOne",
       ),
+      // // standard dark theme : ThemData.Dark
+      darkTheme: ThemeData(
+        brightness: Brightness.dark,
+        // iconTheme: IconThemeData(color: Colors.white),
+
+        primarySwatch: Colors.teal,
+        // main background etc. color
+        primaryColor: Color.fromARGB(255, 49, 43, 58),
+
+        // dark text, icon etc. color
+        backgroundColor: Colors.white,
+        fontFamily: "FredokaOne",
+      ),
+      themeMode: _themeMode, // device controls theme
     );
+  }
+
+  // change theme
+  changeTheme(ThemeMode themeMode) {
+    setState(() {
+      _themeMode = themeMode;
+    });
   }
 }

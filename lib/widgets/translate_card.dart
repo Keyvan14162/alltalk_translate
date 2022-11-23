@@ -1,4 +1,5 @@
 import 'package:alltalk_translate/all_talk_icons_icons.dart';
+import 'package:alltalk_translate/color_consts.dart';
 import 'package:alltalk_translate/helpers.dart';
 import 'package:alltalk_translate/providers.dart';
 import 'package:animated_icon_button/animated_icon_button.dart';
@@ -66,11 +67,16 @@ class _TranslateCardState extends ConsumerState<TranslateCard> {
   double headerSize = 20;
   double fontsize = 18;
 
+  late Color primaryColor;
+  late Color backgroundColor;
+
   @override
   Widget build(BuildContext context) {
     // ozel durumlaricin else if ekle
     double width = MediaQuery.of(context).size.width;
     double height = MediaQuery.of(context).size.height;
+    primaryColor = Theme.of(context).primaryColor;
+    backgroundColor = Theme.of(context).backgroundColor;
 
     if (widget.selectedCountryAbbreviation == "us") {
       selectedCountry = "en-US";
@@ -94,7 +100,7 @@ class _TranslateCardState extends ConsumerState<TranslateCard> {
         if (snapshot.hasData) {
           return ExpansionPanelList(
             elevation: 0,
-            dividerColor: Colors.white,
+            // dividerColor: Colors.red,
             expandedHeaderPadding: const EdgeInsets.all(8.0),
             expansionCallback: (panelIndex, isExpanded) {
               setState(() {
@@ -119,7 +125,7 @@ class _TranslateCardState extends ConsumerState<TranslateCard> {
 
   Container expansionPanelItemShimmer(double height) {
     return Container(
-      color: Colors.white,
+      color: primaryColor,
       child: Shimmer.fromColors(
         baseColor: Colors.grey.withOpacity(0.4),
         highlightColor: Colors.grey.withOpacity(0.9),
@@ -160,8 +166,8 @@ class _TranslateCardState extends ConsumerState<TranslateCard> {
             Expanded(
               child: Shimmer.fromColors(
                 direction: ShimmerDirection.ltr,
-                baseColor: Colors.red,
-                highlightColor: Colors.yellow,
+                baseColor: ColorConsts.myRed,
+                highlightColor: ColorConsts.myYellow,
                 period: const Duration(milliseconds: 3000),
                 child: Text(
                   Helpers.getCountryFullName(
@@ -255,6 +261,7 @@ class _TranslateCardState extends ConsumerState<TranslateCard> {
   getExpansionPanelListItems(String text, double width, double height) {
     return ExpansionPanel(
       canTapOnHeader: true,
+      backgroundColor: primaryColor,
       isExpanded: myIsExpanded,
       //backgroundColor: flagDominantColor,
       headerBuilder: (context, isExpanded) => Row(
@@ -263,7 +270,7 @@ class _TranslateCardState extends ConsumerState<TranslateCard> {
           // lang change
           Card(
             elevation: 0,
-            shadowColor: Colors.grey.withOpacity(0.5),
+            // shadowColor: Colors.grey.withOpacity(0.5),
             shape: RoundedRectangleBorder(
               borderRadius: BorderRadius.circular(4.0),
             ),
@@ -317,8 +324,8 @@ class _TranslateCardState extends ConsumerState<TranslateCard> {
                 Flexible(
                   child: Shimmer.fromColors(
                     direction: ShimmerDirection.ltr,
-                    baseColor: Colors.black,
-                    highlightColor: Colors.white,
+                    baseColor: backgroundColor,
+                    highlightColor: primaryColor,
                     period: const Duration(milliseconds: 3000),
                     loop: 1,
                     child: AnimatedIconButton(
@@ -340,8 +347,8 @@ class _TranslateCardState extends ConsumerState<TranslateCard> {
                 Flexible(
                   child: Shimmer.fromColors(
                     direction: ShimmerDirection.ltr,
-                    baseColor: Colors.black,
-                    highlightColor: Colors.white,
+                    baseColor: backgroundColor,
+                    highlightColor: primaryColor,
                     period: const Duration(milliseconds: 3000),
                     loop: 1,
                     child: AnimatedIconButton(
@@ -363,8 +370,8 @@ class _TranslateCardState extends ConsumerState<TranslateCard> {
                 Flexible(
                   child: Shimmer.fromColors(
                     direction: ShimmerDirection.ltr,
-                    baseColor: Colors.black,
-                    highlightColor: Colors.white,
+                    baseColor: backgroundColor,
+                    highlightColor: primaryColor,
                     period: const Duration(milliseconds: 3000),
                     loop: 1,
                     child: AnimatedIconButton(
@@ -413,7 +420,7 @@ class _TranslateCardState extends ConsumerState<TranslateCard> {
           image: DecorationImage(
             fit: BoxFit.cover,
             colorFilter: ColorFilter.mode(
-              Colors.black.withOpacity(1),
+              backgroundColor.withOpacity(1),
               BlendMode.dstATop,
             ),
             image: AssetImage(
@@ -429,7 +436,7 @@ class _TranslateCardState extends ConsumerState<TranslateCard> {
               child: Container(
                 padding: const EdgeInsets.all(8.0),
                 decoration: BoxDecoration(
-                  color: Colors.white.withOpacity(0.8),
+                  color: primaryColor.withOpacity(0.8),
                   borderRadius: const BorderRadius.only(
                     topRight: Radius.circular(12),
                     bottomLeft: Radius.circular(12),
@@ -438,7 +445,7 @@ class _TranslateCardState extends ConsumerState<TranslateCard> {
                 child: Text(
                   text,
                   style: TextStyle(
-                    color: Colors.grey[800],
+                    color: backgroundColor,
                     fontWeight: FontWeight.w400,
                     fontSize: fontsize,
                   ),
@@ -453,7 +460,6 @@ class _TranslateCardState extends ConsumerState<TranslateCard> {
 
   List<PopupMenuItem> createPopupMenuItems() {
     List<PopupMenuItem> popupMenuItemList = [];
-    // widget.languages?
     myLanguages.asMap().forEach((index, element) {
       List<String> countryNameList = element.toString().split("-");
       // print(countryNameList);
@@ -489,7 +495,8 @@ class _TranslateCardState extends ConsumerState<TranslateCard> {
                 height: 20,
                 width: 30,
               ),
-              Text(element),
+              Text(
+                  Helpers.getCountryFullName(element.split("-")[0].toString())),
             ],
           ),
         ),
