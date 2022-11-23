@@ -105,6 +105,7 @@ class _HomePageState extends ConsumerState<HomePage>
                   ),
                   ListView.builder(
                     primary: false,
+                    reverse: true,
                     shrinkWrap: true,
                     itemCount: ref
                         .read(translateCardListProvider.notifier)
@@ -330,20 +331,6 @@ class _HomePageState extends ConsumerState<HomePage>
                   .read(translateCardListProvider.notifier)
                   .state[index]
                   .cardKey,
-              /*
-              onDismissed: (direction) {
-                // SSSSSSSEEEEEEETTTTT SSSSSSTTTTTAAAATTTTEEEE
-                ref.watch(translateCardListProvider).removeWhere(
-                      (element) =>
-                          element.cardKey ==
-                          ref
-                              .read(translateCardListProvider.notifier)
-                              .state[index]
-                              .cardKey,
-                    );
-              },
-              */
-
               startActionPane: ActionPane(
                 motion: const ScrollMotion(),
                 dismissible: DismissiblePane(onDismissed: () {
@@ -369,25 +356,24 @@ class _HomePageState extends ConsumerState<HomePage>
               ),
               endActionPane: ActionPane(
                 motion: const ScrollMotion(),
+                dismissible: DismissiblePane(onDismissed: () {
+                  // SSSSSSSEEEEEEETTTTT SSSSSSTTTTTAAAATTTTEEEE
+                  ref.watch(translateCardListProvider).removeWhere(
+                        (element) =>
+                            element.cardKey ==
+                            ref
+                                .read(translateCardListProvider.notifier)
+                                .state[index]
+                                .cardKey,
+                      );
+                }),
                 children: [
                   SlidableAction(
-                    // An action can be bigger than the others.
-                    flex: 2,
-                    onPressed: (context) async {
-                      print("sddsdd");
-                      await shareText();
-                    },
-                    backgroundColor: ColorConsts.myYellow,
-                    foregroundColor: Colors.white,
-                    icon: Icons.share,
-                    label: 'Share',
-                  ),
-                  SlidableAction(
                     onPressed: (context) {},
-                    backgroundColor: ColorConsts.myBlue,
+                    backgroundColor: ColorConsts.myRed,
                     foregroundColor: Colors.white,
-                    icon: Icons.save,
-                    label: 'Save',
+                    icon: Icons.delete,
+                    label: 'Delete',
                   ),
                 ],
               ),
@@ -534,22 +520,8 @@ class _HomePageState extends ConsumerState<HomePage>
                             backgroundColor: primaryColor,
                             foregroundColor: backgroundColor,
                           ),
-                          onPressed: () async {
-                            isLanguageSelectedBefore(
-                                    selectedCountryAbbreviation)
-                                ? () {}
-                                : setState(() {
-                                    if (!isLanguageSelectedBefore(
-                                        selectedCountryAbbreviation)) {
-                                      ref.watch(translateCardListProvider).add(
-                                            TranslateCard(
-                                              cardKey: UniqueKey(),
-                                              selectedCountryAbbreviation:
-                                                  selectedCountryAbbreviation,
-                                            ),
-                                          );
-                                    }
-                                  });
+                          onPressed: () {
+                            addSelectedLanguage();
                           },
                           child: Row(
                             children: [
@@ -569,65 +541,7 @@ class _HomePageState extends ConsumerState<HomePage>
                                   ),
                                 ],
                                 onPressed: () {
-                                  isLanguageSelectedBefore(
-                                          selectedCountryAbbreviation)
-                                      ?
-                                      // laguage already added
-                                      ScaffoldMessenger.of(context)
-                                          .showSnackBar(
-                                          SnackBar(
-                                            duration:
-                                                const Duration(seconds: 3),
-                                            backgroundColor: Colors.white,
-                                            content: Text(
-                                              "${Helpers.getCountryFullName(selectedCountryAbbreviation)} already on list.",
-                                              style: const TextStyle(
-                                                color: Colors.black,
-                                              ),
-                                            ),
-                                            action: SnackBarAction(
-                                              label: 'Ok',
-                                              onPressed: () {
-                                                ScaffoldMessenger.of(context)
-                                                    .clearSnackBars();
-                                              },
-                                            ),
-                                          ),
-                                        )
-                                      :
-                                      // add to provider list
-                                      setState(
-                                          () {
-                                            if (!isLanguageSelectedBefore(
-                                                selectedCountryAbbreviation)) {
-                                              ref
-                                                  .watch(
-                                                      translateCardListProvider)
-                                                  .add(TranslateCard(
-                                                    cardKey: UniqueKey(),
-                                                    selectedCountryAbbreviation:
-                                                        selectedCountryAbbreviation,
-                                                  ));
-                                            }
-                                          },
-                                        );
-                                  // show confirm snackbar
-                                  ScaffoldMessenger.of(context).showSnackBar(
-                                    SnackBar(
-                                      duration: const Duration(seconds: 3),
-                                      backgroundColor: Colors.white,
-                                      content: Text(
-                                        "${Helpers.getCountryFullName(selectedCountryAbbreviation)} added to list.",
-                                        style: const TextStyle(
-                                          color: Colors.black,
-                                        ),
-                                      ),
-                                      action: SnackBarAction(
-                                        label: 'Ok',
-                                        onPressed: () {},
-                                      ),
-                                    ),
-                                  );
+                                  addSelectedLanguage();
                                 },
                               ),
                             ],
@@ -645,11 +559,56 @@ class _HomePageState extends ConsumerState<HomePage>
     );
   }
 
-  shareText() async {
-    try {
-      await Share.share("text");
-    } catch (e) {
-      print(e);
-    }
+  addSelectedLanguage() {
+    isLanguageSelectedBefore(selectedCountryAbbreviation)
+        ?
+        // laguage already added
+        ScaffoldMessenger.of(context).showSnackBar(
+            SnackBar(
+              duration: const Duration(seconds: 3),
+              backgroundColor: Colors.white,
+              content: Text(
+                "${Helpers.getCountryFullName(selectedCountryAbbreviation)} already on list.",
+                style: const TextStyle(
+                  color: Colors.black,
+                ),
+              ),
+              action: SnackBarAction(
+                label: 'Ok',
+                onPressed: () {
+                  ScaffoldMessenger.of(context).clearSnackBars();
+                },
+              ),
+            ),
+          )
+        :
+        // add to provider list
+        setState(
+            () {
+              if (!isLanguageSelectedBefore(selectedCountryAbbreviation)) {
+                ref.watch(translateCardListProvider).add(TranslateCard(
+                      cardKey: UniqueKey(),
+                      selectedCountryAbbreviation: selectedCountryAbbreviation,
+                    ));
+              }
+            },
+          );
+    // show confirm snackbar
+    ScaffoldMessenger.of(context).showSnackBar(
+      SnackBar(
+        duration: const Duration(seconds: 3),
+        backgroundColor: Colors.white,
+        content: Text(
+          "${Helpers.getCountryFullName(selectedCountryAbbreviation)} added to list.",
+          style: const TextStyle(
+            color: Colors.black,
+          ),
+        ),
+        action: SnackBarAction(
+          label: 'Ok',
+          onPressed: () {},
+        ),
+      ),
+    );
   }
 }

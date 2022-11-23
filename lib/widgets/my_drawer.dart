@@ -1,10 +1,10 @@
+import 'dart:ui';
+
 import 'package:alltalk_translate/all_talk_icons_icons.dart';
 import 'package:alltalk_translate/color_consts.dart';
 import 'package:alltalk_translate/main.dart';
 import 'package:alltalk_translate/providers.dart';
 import 'package:animated_icon_button/animated_icon_button.dart';
-import 'package:animated_switch/animated_switch.dart';
-import 'package:day_night_switcher/day_night_switcher.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_fluid_slider_nnbd/flutter_fluid_slider_nnbd.dart';
 import 'package:flutter_tts/flutter_tts.dart';
@@ -38,146 +38,93 @@ class _MyDrawer extends ConsumerState<MyDrawer> {
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           crossAxisAlignment: CrossAxisAlignment.center,
           children: [
-            AnimatedIconButton(
-              icons: const [
-                AnimatedIconItem(
-                  icon: Icon(
-                    AllTalkIcons.sun,
-                  ),
-                ),
-                AnimatedIconItem(
-                  icon: Icon(
-                    AllTalkIcons.sun_filled,
-                  ),
-                ),
-              ],
-              onPressed: () {
-                if (brightness == Brightness.dark) {
-                  MyApp.of(context).changeTheme(ThemeMode.light);
-                } else {
-                  MyApp.of(context).changeTheme(ThemeMode.dark);
-                }
-              },
-            ),
-            IconButton(
-              onPressed: () {
-                if (brightness == Brightness.dark) {
-                  MyApp.of(context).changeTheme(ThemeMode.light);
-                } else {
-                  MyApp.of(context).changeTheme(ThemeMode.dark);
-                }
-              },
-              icon: brightness == Brightness.dark
-                  ? const Icon(
-                      AllTalkIcons.sun,
-                    )
-                  : const Icon(
-                      AllTalkIcons.sun_filled,
-                    ),
-            ),
-
             // profile
-            Container(
-              height: height / 6,
-              child: Row(
-                children: [
-                  // profile image
-                  const CircleAvatar(
-                    maxRadius: 52,
-                    child: CircleAvatar(
-                      radius: 52,
-                      backgroundColor: ColorConsts.myBlue,
-                      child: CircleAvatar(
-                        radius: 50,
-                        backgroundImage: AssetImage("assets/logo/logo.png"),
-                      ),
-                    ),
-                  ),
-                  const SizedBox(
-                    width: 10,
-                  ),
-                  // header and icons
-                  Expanded(
-                    child: Column(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      crossAxisAlignment: CrossAxisAlignment.center,
-                      children: [
-                        // kendin bi tane icon yapabilin
-                        Text(
-                          "AllTalk",
-                          style: TextStyle(
-                              fontSize: headerSize, color: backgroundColor),
+            Column(
+              children: [
+                Container(
+                  height: height / 6,
+                  child: Row(
+                    children: [
+                      // profile image
+                      const CircleAvatar(
+                        maxRadius: 52,
+                        child: CircleAvatar(
+                          radius: 52,
+                          backgroundColor: ColorConsts.myBlue,
+                          child: CircleAvatar(
+                            radius: 50,
+                            backgroundImage: AssetImage("assets/logo/logo.png"),
+                          ),
                         ),
-
-                        // social media icons
-                        Row(
+                      ),
+                      const SizedBox(
+                        width: 10,
+                      ),
+                      // header and icons
+                      Expanded(
+                        child: Column(
                           mainAxisAlignment: MainAxisAlignment.center,
+                          crossAxisAlignment: CrossAxisAlignment.center,
                           children: [
-                            // github
-                            AnimatedIconButton(
-                              icons: const [
-                                AnimatedIconItem(
-                                  icon: Icon(
-                                    AllTalkIcons.github,
-                                    size: 24,
-                                  ),
-                                ),
-                              ],
-                              onPressed: () async {
-                                if (!await launchUrl(
-                                    Uri.parse("https://github.com/Keyvan14162"),
-                                    mode: LaunchMode.externalApplication)) {
-                                  throw "Could not launch ";
-                                }
-                              },
-                            ),
-
-                            // linkedin
-                            AnimatedIconButton(
-                              icons: const [
-                                AnimatedIconItem(
-                                  icon: Icon(
-                                    AllTalkIcons.linkedin,
-                                    size: 24,
-                                  ),
-                                ),
-                              ],
-                              onPressed: () async {
-                                if (!await launchUrl(
-                                    Uri.parse(
-                                        "https://www.linkedin.com/in/ismail-keyvan/"),
-                                    mode: LaunchMode.externalApplication)) {
-                                  throw "Could not launch ";
-                                }
-                              },
-                            ),
-
-                            // gmail
-                            AnimatedIconButton(
-                              icons: const [
-                                AnimatedIconItem(
-                                  icon: Icon(
-                                    AllTalkIcons.mail,
-                                    size: 24,
-                                  ),
-                                ),
-                              ],
-                              onPressed: () async {
-                                if (!await launchUrl(
-                                    Uri.parse(
-                                        "mailto:ismailkyvsn2000@gmail.com?subject=Hello%20!&body="),
-                                    mode: LaunchMode.externalApplication)) {
-                                  throw "Could not launch ";
-                                }
-                              },
+                            // kendin bi tane icon yapabilin
+                            Text(
+                              "AllTalk",
+                              style: TextStyle(
+                                  fontSize: headerSize, color: backgroundColor),
                             ),
                           ],
                         ),
-                      ],
-                    ),
+                      ),
+                    ],
                   ),
-                ],
-              ),
+                ),
+                // social media icons
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    // github
+                    createSocialMediaIcon(
+                        AllTalkIcons.github, "https://github.com/Keyvan14162"),
+
+                    // linkedin
+                    createSocialMediaIcon(AllTalkIcons.linkedin,
+                        "https://www.linkedin.com/in/ismail-keyvan/"),
+
+                    // gmail
+                    createSocialMediaIcon(AllTalkIcons.mail,
+                        "mailto:ismailkyvsn2000@gmail.com?subject=Hello%20!&body="),
+
+                    // play store vote
+                    createSocialMediaIcon(AllTalkIcons.star_filled,
+                        "https://play.google.com/store/apps/details?id=com.ismailkeyvan.aktuel_urunler_bim_a101_sok"),
+
+                    // dark - light mode
+                    Flexible(
+                      child: AnimatedIconButton(
+                        icons: const [
+                          AnimatedIconItem(
+                            icon: Icon(
+                              AllTalkIcons.sun,
+                            ),
+                          ),
+                          AnimatedIconItem(
+                            icon: Icon(
+                              AllTalkIcons.moon,
+                            ),
+                          ),
+                        ],
+                        onPressed: () {
+                          if (brightness == Brightness.dark) {
+                            MyApp.of(context).changeTheme(ThemeMode.light);
+                          } else {
+                            MyApp.of(context).changeTheme(ThemeMode.dark);
+                          }
+                        },
+                      ),
+                    ),
+                  ],
+                ),
+              ],
             ),
 
             // sound settings
@@ -284,9 +231,30 @@ class _MyDrawer extends ConsumerState<MyDrawer> {
             ),
 
             // About
-            const About(),
+            createAbout(primaryColor, backgroundColor),
           ],
         ),
+      ),
+    );
+  }
+
+  createSocialMediaIcon(IconData iconData, String url) {
+    return Flexible(
+      child: AnimatedIconButton(
+        icons: [
+          AnimatedIconItem(
+            icon: Icon(
+              iconData,
+              size: 24,
+            ),
+          ),
+        ],
+        onPressed: () async {
+          if (!await launchUrl(Uri.parse(url),
+              mode: LaunchMode.externalApplication)) {
+            throw "Could not launch ";
+          }
+        },
       ),
     );
   }
@@ -322,17 +290,8 @@ class _MyDrawer extends ConsumerState<MyDrawer> {
       ),
     );
   }
-}
 
-class About extends StatelessWidget {
-  const About({
-    Key? key,
-  }) : super(key: key);
-
-  @override
-  Widget build(BuildContext context) {
-    Color primaryColor = Theme.of(context).primaryColor;
-    Color backgroundColor = Theme.of(context).backgroundColor;
+  createAbout(Color primaryColor, Color backgroundColor) {
     return Padding(
       padding: const EdgeInsets.all(8.0),
       child: Row(

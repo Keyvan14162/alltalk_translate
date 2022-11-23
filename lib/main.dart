@@ -16,13 +16,13 @@ class MyApp extends StatefulWidget {
   State<MyApp> createState() => _MyAppState();
 
   /// ↓↓ ADDED FOR THEME CHANGE
-  /// InheritedWidget style accessor to our State object.
+
   static _MyAppState of(BuildContext context) =>
       context.findAncestorStateOfType<_MyAppState>()!;
 }
 
 class _MyAppState extends State<MyApp> {
-  ThemeMode _themeMode = ThemeMode.system;
+  ThemeMode _themeMode = ThemeMode.light; // or system
 
   @override
   Widget build(BuildContext context) {

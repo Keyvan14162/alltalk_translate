@@ -123,7 +123,7 @@ class _TranslateCardState extends ConsumerState<TranslateCard> {
     );
   }
 
-  Container expansionPanelItemShimmer(double height) {
+  expansionPanelItemShimmer(double height) {
     return Container(
       color: primaryColor,
       child: Shimmer.fromColors(
@@ -163,6 +163,7 @@ class _TranslateCardState extends ConsumerState<TranslateCard> {
               ),
             ),
             // header
+
             Expanded(
               child: Shimmer.fromColors(
                 direction: ShimmerDirection.ltr,
@@ -296,6 +297,9 @@ class _TranslateCardState extends ConsumerState<TranslateCard> {
               ),
             ),
           ),
+          const SizedBox(
+            width: 10,
+          ),
           // header
           Expanded(
             child: Shimmer.fromColors(
@@ -315,6 +319,7 @@ class _TranslateCardState extends ConsumerState<TranslateCard> {
               ),
             ),
           ),
+
           // icons
           Flexible(
             child: Row(
