@@ -376,8 +376,23 @@ class _TranslateCardState extends ConsumerState<TranslateCard> {
                           ),
                         ),
                       ],
-                      onPressed: () async {
-                        print(text);
+                      onPressed: () {
+                        ScaffoldMessenger.of(context).showSnackBar(
+                          SnackBar(
+                            duration: const Duration(seconds: 3),
+                            backgroundColor: Colors.white,
+                            content: Text(
+                              "$text Copied to Clipboard",
+                              style: const TextStyle(
+                                color: Colors.black,
+                              ),
+                            ),
+                            action: SnackBarAction(
+                              label: 'Ok',
+                              onPressed: () {},
+                            ),
+                          ),
+                        );
                       },
                     ),
                   ),

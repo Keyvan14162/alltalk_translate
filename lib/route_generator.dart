@@ -1,4 +1,4 @@
-import 'package:alltalk_translate/widgets/zoom_drawer/zoom_drawer_screen.dart';
+import 'package:alltalk_translate/home_page.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
@@ -19,7 +19,7 @@ class RouteGenerator {
     switch (settings.name) {
       // home page
       case "/":
-        return _generateRoute(ZoomDrawerScreen(), settings);
+        return _generateRoute(HomePage(), settings);
 
       // unknown page
       default:

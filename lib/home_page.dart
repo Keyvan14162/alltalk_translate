@@ -1,11 +1,15 @@
+import 'dart:async';
+
 import 'package:alltalk_translate/all_talk_icons_icons.dart';
+import 'package:alltalk_translate/helpers.dart';
 import 'package:alltalk_translate/providers.dart';
+import 'package:alltalk_translate/widgets/my_drawer.dart';
 import 'package:alltalk_translate/widgets/translate_card.dart';
 import 'package:animated_icon_button/animated_icon_button.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_zoom_drawer/flutter_zoom_drawer.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:alltalk_translate/country_constants.dart' as country_constants;
+import 'package:internet_connection_checker/internet_connection_checker.dart';
 
 class HomePage extends StatefulHookConsumerWidget {
   const HomePage({Key? key}) : super(key: key);
@@ -43,9 +47,23 @@ class _HomePageState extends ConsumerState<HomePage>
   double myBlurRadius = 4.0;
   double mySPreadRadius = 1;
 
+  late StreamSubscription<InternetConnectionStatus> internetConnectionListener;
+
   @override
   void initState() {
     super.initState();
+
+    internetConnectionListener =
+        InternetConnectionChecker().onStatusChange.listen((status) {
+      ScaffoldMessenger.of(context).clearSnackBars();
+      setState(() {});
+    });
+  }
+
+  @override
+  void dispose() {
+    internetConnectionListener.cancel();
+    super.dispose();
   }
 
   final List<Item> _data = generateItems(8);
@@ -56,8 +74,11 @@ class _HomePageState extends ConsumerState<HomePage>
     double height = MediaQuery.of(context).size.height;
     double addLangHeight = height / 14;
 
+    connectionStatusSnackbar();
+
     return Scaffold(
       appBar: myAppbar(height, width, context),
+      drawer: const MyDrawer(),
       body: NestedScrollView(
         clipBehavior: Clip.none,
         headerSliverBuilder: (context, innerBoxIsScrolled) {
@@ -114,13 +135,102 @@ class _HomePageState extends ConsumerState<HomePage>
     );
   }
 
+  connectionStatusSnackbar() async {
+    await (InternetConnectionChecker().hasConnection).then((value) {
+      if (!value) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(
+            duration: const Duration(seconds: 100),
+            backgroundColor: Colors.white,
+            content: const Text(
+              "No Internet Connection",
+              style: TextStyle(
+                color: Colors.black,
+              ),
+            ),
+            action: SnackBarAction(
+              label: 'Refresh',
+              onPressed: () {
+                setState(() {});
+              },
+            ),
+          ),
+        );
+      }
+    });
+  }
+
   AppBar myAppbar(double height, double width, BuildContext context) {
     return AppBar(
       elevation: 0,
 
       backgroundColor: Colors.white,
       toolbarHeight: height / 9, // 100
+      foregroundColor: Colors.black,
+      title: Container(
+        height: height / 10,
+        alignment: Alignment.center,
+        decoration: const BoxDecoration(
+          color: Colors.white,
+        ),
+        // menu button and textfield
+        child: Row(
+          children: [
+            Expanded(
+              child: Container(
+                decoration: BoxDecoration(
+                  color: Colors.black.withOpacity(0.1),
+                  borderRadius: const BorderRadius.all(
+                    Radius.circular(50),
+                  ),
+                ),
+                child: TextField(
+                  maxLines: 1,
+                  style: const TextStyle(
+                    fontSize: 17,
+                    color: Colors.black,
+                  ),
+                  decoration: InputDecoration(
+                    hintStyle: TextStyle(
+                      fontSize: 17,
+                      color: Colors.grey.withOpacity(0.9),
+                    ),
+                    hintText: 'Enter text to translate',
+                    suffixIcon: AnimatedIconButton(
+                      icons: const [
+                        AnimatedIconItem(
+                          icon: Icon(
+                            AllTalkIcons.ok,
+                            color: Colors.cyan,
+                          ),
+                        ),
+                      ],
+                      onPressed: () {
+                        if (_textController.text.isNotEmpty) {
+                          ref.read(mainTextProvider.notifier).state =
+                              _textController.text;
+                        }
+                      },
+                    ),
+                    border: InputBorder.none,
+                    contentPadding: const EdgeInsets.all(20),
+                  ),
+                  controller: _textController,
+                  onSubmitted: (value) {
+                    if (value.isNotEmpty) {
+                      ref.read(mainTextProvider.notifier).state =
+                          _textController.text;
+                    }
+                  },
+                  onChanged: (value) {},
+                ),
+              ),
+            ),
+          ],
+        ),
+      ),
 
+      /*
       actions: [
         Flexible(
           child: Column(
@@ -146,6 +256,7 @@ class _HomePageState extends ConsumerState<HomePage>
                 // menu button and textfield
                 child: Row(
                   children: [
+                    /*
                     IconButton(
                       onPressed: () {
                         ZoomDrawer.of(context)!.toggle();
@@ -156,6 +267,7 @@ class _HomePageState extends ConsumerState<HomePage>
                         size: 32,
                       ),
                     ),
+                    */
                     Container(
                       width: width * 0.8,
                       decoration: BoxDecoration(
@@ -213,6 +325,7 @@ class _HomePageState extends ConsumerState<HomePage>
           ),
         ),
       ],
+      */
     );
   }
 
@@ -406,7 +519,7 @@ class _HomePageState extends ConsumerState<HomePage>
                               ),
                               // icon
                               AnimatedIconButton(
-                                icons: [
+                                icons: const [
                                   AnimatedIconItem(
                                     icon: Icon(
                                       AllTalkIcons.plus,
@@ -418,24 +531,63 @@ class _HomePageState extends ConsumerState<HomePage>
                                 onPressed: () {
                                   isLanguageSelectedBefore(
                                           selectedCountryAbbreviation)
-                                      ? () {}
-                                      : setState(
+                                      ?
+                                      // laguage already added
+                                      ScaffoldMessenger.of(context)
+                                          .showSnackBar(
+                                          SnackBar(
+                                            duration:
+                                                const Duration(seconds: 3),
+                                            backgroundColor: Colors.white,
+                                            content: Text(
+                                              "${Helpers.getCountryFullName(selectedCountryAbbreviation)} already on list.",
+                                              style: const TextStyle(
+                                                color: Colors.black,
+                                              ),
+                                            ),
+                                            action: SnackBarAction(
+                                              label: 'Ok',
+                                              onPressed: () {
+                                                ScaffoldMessenger.of(context)
+                                                    .clearSnackBars();
+                                              },
+                                            ),
+                                          ),
+                                        )
+                                      :
+                                      // add to provider list
+                                      setState(
                                           () {
                                             if (!isLanguageSelectedBefore(
                                                 selectedCountryAbbreviation)) {
                                               ref
                                                   .watch(
                                                       translateCardListProvider)
-                                                  .add(
-                                                    TranslateCard(
-                                                      cardKey: UniqueKey(),
-                                                      selectedCountryAbbreviation:
-                                                          selectedCountryAbbreviation,
-                                                    ),
-                                                  );
+                                                  .add(TranslateCard(
+                                                    cardKey: UniqueKey(),
+                                                    selectedCountryAbbreviation:
+                                                        selectedCountryAbbreviation,
+                                                  ));
                                             }
                                           },
                                         );
+                                  // show confirm snackbar
+                                  ScaffoldMessenger.of(context).showSnackBar(
+                                    SnackBar(
+                                      duration: const Duration(seconds: 3),
+                                      backgroundColor: Colors.white,
+                                      content: Text(
+                                        "${Helpers.getCountryFullName(selectedCountryAbbreviation)} added to list.",
+                                        style: const TextStyle(
+                                          color: Colors.black,
+                                        ),
+                                      ),
+                                      action: SnackBarAction(
+                                        label: 'Ok',
+                                        onPressed: () {},
+                                      ),
+                                    ),
+                                  );
                                 },
                               ),
                             ],
