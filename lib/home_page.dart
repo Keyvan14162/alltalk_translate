@@ -35,17 +35,21 @@ class Item {
 
 class _HomePageState extends ConsumerState<HomePage>
     with SingleTickerProviderStateMixin {
-  final TextEditingController _textController = TextEditingController();
+  late TextEditingController _textController;
   String selectedCountryAbbreviation = "tr";
 
   double myBlurRadius = 4.0;
   double mySPreadRadius = 1;
+  late Color primaryColor;
+  late Color backgroundColor;
 
   late StreamSubscription<InternetConnectionStatus> internetConnectionListener;
 
   @override
   void initState() {
     super.initState();
+
+    _textController = TextEditingController();
 
     internetConnectionListener =
         InternetConnectionChecker().onStatusChange.listen((status) {
@@ -57,11 +61,9 @@ class _HomePageState extends ConsumerState<HomePage>
   @override
   void dispose() {
     internetConnectionListener.cancel();
+    _textController.dispose();
     super.dispose();
   }
-
-  late Color primaryColor;
-  late Color backgroundColor;
 
   @override
   Widget build(BuildContext context) {
@@ -112,7 +114,7 @@ class _HomePageState extends ConsumerState<HomePage>
                         .state
                         .length,
                     itemBuilder: (context, index) {
-                      return createGridViewItems()[index];
+                      return createTranslateCardListItems()[index];
                     },
                   ),
                 ],
@@ -169,7 +171,7 @@ class _HomePageState extends ConsumerState<HomePage>
             Expanded(
               child: Container(
                 decoration: BoxDecoration(
-                  color: Colors.black.withOpacity(0.1),
+                  color: backgroundColor.withOpacity(0.1),
                   borderRadius: const BorderRadius.all(
                     Radius.circular(50),
                   ),
@@ -220,107 +222,10 @@ class _HomePageState extends ConsumerState<HomePage>
           ],
         ),
       ),
-
-      /*
-      actions: [
-        Flexible(
-          child: Column(
-            children: [
-              Container(
-                height: height / 10,
-                width: width,
-                alignment: Alignment.center,
-                decoration: BoxDecoration(
-                  borderRadius: const BorderRadius.only(
-                    bottomRight: Radius.circular(50),
-                  ),
-                  boxShadow: [
-                    BoxShadow(
-                      color: Colors.grey.withOpacity(0.7),
-                      //offset: const Offset(-10.0, 10.0),
-                      blurRadius: myBlurRadius,
-                      spreadRadius: mySPreadRadius,
-                    ),
-                  ],
-                  color: Colors.white,
-                ),
-                // menu button and textfield
-                child: Row(
-                  children: [
-                    /*
-                    IconButton(
-                      onPressed: () {
-                        ZoomDrawer.of(context)!.toggle();
-                      },
-                      icon: Icon(
-                        AllTalkIcons.cog,
-                        color: Colors.black,
-                        size: 32,
-                      ),
-                    ),
-                    */
-                    Container(
-                      width: width * 0.8,
-                      decoration: BoxDecoration(
-                        color: Colors.black.withOpacity(0.1),
-                        borderRadius: const BorderRadius.all(
-                          Radius.circular(50),
-                        ),
-                      ),
-                      child: TextField(
-                        maxLines: 1,
-                        style: const TextStyle(
-                          fontSize: 17,
-                          color: Colors.black,
-                        ),
-                        decoration: InputDecoration(
-                          hintStyle: TextStyle(
-                            fontSize: 17,
-                            color: Colors.grey.withOpacity(0.9),
-                          ),
-                          hintText: 'Enter text to translate',
-                          suffixIcon: AnimatedIconButton(
-                            icons: [
-                              AnimatedIconItem(
-                                icon: Icon(
-                                  AllTalkIcons.ok,
-                                  // size: 24,
-                                  color: Colors.cyan,
-                                ),
-                              ),
-                            ],
-                            onPressed: () {
-                              if (_textController.text.isNotEmpty) {
-                                ref.read(mainTextProvider.notifier).state =
-                                    _textController.text;
-                              }
-                            },
-                          ),
-                          border: InputBorder.none,
-                          contentPadding: const EdgeInsets.all(20),
-                        ),
-                        controller: _textController,
-                        onSubmitted: (value) {
-                          if (value.isNotEmpty) {
-                            ref.read(mainTextProvider.notifier).state =
-                                _textController.text;
-                          }
-                        },
-                        onChanged: (value) {},
-                      ),
-                    ),
-                  ],
-                ),
-              ),
-            ],
-          ),
-        ),
-      ],
-      */
     );
   }
 
-  List<Widget> createGridViewItems() {
+  List<Widget> createTranslateCardListItems() {
     List<Widget> list = List.generate(
       ref.read(translateCardListProvider.notifier).state.length,
       (index) {
@@ -385,7 +290,6 @@ class _HomePageState extends ConsumerState<HomePage>
                   boxShadow: [
                     BoxShadow(
                       color: Colors.grey.withOpacity(1),
-                      blurStyle: BlurStyle.normal,
                       offset: const Offset(0, -1),
                       blurRadius: myBlurRadius,
                       spreadRadius: mySPreadRadius,
@@ -446,7 +350,11 @@ class _HomePageState extends ConsumerState<HomePage>
                 height: 20,
                 width: 30,
               ),
-              Text(element),
+              Text(
+                Helpers.getCountryFullName(
+                  element.split("-")[0].toString(),
+                ),
+              ),
             ],
           ),
         ),

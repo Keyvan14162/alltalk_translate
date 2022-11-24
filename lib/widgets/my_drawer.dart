@@ -53,7 +53,8 @@ class _MyDrawer extends ConsumerState<MyDrawer> {
                           backgroundColor: ColorConsts.myBlue,
                           child: CircleAvatar(
                             radius: 50,
-                            backgroundImage: AssetImage("assets/logo/logo.png"),
+                            backgroundImage:
+                                AssetImage("assets/logos/logo.png"),
                           ),
                         ),
                       ),

@@ -262,9 +262,8 @@ class _TranslateCardState extends ConsumerState<TranslateCard> {
   getExpansionPanelListItems(String text, double width, double height) {
     return ExpansionPanel(
       canTapOnHeader: true,
-      backgroundColor: primaryColor,
+      backgroundColor: primaryColor.withOpacity(0.9),
       isExpanded: myIsExpanded,
-      //backgroundColor: flagDominantColor,
       headerBuilder: (context, isExpanded) => Row(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
@@ -501,7 +500,10 @@ class _TranslateCardState extends ConsumerState<TranslateCard> {
                 width: 30,
               ),
               Text(
-                  Helpers.getCountryFullName(element.split("-")[0].toString())),
+                Helpers.getCountryFullName(
+                  element.split("-")[0].toString(),
+                ),
+              ),
             ],
           ),
         ),

@@ -39,7 +39,7 @@ class _MyAppState extends State<MyApp> {
         primaryColor: Colors.white,
 
         // dark text, icon etc. color
-        backgroundColor: Color.fromARGB(255, 58, 50, 43),
+        backgroundColor: Color.fromARGB(255, 0, 23, 39),
 
         fontFamily: "FredokaOne",
       ),
@@ -50,7 +50,7 @@ class _MyAppState extends State<MyApp> {
 
         primarySwatch: Colors.teal,
         // main background etc. color
-        primaryColor: Color.fromARGB(255, 49, 43, 58),
+        primaryColor: Color.fromARGB(255, 0, 23, 39),
 
         // dark text, icon etc. color
         backgroundColor: Colors.white,
