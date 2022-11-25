@@ -1,4 +1,5 @@
-import 'dart:ui';
+import 'package:alltalk_translate/generated/locale_keys.g.dart';
+import 'package:easy_localization/easy_localization.dart';
 
 import 'package:alltalk_translate/all_talk_icons_icons.dart';
 import 'package:alltalk_translate/color_consts.dart';
@@ -83,6 +84,18 @@ class _MyDrawer extends ConsumerState<MyDrawer> {
                 Row(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
+                    // lang change
+                    IconButton(
+                      onPressed: () {
+                        if (context.locale == Locale("tr")) {
+                          context.setLocale(Locale("en"));
+                        } else {
+                          context.setLocale(Locale("tr"));
+                        }
+                      },
+                      icon: const Icon(Icons.language),
+                    ),
+
                     // github
                     createSocialMediaIcon(
                         AllTalkIcons.github, "https://github.com/Keyvan14162"),
@@ -134,7 +147,7 @@ class _MyDrawer extends ConsumerState<MyDrawer> {
               children: [
                 // volume
                 Text(
-                  "Volume",
+                  LocaleKeys.volume.tr(),
                   style: TextStyle(
                     fontSize: soundSettingsTextSize,
                     color: backgroundColor,
@@ -155,7 +168,7 @@ class _MyDrawer extends ConsumerState<MyDrawer> {
 
                 // pitch
                 Text(
-                  "Pitch",
+                  LocaleKeys.pitch.tr(),
                   style: TextStyle(
                     fontSize: soundSettingsTextSize,
                     color: backgroundColor,
@@ -176,7 +189,7 @@ class _MyDrawer extends ConsumerState<MyDrawer> {
 
                 // speech rate
                 Text(
-                  "SpeechRate",
+                  LocaleKeys.speech_rate.tr(),
                   style: TextStyle(
                     fontSize: soundSettingsTextSize,
                     color: backgroundColor,
@@ -216,7 +229,7 @@ class _MyDrawer extends ConsumerState<MyDrawer> {
                       },
                     ),
                     Text(
-                      "Reset",
+                      LocaleKeys.reset.tr(),
                       style: TextStyle(
                         fontSize: soundSettingsTextSize,
                         color: backgroundColor,
@@ -309,15 +322,15 @@ class _MyDrawer extends ConsumerState<MyDrawer> {
                         "AllTalk",
                       ),
                     ),
-                    content: const Text(
-                      "Sa! \n\n Klilcdaroglu aday olmasin.",
+                    content: Text(
+                      "${LocaleKeys.about_first_part.tr()} \n\n ${LocaleKeys.about_second_part.tr()}",
                     ),
                     actions: [
                       TextButton(
                         onPressed: () {
                           Navigator.of(context).pop();
                         },
-                        child: const Text("Ok"),
+                        child: Text(LocaleKeys.ok.tr()),
                       ),
                     ],
                   );
@@ -332,7 +345,7 @@ class _MyDrawer extends ConsumerState<MyDrawer> {
                   size: 14,
                 ),
                 Text(
-                  "About",
+                  LocaleKeys.about.tr(),
                   style: TextStyle(
                     color: backgroundColor,
                     decoration: TextDecoration.underline,

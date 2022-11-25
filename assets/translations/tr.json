@@ -1,0 +1,31 @@
+{
+    "enter_text_to_translate": "Çevrilecek metin",
+    "add_selected_language": "Seçili Dili Ekle",
+    "volume": "Ses",
+    "pitch": "Akord",
+    "speech_rate": "Konuşma Hızı",
+    "reset": "Sıfırla",
+    "about": "Hakkında",
+    "ok": "Tamam",
+    "hello": "Merhaba!",
+    "about_first_part": "about ilk",
+    "about_second_part": "about ikinci",
+    "already_on_list": "zaten listede",
+    "added_to_list": "listeye eklendi",    
+    "language_already_added": "Dil zaten eklendi",
+
+    "turkish": "Türkçe",
+    "russian": "Rusça",
+    "english_us": "İngilizce-US",
+    "korean": "Korece",
+    "urdu": "Urduca",
+    "indian": "Hintçe",
+    "hungarian": "Macarca",
+    "french": "Fransızca",
+    "deutsch": "Almanca",
+    "spanish": "İspanyolca",
+    "romanian": "Romence",
+    "japanase": "Japonca"
+
+
+}

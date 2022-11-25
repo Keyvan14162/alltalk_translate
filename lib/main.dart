@@ -1,12 +1,21 @@
+import 'package:alltalk_translate/generated/codegen_loader.g.dart';
 import 'package:alltalk_translate/route_generator.dart';
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 
-void main() {
+void main() async {
   WidgetsFlutterBinding.ensureInitialized();
+  await EasyLocalization.ensureInitialized();
+
   // SystemChrome.setEnabledSystemUIMode(SystemUiMode.immersiveSticky);
 
-  runApp(const ProviderScope(child: MyApp()));
+  runApp(EasyLocalization(
+      supportedLocales: [Locale('en'), Locale('tr')],
+      path: 'assets/translations',
+      fallbackLocale: Locale('en'),
+      assetLoader: CodegenLoader(),
+      child: const ProviderScope(child: MyApp())));
 }
 
 class MyApp extends StatefulWidget {
@@ -27,9 +36,15 @@ class _MyAppState extends State<MyApp> {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
+      // easy localization
+      localizationsDelegates: context.localizationDelegates,
+      supportedLocales: context.supportedLocales,
+      locale: context.locale,
+
       debugShowCheckedModeBanner: false,
       onGenerateRoute: RouteGenerator.routeGenrator,
       title: 'AllTalk Translate',
+
       // light theme
       theme: ThemeData(
         brightness: Brightness.light,

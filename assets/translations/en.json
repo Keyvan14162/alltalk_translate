@@ -1,0 +1,30 @@
+{
+    "enter_text_to_translate": "Enter text to translate",
+    "add_selected_language": "Add Selected Language",
+    "volume": "Volume",
+    "pitch": "Pitch",
+    "speech_rate": "Speech Rate",
+    "reset": "Reset",
+    "about": "About",
+    "ok": "Ok",
+    "hello": "Hello!",
+    "about_first_part": "about first",
+    "about_second_part": "about second",
+    "already_on_list": "already on list",
+    "added_to_list": "added to list",
+    "language_already_added": "Language already added",
+
+    "turkish": "Turkish",
+    "russian": "Russian",
+    "english_us": "English-US",
+    "korean": "Korean",
+    "urdu": "Urdu",
+    "indian": "Indian",
+    "hungarian": "Hungarian",
+    "french": "French",
+    "deutsch": "Deutsch",
+    "spanish": "Spanish",
+    "romanian": "Romanian",
+    "japanase": "Japanase"
+
+}

@@ -1,7 +1,8 @@
 import 'dart:async';
-
+import 'package:easy_localization/easy_localization.dart';
 import 'package:alltalk_translate/all_talk_icons_icons.dart';
 import 'package:alltalk_translate/color_consts.dart';
+import 'package:alltalk_translate/generated/locale_keys.g.dart';
 import 'package:alltalk_translate/helpers.dart';
 import 'package:alltalk_translate/providers.dart';
 import 'package:alltalk_translate/widgets/my_drawer.dart';
@@ -12,7 +13,6 @@ import 'package:flutter_slidable/flutter_slidable.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:alltalk_translate/country_constants.dart' as country_constants;
 import 'package:internet_connection_checker/internet_connection_checker.dart';
-import 'package:share_plus/share_plus.dart';
 
 class HomePage extends StatefulHookConsumerWidget {
   const HomePage({Key? key}) : super(key: key);
@@ -188,7 +188,7 @@ class _HomePageState extends ConsumerState<HomePage>
                       fontSize: 17,
                       color: backgroundColor.withOpacity(0.6),
                     ),
-                    hintText: 'Enter text to translate',
+                    hintText: LocaleKeys.enter_text_to_translate.tr(),
                     suffixIcon: AnimatedIconButton(
                       icons: const [
                         AnimatedIconItem(
@@ -433,9 +433,9 @@ class _HomePageState extends ConsumerState<HomePage>
                           },
                           child: Row(
                             children: [
-                              const Text(
-                                "Add Selected Language",
-                                style: TextStyle(fontSize: 16),
+                              Text(
+                                LocaleKeys.add_selected_language.tr(),
+                                style: const TextStyle(fontSize: 16),
                               ),
                               // icon
                               AnimatedIconButton(
@@ -476,13 +476,13 @@ class _HomePageState extends ConsumerState<HomePage>
               duration: const Duration(seconds: 3),
               backgroundColor: Colors.white,
               content: Text(
-                "${Helpers.getCountryFullName(selectedCountryAbbreviation)} already on list.",
+                "${Helpers.getCountryFullName(selectedCountryAbbreviation)} ${LocaleKeys.already_on_list.tr()}",
                 style: const TextStyle(
                   color: Colors.black,
                 ),
               ),
               action: SnackBarAction(
-                label: 'Ok',
+                label: LocaleKeys.ok.tr(),
                 onPressed: () {
                   ScaffoldMessenger.of(context).clearSnackBars();
                 },
@@ -507,13 +507,13 @@ class _HomePageState extends ConsumerState<HomePage>
         duration: const Duration(seconds: 3),
         backgroundColor: Colors.white,
         content: Text(
-          "${Helpers.getCountryFullName(selectedCountryAbbreviation)} added to list.",
+          "${Helpers.getCountryFullName(selectedCountryAbbreviation)} ${LocaleKeys.added_to_list.tr()}",
           style: const TextStyle(
             color: Colors.black,
           ),
         ),
         action: SnackBarAction(
-          label: 'Ok',
+          label: LocaleKeys.ok.tr(),
           onPressed: () {},
         ),
       ),

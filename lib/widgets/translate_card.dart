@@ -162,8 +162,8 @@ class _TranslateCardState extends ConsumerState<TranslateCard> {
                 ),
               ),
             ),
-            // header
 
+            // header
             Expanded(
               child: Shimmer.fromColors(
                 direction: ShimmerDirection.ltr,
