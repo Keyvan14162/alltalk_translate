@@ -61,7 +61,7 @@ class _HomePageState extends ConsumerState<HomePage>
   @override
   void dispose() {
     internetConnectionListener.cancel();
-    _textController.dispose();
+    _textController.dispose(); 
     super.dispose();
   }
 
