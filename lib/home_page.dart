@@ -8,6 +8,7 @@ import 'package:alltalk_translate/providers.dart';
 import 'package:alltalk_translate/widgets/my_drawer.dart';
 import 'package:alltalk_translate/widgets/translate_card.dart';
 import 'package:animated_icon_button/animated_icon_button.dart';
+import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_slidable/flutter_slidable.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
@@ -61,7 +62,7 @@ class _HomePageState extends ConsumerState<HomePage>
   @override
   void dispose() {
     internetConnectionListener.cancel();
-    _textController.dispose(); 
+    _textController.dispose();
     super.dispose();
   }
 
@@ -73,54 +74,41 @@ class _HomePageState extends ConsumerState<HomePage>
     primaryColor = Theme.of(context).primaryColor;
     backgroundColor = Theme.of(context).backgroundColor;
 
-    connectionStatusSnackbar();
+    List<Widget> translateCardListItems = createTranslateCardListItems();
+
+    // connectionStatusSnackbar();
 
     return Scaffold(
       appBar: myAppbar(height, width, context),
       drawer: const MyDrawer(),
-      body: NestedScrollView(
-        clipBehavior: Clip.none,
-        headerSliverBuilder: (context, innerBoxIsScrolled) {
-          return [
-            // add lang
-            SliverAppBar(
-              backgroundColor: primaryColor,
-              toolbarHeight: addLangHeight + 20,
-              actions: [
-                addLangWidget(
-                  context,
-                  addLangHeight,
-                ),
-              ],
+      body: SingleChildScrollView(
+        child: Column(
+          children: [
+            // add lang part
+            addLangWidget(
+              context,
+              addLangHeight,
             ),
-          ];
-        },
-        body: Container(
-          color: primaryColor,
-          child: Scrollbar(
-            child: SingleChildScrollView(
-              child: Column(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  SizedBox(
-                    height: height * 0.02,
-                  ),
-                  ListView.builder(
-                    primary: false,
-                    reverse: true,
-                    shrinkWrap: true,
-                    itemCount: ref
-                        .read(translateCardListProvider.notifier)
-                        .state
-                        .length,
-                    itemBuilder: (context, index) {
-                      return createTranslateCardListItems()[index];
-                    },
-                  ),
-                ],
-              ),
+
+            const SizedBox(
+              height: 8,
             ),
-          ),
+            // language list
+            ListView.builder(
+              primary: false,
+              reverse: true,
+              shrinkWrap: true,
+              itemCount:
+                  ref.read(translateCardListProvider.notifier).state.length,
+              itemBuilder: (context, index) {
+                return translateCardListItems[index];
+              },
+            ),
+
+            SizedBox(
+              height: height / 20,
+            ),
+          ],
         ),
       ),
     );
@@ -229,81 +217,62 @@ class _HomePageState extends ConsumerState<HomePage>
     List<Widget> list = List.generate(
       ref.read(translateCardListProvider.notifier).state.length,
       (index) {
-        return Column(
-          children: [
-            Slidable(
-              key: ref
-                  .read(translateCardListProvider.notifier)
-                  .state[index]
-                  .cardKey,
-              startActionPane: ActionPane(
-                motion: const ScrollMotion(),
-                dismissible: DismissiblePane(onDismissed: () {
-                  // SSSSSSSEEEEEEETTTTT SSSSSSTTTTTAAAATTTTEEEE
-                  ref.watch(translateCardListProvider).removeWhere(
-                        (element) =>
-                            element.cardKey ==
-                            ref
-                                .read(translateCardListProvider.notifier)
-                                .state[index]
-                                .cardKey,
-                      );
-                }),
-                children: [
-                  SlidableAction(
-                    onPressed: (context) {},
-                    backgroundColor: ColorConsts.myRed,
-                    foregroundColor: Colors.white,
-                    icon: Icons.delete,
-                    label: 'Delete',
-                  ),
-                ],
+        return Slidable(
+          dragStartBehavior: DragStartBehavior.start,
+          key:
+              ref.read(translateCardListProvider.notifier).state[index].cardKey,
+          startActionPane: ActionPane(
+            motion: const ScrollMotion(),
+            dismissible: DismissiblePane(onDismissed: () {
+              setState(() {
+                ref.watch(translateCardListProvider).removeWhere(
+                      (element) =>
+                          element.cardKey ==
+                          ref
+                              .read(translateCardListProvider.notifier)
+                              .state[index]
+                              .cardKey,
+                    );
+              });
+            }),
+            children: [
+              SlidableAction(
+                onPressed: (context) {},
+                backgroundColor: ColorConsts.myRed,
+                foregroundColor: Colors.white,
+                icon: Icons.delete,
+                label: 'Delete',
               ),
-              endActionPane: ActionPane(
-                motion: const ScrollMotion(),
-                dismissible: DismissiblePane(onDismissed: () {
-                  // SSSSSSSEEEEEEETTTTT SSSSSSTTTTTAAAATTTTEEEE
-                  ref.watch(translateCardListProvider).removeWhere(
-                        (element) =>
-                            element.cardKey ==
-                            ref
-                                .read(translateCardListProvider.notifier)
-                                .state[index]
-                                .cardKey,
-                      );
-                }),
-                children: [
-                  SlidableAction(
-                    onPressed: (context) {},
-                    backgroundColor: ColorConsts.myRed,
-                    foregroundColor: Colors.white,
-                    icon: Icons.delete,
-                    label: 'Delete',
-                  ),
-                ],
+            ],
+          ),
+          endActionPane: ActionPane(
+            motion: const ScrollMotion(),
+            dismissible: DismissiblePane(onDismissed: () {
+              setState(() {
+                ref.watch(translateCardListProvider).removeWhere(
+                      (element) =>
+                          element.cardKey ==
+                          ref
+                              .read(translateCardListProvider.notifier)
+                              .state[index]
+                              .cardKey,
+                    );
+              });
+            }),
+            children: [
+              SlidableAction(
+                onPressed: (context) {},
+                backgroundColor: ColorConsts.myRed,
+                foregroundColor: Colors.white,
+                icon: Icons.delete,
+                label: 'Delete',
               ),
-              child: Container(
-                decoration: BoxDecoration(
-                  borderRadius: BorderRadius.circular(
-                    MediaQuery.of(context).size.width / 20,
-                  ),
-                  boxShadow: [
-                    BoxShadow(
-                      color: Colors.grey.withOpacity(1),
-                      offset: const Offset(0, -1),
-                      blurRadius: myBlurRadius,
-                      spreadRadius: mySPreadRadius,
-                    ),
-                  ],
-                ),
-                child:
-                    ref.read(translateCardListProvider.notifier).state[index],
-              ),
-            ),
-            const SizedBox(
-              height: 0,
-            )
-          ],
+            ],
+          ),
+          child: Card(
+            elevation: 4,
+            child: ref.read(translateCardListProvider.notifier).state[index],
+          ),
         );
       },
     );
@@ -363,106 +332,94 @@ class _HomePageState extends ConsumerState<HomePage>
     return popupMenuItemList;
   }
 
-  addLangWidget(BuildContext context, double addLangHeight) {
-    return Flexible(
-      child: Column(
-        children: [
-          Center(
-            child: Material(
-              child: Container(
-                height: addLangHeight,
-                width: MediaQuery.of(context).size.width,
-                decoration: BoxDecoration(
-                  boxShadow: [
-                    BoxShadow(
-                      color: Colors.grey.withOpacity(0.7),
-                      blurRadius: myBlurRadius,
-                      spreadRadius: mySPreadRadius,
-                    ),
-                  ],
-                  color: primaryColor,
+  Widget addLangWidget(BuildContext context, double addLangHeight) {
+    return Material(
+      child: Container(
+        height: addLangHeight + 10,
+        width: MediaQuery.of(context).size.width,
+        decoration: BoxDecoration(
+          boxShadow: [
+            BoxShadow(
+              color: Colors.grey.withOpacity(0.7),
+              blurRadius: myBlurRadius,
+              spreadRadius: mySPreadRadius,
+            ),
+          ],
+          color: primaryColor,
+        ),
+        child: Row(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            // choose lang
+            Flexible(
+              child: Card(
+                margin: const EdgeInsets.all(0),
+                elevation: 0,
+                shadowColor: Colors.grey.withOpacity(0.5),
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(4.0),
                 ),
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceAround,
-                  children: [
-                    // choose lang
-                    Flexible(
-                      child: Card(
-                        margin: const EdgeInsets.all(0),
-                        elevation: 0,
-                        shadowColor: Colors.grey.withOpacity(0.5),
-                        shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(4.0),
-                        ),
-                        child: Container(
-                          height: 45,
-                          width: 60,
-                          decoration: BoxDecoration(
-                            borderRadius: BorderRadius.circular(4.0),
-                            color: Colors.grey,
-                          ),
-                          child: PopupMenuButton(
-                            itemBuilder: (context) => createPopupMenuItems(),
-                            child: ClipRRect(
-                              borderRadius: BorderRadius.circular(4.0),
-                              child: Image.asset(
-                                'icons/flags/png/$selectedCountryAbbreviation.png',
-                                package: 'country_icons',
-                                errorBuilder: (context, error, stackTrace) {
-                                  return const SizedBox();
-                                },
-                                fit: BoxFit.cover,
-                              ),
-                            ),
-                          ),
-                        ),
+                child: Container(
+                  height: 45,
+                  width: 60,
+                  decoration: BoxDecoration(
+                    borderRadius: BorderRadius.circular(4.0),
+                    color: Colors.grey,
+                  ),
+                  child: PopupMenuButton(
+                    itemBuilder: (context) => createPopupMenuItems(),
+                    child: ClipRRect(
+                      borderRadius: BorderRadius.circular(4.0),
+                      child: Image.asset(
+                        'icons/flags/png/$selectedCountryAbbreviation.png',
+                        package: 'country_icons',
+                        errorBuilder: (context, error, stackTrace) {
+                          return const SizedBox();
+                        },
+                        fit: BoxFit.cover,
                       ),
                     ),
-
-                    // text and button
-                    Row(
-                      children: [
-                        ElevatedButton(
-                          style: ElevatedButton.styleFrom(
-                            elevation: 0,
-                            backgroundColor: primaryColor,
-                            foregroundColor: backgroundColor,
-                          ),
-                          onPressed: () {
-                            addSelectedLanguage();
-                          },
-                          child: Row(
-                            children: [
-                              Text(
-                                LocaleKeys.add_selected_language.tr(),
-                                style: const TextStyle(fontSize: 16),
-                              ),
-                              // icon
-                              AnimatedIconButton(
-                                icons: const [
-                                  AnimatedIconItem(
-                                    icon: Icon(
-                                      AllTalkIcons.plus,
-                                      size: 24,
-                                      color: ColorConsts.myRed,
-                                    ),
-                                  ),
-                                ],
-                                onPressed: () {
-                                  addSelectedLanguage();
-                                },
-                              ),
-                            ],
-                          ),
-                        ),
-                      ],
-                    ),
-                  ],
+                  ),
                 ),
               ),
             ),
-          ),
-        ],
+
+            // text and button
+            ElevatedButton(
+              style: ElevatedButton.styleFrom(
+                elevation: 0,
+                backgroundColor: primaryColor,
+                foregroundColor: backgroundColor,
+              ),
+              onPressed: () {
+                addSelectedLanguage();
+              },
+              child: Row(
+                children: [
+                  Text(
+                    LocaleKeys.add_selected_language.tr(),
+                    style: const TextStyle(fontSize: 16),
+                  ),
+                  // icon
+                  AnimatedIconButton(
+                    icons: const [
+                      AnimatedIconItem(
+                        icon: Icon(
+                          AllTalkIcons.plus,
+                          size: 24,
+                          color: ColorConsts.myRed,
+                        ),
+                      ),
+                    ],
+                    onPressed: () {
+                      addSelectedLanguage();
+                    },
+                  ),
+                ],
+              ),
+            ),
+          ],
+        ),
       ),
     );
   }

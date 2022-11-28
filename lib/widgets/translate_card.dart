@@ -92,6 +92,25 @@ class _TranslateCardState extends ConsumerState<TranslateCard> {
       selectedCountry =
           "${widget.selectedCountryAbbreviation}-${widget.selectedCountryAbbreviation.toUpperCase()}";
     }
+    print("list returned");
+    return ExpansionPanelList(
+      elevation: 0,
+      // dividerColor: Colors.red,
+      expandedHeaderPadding: const EdgeInsets.all(8.0),
+
+      expansionCallback: (panelIndex, isExpanded) {
+        setState(() {
+          myIsExpanded = !isExpanded;
+        });
+      },
+      children: [
+        getExpansionPanelListItems(
+          "snapshot.data.toString()",
+          width,
+          height,
+        ),
+      ],
+    );
     return FutureBuilder(
       future: ref.watch(mainTextProvider).translate(
             to: selectedCountry.split("-")[0].toLowerCase(),
@@ -263,6 +282,7 @@ class _TranslateCardState extends ConsumerState<TranslateCard> {
     return ExpansionPanel(
       canTapOnHeader: true,
       backgroundColor: primaryColor.withOpacity(0.9),
+
       isExpanded: myIsExpanded,
       headerBuilder: (context, isExpanded) => Row(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
