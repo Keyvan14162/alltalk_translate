@@ -96,9 +96,6 @@ flutter:
   - family: AllTalkIcons
     fonts:
      - asset: assets/fonts/AllTalkIcons.ttf
-  - family: FredokaOne
-    fonts:
-     - asset: assets/fonts/FredokaOne-Regular.ttf
   - family: Righteous
     fonts:
      - asset: assets/fonts/Righteous-Regular.ttf

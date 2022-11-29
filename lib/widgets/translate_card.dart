@@ -80,20 +80,7 @@ class _TranslateCardState extends ConsumerState<TranslateCard> {
     primaryColor = Theme.of(context).primaryColor;
     backgroundColor = Theme.of(context).backgroundColor;
 
-    if (widget.selectedCountryAbbreviation == "us") {
-      selectedCountry = "en-US";
-    } else if (widget.selectedCountryAbbreviation == "kr") {
-      selectedCountry = "ko-KR";
-    } else if (widget.selectedCountryAbbreviation == "pk") {
-      selectedCountry = "ur-PK";
-    } else if (widget.selectedCountryAbbreviation == "in") {
-      selectedCountry = "hi-IN";
-    } else if (widget.selectedCountryAbbreviation == "jp") {
-      selectedCountry = "ja-JP";
-    } else {
-      selectedCountry =
-          "${widget.selectedCountryAbbreviation}-${widget.selectedCountryAbbreviation.toUpperCase()}";
-    }
+    setSelectedCountry(widget.selectedCountryAbbreviation);
 
     return FutureBuilder(
       future: ref.watch(mainTextProvider).translate(
@@ -124,6 +111,39 @@ class _TranslateCardState extends ConsumerState<TranslateCard> {
         }
       },
     );
+  }
+
+  setSelectedCountry(String selectedCountryAbbreviation) {
+    if (widget.selectedCountryAbbreviation == "us") {
+      selectedCountry = "en-US";
+    } else if (widget.selectedCountryAbbreviation == "kr") {
+      selectedCountry = "ko-KR";
+    } else if (widget.selectedCountryAbbreviation == "pk") {
+      selectedCountry = "ur-PK";
+    } else if (widget.selectedCountryAbbreviation == "in") {
+      selectedCountry = "hi-IN";
+    } else if (widget.selectedCountryAbbreviation == "jp") {
+      selectedCountry = "ja-JP";
+    } else if (widget.selectedCountryAbbreviation == "dk") {
+      selectedCountry = "da-DK";
+    } else if (widget.selectedCountryAbbreviation == "ee") {
+      selectedCountry = "et-EE";
+    } else if (widget.selectedCountryAbbreviation == "vn") {
+      selectedCountry = "vi-VN";
+    } else if (widget.selectedCountryAbbreviation == "se") {
+      selectedCountry = "sv-SE";
+    } else if (widget.selectedCountryAbbreviation == "gr") {
+      selectedCountry = "el-GR";
+    } else if (widget.selectedCountryAbbreviation == "bd") {
+      selectedCountry = "bn-BD";
+    } else if (widget.selectedCountryAbbreviation == "cz") {
+      selectedCountry = "cs-CZ";
+    } else if (widget.selectedCountryAbbreviation == "ua") {
+      selectedCountry = "uk-UA";
+    } else {
+      selectedCountry =
+          "${widget.selectedCountryAbbreviation}-${widget.selectedCountryAbbreviation.toUpperCase()}";
+    }
   }
 
   expansionPanelItemShimmer(double height) {

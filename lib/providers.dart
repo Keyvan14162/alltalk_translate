@@ -13,7 +13,83 @@ final translateCardListProvider = StateProvider<List<TranslateCard>>((ref) {
   List<TranslateCard> translateCardList = [
     TranslateCard(
       cardKey: UniqueKey(),
+      selectedCountryAbbreviation: "id",
+    ),
+    TranslateCard(
+      cardKey: UniqueKey(),
+      selectedCountryAbbreviation: "az",
+    ),
+    TranslateCard(
+      cardKey: UniqueKey(),
+      selectedCountryAbbreviation: "ua",
+    ),
+    TranslateCard(
+      cardKey: UniqueKey(),
+      selectedCountryAbbreviation: "cz",
+    ),
+    TranslateCard(
+      cardKey: UniqueKey(),
+      selectedCountryAbbreviation: "pl",
+    ),
+    TranslateCard(
+      cardKey: UniqueKey(),
+      selectedCountryAbbreviation: "sk",
+    ),
+    TranslateCard(
+      cardKey: UniqueKey(),
+      selectedCountryAbbreviation: "it",
+    ),
+    TranslateCard(
+      cardKey: UniqueKey(),
+      selectedCountryAbbreviation: "bg",
+    ),
+    TranslateCard(
+      cardKey: UniqueKey(),
+      selectedCountryAbbreviation: "se",
+    ),
+    TranslateCard(
+      cardKey: UniqueKey(),
+      selectedCountryAbbreviation: "bd",
+    ),
+    TranslateCard(
+      cardKey: UniqueKey(),
+      selectedCountryAbbreviation: "lv",
+    ),
+    TranslateCard(
+      cardKey: UniqueKey(),
+      selectedCountryAbbreviation: "gr",
+    ),
+    TranslateCard(
+      cardKey: UniqueKey(),
+      selectedCountryAbbreviation: "vn",
+    ),
+    TranslateCard(
+      cardKey: UniqueKey(),
+      selectedCountryAbbreviation: "fi",
+    ),
+    TranslateCard(
+      cardKey: UniqueKey(),
+      selectedCountryAbbreviation: "pt",
+    ),
+    TranslateCard(
+      cardKey: UniqueKey(),
+      selectedCountryAbbreviation: "ee",
+    ),
+    TranslateCard(
+      cardKey: UniqueKey(),
       selectedCountryAbbreviation: "jp",
+    ),
+    TranslateCard(
+      cardKey: UniqueKey(),
+      selectedCountryAbbreviation: "th",
+    ),
+    TranslateCard(
+      cardKey: UniqueKey(),
+      selectedCountryAbbreviation: "dk",
+    ),
+    TranslateCard(
+      cardKey: UniqueKey(),
+      selectedCountryAbbreviation: "no",
     ),
     TranslateCard(
       cardKey: UniqueKey(),

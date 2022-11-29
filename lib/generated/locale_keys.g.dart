@@ -27,5 +27,24 @@ abstract class  LocaleKeys {
   static const spanish = 'spanish';
   static const romanian = 'romanian';
   static const japanase = 'japanase';
+  static const thai = 'thai';
+  static const norwegian = 'norwegian';
+  static const danish = 'danish';
+  static const portuguese = 'portuguese';
+  static const estonian = 'estonian';
+  static const vietnamase = 'vietnamase';
+  static const swedish = 'swedish';
+  static const greek = 'greek';
+  static const finnish = 'finnish';
+  static const latvian = 'latvian';
+  static const bengali = 'bengali';
+  static const czech = 'czech';
+  static const polish = 'polish';
+  static const slovak = 'slovak';
+  static const italiano = 'italiano';
+  static const bulgarian = 'bulgarian';
+  static const indonesian = 'indonesian';
+  static const ukrainian = 'ukrainian';
+  static const azerbaijani = 'azerbaijani';
 
 }
