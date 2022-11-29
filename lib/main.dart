@@ -55,9 +55,9 @@ class _MyAppState extends State<MyApp> {
         primaryColor: Colors.white,
 
         // dark text, icon etc. color
-        backgroundColor: Color.fromARGB(255, 0, 23, 39),
+        backgroundColor: const Color.fromARGB(255, 0, 23, 39),
 
-        fontFamily: "FredokaOne",
+        fontFamily: "Righteous",
       ),
       // // standard dark theme : ThemData.Dark
       darkTheme: ThemeData(
@@ -70,7 +70,7 @@ class _MyAppState extends State<MyApp> {
 
         // dark text, icon etc. color
         backgroundColor: Colors.white,
-        fontFamily: "FredokaOne",
+        fontFamily: "Righteous",
       ),
       themeMode: _themeMode, // device controls theme
     );

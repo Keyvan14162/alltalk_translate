@@ -318,7 +318,7 @@ class _TranslateCardState extends ConsumerState<TranslateCard> {
                   fontSize: headerSize,
                   color: Colors.red.withOpacity(0.7),
                   fontWeight: FontWeight.bold,
-                  fontFamily: "as",
+                  // fontFamily: "as",
                 ),
               ),
             ),
