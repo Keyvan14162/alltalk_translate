@@ -12,10 +12,10 @@ void main() async {
   SystemChrome.setEnabledSystemUIMode(SystemUiMode.immersiveSticky);
 
   runApp(EasyLocalization(
-      supportedLocales: [Locale('en'), Locale('tr')],
+      supportedLocales: const [Locale('en'), Locale('tr')],
       path: 'assets/translations',
-      fallbackLocale: Locale('en'),
-      assetLoader: CodegenLoader(),
+      fallbackLocale: const Locale('tr'),
+      assetLoader: const CodegenLoader(),
       child: const ProviderScope(child: MyApp())));
 }
 
@@ -66,7 +66,7 @@ class _MyAppState extends State<MyApp> {
 
         primarySwatch: Colors.teal,
         // main background etc. color
-        primaryColor: Color.fromARGB(255, 0, 23, 39),
+        primaryColor: const Color.fromARGB(255, 0, 23, 39),
 
         // dark text, icon etc. color
         backgroundColor: Colors.white,

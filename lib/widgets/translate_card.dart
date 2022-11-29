@@ -1,3 +1,5 @@
+import 'dart:convert';
+
 import 'package:alltalk_translate/all_talk_icons_icons.dart';
 import 'package:alltalk_translate/color_consts.dart';
 import 'package:alltalk_translate/helpers.dart';
@@ -92,25 +94,7 @@ class _TranslateCardState extends ConsumerState<TranslateCard> {
       selectedCountry =
           "${widget.selectedCountryAbbreviation}-${widget.selectedCountryAbbreviation.toUpperCase()}";
     }
-    print("list returned");
-    return ExpansionPanelList(
-      elevation: 0,
-      // dividerColor: Colors.red,
-      expandedHeaderPadding: const EdgeInsets.all(8.0),
 
-      expansionCallback: (panelIndex, isExpanded) {
-        setState(() {
-          myIsExpanded = !isExpanded;
-        });
-      },
-      children: [
-        getExpansionPanelListItems(
-          "snapshot.data.toString()",
-          width,
-          height,
-        ),
-      ],
-    );
     return FutureBuilder(
       future: ref.watch(mainTextProvider).translate(
             to: selectedCountry.split("-")[0].toLowerCase(),
@@ -334,6 +318,7 @@ class _TranslateCardState extends ConsumerState<TranslateCard> {
                   fontSize: headerSize,
                   color: Colors.red.withOpacity(0.7),
                   fontWeight: FontWeight.bold,
+                  fontFamily: "as",
                 ),
               ),
             ),
