@@ -1,6 +1,5 @@
 import 'package:alltalk_translate/generated/locale_keys.g.dart';
 import 'package:easy_localization/easy_localization.dart';
-
 import 'package:alltalk_translate/all_talk_icons_icons.dart';
 import 'package:alltalk_translate/color_consts.dart';
 import 'package:alltalk_translate/main.dart';
@@ -85,15 +84,26 @@ class _MyDrawer extends ConsumerState<MyDrawer> {
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
                     // lang change
-                    IconButton(
+                    ElevatedButton(
+                      style: ElevatedButton.styleFrom(
+                        elevation: 0,
+                        backgroundColor: primaryColor,
+                        foregroundColor: backgroundColor,
+                        splashFactory: NoSplash.splashFactory,
+                      ),
                       onPressed: () {
-                        if (context.locale == Locale("tr")) {
-                          context.setLocale(Locale("en"));
+                        if (context.locale == const Locale("tr")) {
+                          context.setLocale(const Locale("en"));
                         } else {
-                          context.setLocale(Locale("tr"));
+                          context.setLocale(const Locale("tr"));
                         }
                       },
-                      icon: const Icon(Icons.language),
+                      child: Row(
+                        children: [
+                          const Icon(AllTalkIcons.globe_outline),
+                          Text(context.locale.toString().toUpperCase()),
+                        ],
+                      ),
                     ),
 
                     // github
@@ -285,8 +295,8 @@ class _MyDrawer extends ConsumerState<MyDrawer> {
       child: FluidSlider(
         sliderColor: ColorConsts.myRed,
         thumbColor: Theme.of(context).primaryColor,
-        labelsTextStyle: TextStyle(
-          color: Theme.of(context).backgroundColor,
+        labelsTextStyle: const TextStyle(
+          color: Colors.white,
         ),
         showDecimalValue: true,
         start: Icon(

@@ -94,15 +94,26 @@ class _HomePageState extends ConsumerState<HomePage>
               height: 8,
             ),
             // language list
-            ListView.builder(
-              primary: false,
-              reverse: true,
-              shrinkWrap: true,
-              itemCount:
-                  ref.read(translateCardListProvider.notifier).state.length,
-              itemBuilder: (context, index) {
-                return translateCardListItems[index];
-              },
+            Container(
+              color: primaryColor.withOpacity(0.2),
+              child: ListView.builder(
+                primary: false,
+                reverse: true,
+                shrinkWrap: true,
+                itemCount:
+                    ref.read(translateCardListProvider.notifier).state.length,
+                itemBuilder: (context, index) {
+                  return translateCardListItems[index];
+                },
+              ),
+            ),
+
+            Text(
+              LocaleKeys.slide_language_to_remove_language.tr(),
+              style: TextStyle(
+                color: Colors.grey.withOpacity(0.5),
+                fontSize: 12,
+              ),
             ),
 
             SizedBox(
@@ -340,7 +351,7 @@ class _HomePageState extends ConsumerState<HomePage>
         decoration: BoxDecoration(
           boxShadow: [
             BoxShadow(
-              color: Colors.grey.withOpacity(0.7),
+              color: backgroundColor.withOpacity(0.1),
               blurRadius: myBlurRadius,
               spreadRadius: mySPreadRadius,
             ),

@@ -13,6 +13,15 @@ final translateCardListProvider = StateProvider<List<TranslateCard>>((ref) {
   List<TranslateCard> translateCardList = [
     TranslateCard(
       cardKey: UniqueKey(),
+      selectedCountryAbbreviation: "tr",
+    ),
+    TranslateCard(
+      cardKey: UniqueKey(),
+      selectedCountryAbbreviation: "us",
+    ),
+    /*
+    TranslateCard(
+      cardKey: UniqueKey(),
       selectedCountryAbbreviation: "id",
     ),
     TranslateCard(
@@ -113,14 +122,6 @@ final translateCardListProvider = StateProvider<List<TranslateCard>>((ref) {
     ),
     TranslateCard(
       cardKey: UniqueKey(),
-      selectedCountryAbbreviation: "tr",
-    ),
-    TranslateCard(
-      cardKey: UniqueKey(),
-      selectedCountryAbbreviation: "us",
-    ),
-    TranslateCard(
-      cardKey: UniqueKey(),
       selectedCountryAbbreviation: "ru",
     ),
     TranslateCard(
@@ -135,6 +136,7 @@ final translateCardListProvider = StateProvider<List<TranslateCard>>((ref) {
       cardKey: UniqueKey(),
       selectedCountryAbbreviation: "in",
     ),
+    */
   ];
   return translateCardList;
 });
