@@ -2,7 +2,7 @@
     package="com.ismailkeyvan.alltalk_translate">
     <uses-permission android:name="android.permission.INTERNET" />
    <application
-        android:label="alltalk_translate"
+        android:label="AllTalk"
         android:name="${applicationName}"
         android:icon="@mipmap/launcher_icon">
         <activity
