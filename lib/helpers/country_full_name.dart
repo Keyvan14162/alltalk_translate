@@ -1,7 +1,7 @@
 import 'package:alltalk_translate/generated/locale_keys.g.dart';
 import 'package:easy_localization/easy_localization.dart';
 
-class Helpers {
+class CountryFullName {
   static String getCountryFullName(String countryAbbreviation) {
     // farkli ise en-US gibi, 2. yi yaz
     // translations/ icindeki jsonlara ekleyip buraya yaz sonra

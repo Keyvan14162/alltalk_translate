@@ -1,16 +1,16 @@
-import 'dart:convert';
-
-import 'package:alltalk_translate/all_talk_icons_icons.dart';
-import 'package:alltalk_translate/color_consts.dart';
-import 'package:alltalk_translate/helpers.dart';
+import 'package:alltalk_translate/constants/all_talk_icons_icons.dart';
+import 'package:alltalk_translate/constants/color_consts.dart';
+import 'package:alltalk_translate/helpers/country_full_name.dart';
 import 'package:alltalk_translate/providers.dart';
 import 'package:animated_icon_button/animated_icon_button.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_tts/flutter_tts.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:shimmer/shimmer.dart';
 import 'package:translator/translator.dart';
-import 'package:alltalk_translate/country_constants.dart' as country_constants;
+import 'package:alltalk_translate/helpers/country_constants.dart'
+    as country_constants;
 
 class TranslateCard extends StatefulHookConsumerWidget {
   TranslateCard(
@@ -194,7 +194,7 @@ class _TranslateCardState extends ConsumerState<TranslateCard> {
                 highlightColor: ColorConsts.myYellow,
                 period: const Duration(milliseconds: 3000),
                 child: Text(
-                  Helpers.getCountryFullName(
+                  CountryFullName.getCountryFullName(
                     widget.selectedCountryAbbreviation,
                   ),
                   style: TextStyle(
@@ -331,7 +331,7 @@ class _TranslateCardState extends ConsumerState<TranslateCard> {
               highlightColor: Colors.yellow,
               period: const Duration(milliseconds: 3000),
               child: Text(
-                Helpers.getCountryFullName(
+                CountryFullName.getCountryFullName(
                   widget.selectedCountryAbbreviation,
                 ),
                 style: TextStyle(
@@ -413,6 +413,8 @@ class _TranslateCardState extends ConsumerState<TranslateCard> {
                         ),
                       ],
                       onPressed: () {
+                        Clipboard.setData(ClipboardData(text: text));
+
                         ScaffoldMessenger.of(context).showSnackBar(
                           SnackBar(
                             duration: const Duration(seconds: 3),
@@ -508,7 +510,7 @@ class _TranslateCardState extends ConsumerState<TranslateCard> {
                 widget.selectedCountryAbbreviation = countryAbbreviation;
               });
             } else {
-              print("Language already added");
+              // print("Language already added");
             }
           },
           child: Row(
@@ -518,14 +520,14 @@ class _TranslateCardState extends ConsumerState<TranslateCard> {
                 'icons/flags/png/$countryAbbreviation.png',
                 package: 'country_icons',
                 errorBuilder: (context, error, stackTrace) {
-                  print(error);
+                  // print(error);
                   return const SizedBox();
                 },
                 height: 20,
                 width: 30,
               ),
               Text(
-                Helpers.getCountryFullName(
+                CountryFullName.getCountryFullName(
                   element.split("-")[0].toString(),
                 ),
               ),

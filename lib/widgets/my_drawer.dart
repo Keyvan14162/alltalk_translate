@@ -1,7 +1,7 @@
 import 'package:alltalk_translate/generated/locale_keys.g.dart';
 import 'package:easy_localization/easy_localization.dart';
-import 'package:alltalk_translate/all_talk_icons_icons.dart';
-import 'package:alltalk_translate/color_consts.dart';
+import 'package:alltalk_translate/constants/all_talk_icons_icons.dart';
+import 'package:alltalk_translate/constants/color_consts.dart';
 import 'package:alltalk_translate/main.dart';
 import 'package:alltalk_translate/providers.dart';
 import 'package:animated_icon_button/animated_icon_button.dart';
@@ -41,22 +41,14 @@ class _MyDrawer extends ConsumerState<MyDrawer> {
             // profile
             Column(
               children: [
-                Container(
+                SizedBox(
                   height: height / 6,
                   child: Row(
                     children: [
                       // profile image
                       const CircleAvatar(
-                        maxRadius: 52,
-                        child: CircleAvatar(
-                          radius: 52,
-                          backgroundColor: ColorConsts.myBlue,
-                          child: CircleAvatar(
-                            radius: 50,
-                            backgroundImage:
-                                AssetImage("assets/logos/logo.png"),
-                          ),
-                        ),
+                        radius: 50,
+                        backgroundImage: AssetImage("assets/logos/logo.png"),
                       ),
                       const SizedBox(
                         width: 10,
@@ -332,8 +324,34 @@ class _MyDrawer extends ConsumerState<MyDrawer> {
                         "AllTalk",
                       ),
                     ),
-                    content: Text(
-                      "${LocaleKeys.about_first_part.tr()} \n\n ${LocaleKeys.about_second_part.tr()}",
+                    content: Column(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        // main text
+                        Text(
+                          "${LocaleKeys.about_first_part.tr()} \n\n ${LocaleKeys.about_second_part.tr()}",
+                          textAlign: TextAlign.center,
+                        ),
+                        const SizedBox(
+                          height: 30,
+                        ), // instagram link
+                        GestureDetector(
+                          onTap: () async {
+                            if (!await launchUrl(
+                                Uri.parse(
+                                    "https://www.instagram.com/ismail_kyvsn/"),
+                                mode: LaunchMode.externalApplication)) {
+                              throw "Could not launch ";
+                            }
+                          },
+                          child: const Text(
+                            "İsmail Keyvan",
+                            style: TextStyle(
+                              decoration: TextDecoration.underline,
+                            ),
+                          ),
+                        ),
+                      ],
                     ),
                     actions: [
                       TextButton(

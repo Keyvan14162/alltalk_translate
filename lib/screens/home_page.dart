@@ -1,18 +1,20 @@
 import 'dart:async';
 import 'package:easy_localization/easy_localization.dart';
-import 'package:alltalk_translate/all_talk_icons_icons.dart';
-import 'package:alltalk_translate/color_consts.dart';
+import 'package:alltalk_translate/constants/all_talk_icons_icons.dart';
+import 'package:alltalk_translate/constants/color_consts.dart';
 import 'package:alltalk_translate/generated/locale_keys.g.dart';
-import 'package:alltalk_translate/helpers.dart';
+import 'package:alltalk_translate/helpers/country_full_name.dart';
 import 'package:alltalk_translate/providers.dart';
 import 'package:alltalk_translate/widgets/my_drawer.dart';
 import 'package:alltalk_translate/widgets/translate_card.dart';
 import 'package:animated_icon_button/animated_icon_button.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_slidable/flutter_slidable.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
-import 'package:alltalk_translate/country_constants.dart' as country_constants;
+import 'package:alltalk_translate/helpers/country_constants.dart'
+    as country_constants;
 import 'package:internet_connection_checker/internet_connection_checker.dart';
 
 class HomePage extends StatefulHookConsumerWidget {
@@ -76,50 +78,63 @@ class _HomePageState extends ConsumerState<HomePage>
 
     List<Widget> translateCardListItems = createTranslateCardListItems();
 
-    // connectionStatusSnackbar();
+    connectionStatusSnackbar();
 
     return Scaffold(
       appBar: myAppbar(height, width, context),
       drawer: const MyDrawer(),
-      body: SingleChildScrollView(
-        child: Column(
-          children: [
-            // add lang part
-            addLangWidget(
-              context,
-              addLangHeight,
-            ),
+      body: SafeArea(
+        child: Listener(
+          // when touching somewhere remove focus from textfield
+          onPointerDown: (_) {
+            FocusScopeNode currentFocus = FocusScope.of(context);
+            if (!currentFocus.hasPrimaryFocus) {
+              currentFocus.focusedChild?.unfocus();
+            }
+          },
+          child: SingleChildScrollView(
+            child: Column(
+              children: [
+                // add lang part
+                addLangWidget(
+                  context,
+                  addLangHeight,
+                ),
 
-            const SizedBox(
-              height: 8,
-            ),
-            // language list
-            Container(
-              color: primaryColor.withOpacity(0.2),
-              child: ListView.builder(
-                primary: false,
-                reverse: true,
-                shrinkWrap: true,
-                itemCount:
-                    ref.read(translateCardListProvider.notifier).state.length,
-                itemBuilder: (context, index) {
-                  return translateCardListItems[index];
-                },
-              ),
-            ),
+                const SizedBox(
+                  height: 8,
+                ),
+                // language list
+                Container(
+                  color: primaryColor.withOpacity(0.2),
+                  child: ListView.builder(
+                    primary: false,
+                    reverse: true,
+                    shrinkWrap: true,
+                    itemCount: ref
+                        .read(translateCardListProvider.notifier)
+                        .state
+                        .length,
+                    itemBuilder: (context, index) {
+                      return translateCardListItems[index];
+                    },
+                  ),
+                ),
 
-            Text(
-              LocaleKeys.slide_language_to_remove_language.tr(),
-              style: TextStyle(
-                color: Colors.grey.withOpacity(0.5),
-                fontSize: 12,
-              ),
-            ),
+                Text(
+                  LocaleKeys.slide_language_to_remove_language.tr(),
+                  style: TextStyle(
+                    color: Colors.grey.withOpacity(0.5),
+                    fontSize: 12,
+                  ),
+                ),
 
-            SizedBox(
-              height: height / 20,
+                SizedBox(
+                  height: height / 20,
+                ),
+              ],
             ),
-          ],
+          ),
         ),
       ),
     );
@@ -132,14 +147,14 @@ class _HomePageState extends ConsumerState<HomePage>
           SnackBar(
             duration: const Duration(seconds: 100),
             backgroundColor: Colors.white,
-            content: const Text(
-              "No Internet Connection",
-              style: TextStyle(
+            content: Text(
+              LocaleKeys.no_internet_connection.tr(),
+              style: const TextStyle(
                 color: Colors.black,
               ),
             ),
             action: SnackBarAction(
-              label: 'Refresh',
+              label: LocaleKeys.refresh.tr(),
               onPressed: () {
                 setState(() {});
               },
@@ -152,6 +167,10 @@ class _HomePageState extends ConsumerState<HomePage>
 
   AppBar myAppbar(double height, double width, BuildContext context) {
     return AppBar(
+      systemOverlayStyle: const SystemUiOverlayStyle(
+        statusBarColor: Colors.white10,
+      ),
+
       elevation: 0,
       iconTheme: IconThemeData(color: backgroundColor),
 
@@ -176,12 +195,15 @@ class _HomePageState extends ConsumerState<HomePage>
                   ),
                 ),
                 child: TextField(
+                  // for paste
+                  enableInteractiveSelection: true,
                   maxLines: 1,
                   style: TextStyle(
                     fontSize: 17,
                     color: backgroundColor,
                   ),
                   cursorColor: backgroundColor,
+
                   decoration: InputDecoration(
                     hintStyle: TextStyle(
                       fontSize: 17,
@@ -331,7 +353,7 @@ class _HomePageState extends ConsumerState<HomePage>
                 width: 30,
               ),
               Text(
-                Helpers.getCountryFullName(
+                CountryFullName.getCountryFullName(
                   element.split("-")[0].toString(),
                 ),
               ),
@@ -444,7 +466,7 @@ class _HomePageState extends ConsumerState<HomePage>
               duration: const Duration(seconds: 3),
               backgroundColor: Colors.white,
               content: Text(
-                "${Helpers.getCountryFullName(selectedCountryAbbreviation)} ${LocaleKeys.already_on_list.tr()}",
+                "${CountryFullName.getCountryFullName(selectedCountryAbbreviation)} ${LocaleKeys.already_on_list.tr()}",
                 style: const TextStyle(
                   color: Colors.black,
                 ),
@@ -475,7 +497,7 @@ class _HomePageState extends ConsumerState<HomePage>
         duration: const Duration(seconds: 3),
         backgroundColor: Colors.white,
         content: Text(
-          "${Helpers.getCountryFullName(selectedCountryAbbreviation)} ${LocaleKeys.added_to_list.tr()}",
+          "${CountryFullName.getCountryFullName(selectedCountryAbbreviation)} ${LocaleKeys.added_to_list.tr()}",
           style: const TextStyle(
             color: Colors.black,
           ),

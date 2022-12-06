@@ -16,6 +16,8 @@ abstract class  LocaleKeys {
   static const added_to_list = 'added_to_list';
   static const language_already_added = 'language_already_added';
   static const slide_language_to_remove_language = 'slide_language_to_remove_language';
+  static const no_internet_connection = 'no_internet_connection';
+  static const refresh = 'refresh';
   static const turkish = 'turkish';
   static const russian = 'russian';
   static const english_us = 'english_us';

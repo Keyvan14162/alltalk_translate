@@ -2,21 +2,24 @@ import 'package:alltalk_translate/generated/codegen_loader.g.dart';
 import 'package:alltalk_translate/route_generator.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
+
   await EasyLocalization.ensureInitialized();
 
-  SystemChrome.setEnabledSystemUIMode(SystemUiMode.immersiveSticky);
-
-  runApp(EasyLocalization(
+  runApp(
+    EasyLocalization(
       supportedLocales: const [Locale('en'), Locale('tr')],
       path: 'assets/translations',
       fallbackLocale: const Locale('tr'),
       assetLoader: const CodegenLoader(),
-      child: const ProviderScope(child: MyApp())));
+      child: const ProviderScope(
+        child: MyApp(),
+      ),
+    ),
+  );
 }
 
 class MyApp extends StatefulWidget {
