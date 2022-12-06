@@ -43,7 +43,6 @@ class _MyDrawer extends ConsumerState<MyDrawer> {
               crossAxisAlignment: CrossAxisAlignment.center,
               children: [
                 // profile
-
                 Column(
                   children: [
                     SizedBox(
@@ -119,7 +118,7 @@ class _MyDrawer extends ConsumerState<MyDrawer> {
 
                         // play store vote
                         createSocialMediaIcon(AllTalkIcons.star_filled,
-                            "https://play.google.com/store/apps/details?id=com.ismailkeyvan.aktuel_urunler_bim_a101_sok"),
+                            "https://play.google.com/store/apps/details?id=com.ismailkeyvan.alltalk_ceviri"),
 
                         // dark - light mode
                         Flexible(
