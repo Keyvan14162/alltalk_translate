@@ -1,7 +1,7 @@
 # ALLTALK ÇEVİRİ
 Birden çok dile aynı anda çeviri yapabileceğiniz ve çeviriyi ait olduğu dilin aksanı ile dinleyebilceğiniz bir çeviri uygulaması.
 
-<p> <img src="./logos/1024.png" width="350" title="hover text"> </p>
+<p> <img src="./github_images/logo-removebg-preview.png" width="350" title="hover text"> </p>
 
 <a href="https://github.com/Keyvan14162/aktuel_market_kataloglari/stargazers"><img src="https://img.shields.io/github/stars/Keyvan14162/aktuel_market_kataloglari" alt="Stars Badge"/></a>
 <a href="https://github.com/Keyvan14162/aktuel_market_kataloglari/network/members"><img src="https://img.shields.io/github/forks/Keyvan14162/aktuel_market_kataloglari" alt="Forks Badge"/></a>
@@ -12,40 +12,27 @@ Birden çok dile aynı anda çeviri yapabileceğiniz ve çeviriyi ait olduğu di
 
 
 # Ana Sayfa
-> AnimatedPadding
-> CachedNetworkImage
+> InternetConnectionChecker
+> AnimatedIconButton
+> Slidable
 
-Birden çok dile ：
+Birden çok dile aynı ekran üzerinden erişim：
 
-<p> <img src="./logos/1.jpg" width="350" height="710" title="hover text"> </p>
+<p> <img src="./github_images/1.png" width="310" height="672" title="hover text"> <img src="./github_images/2.png" width="310" height="672" title="hover text"></p>
 
-# Katalog Sayfaları
 
-> GridView.builder
+30+ dilden arayüze istediğiniz ekleyin, kullanmadıklarınızzı çıkartın
 
-Seçilen kataloğun tüm sayfalarını tek ekranda görün ve istediklerinizi daha yakından inceleyin：
+<p> <img src="./github_images/4.png" width="310" height="672" title="hover text"> </p>
 
-<p> <img src="./logos/4.jpg" width="350" height="710" title="hover text"> </p>
-
-# Afiş Sayfası
-
-Afişler arasında kolayca gezinin ve daha detaylı incelemek için tıklayın：
-> CarouselSlider
-
-<p> <img src="./logos/3.jpg" width="350" height="710" title="hover text"> </p>
-
-# Detay Sayfası
-> PhotoViewGallery.builder
-
-Afişi yakınlaştırın, ürünleri daha yakından inceleyin：
-
-<p> <img src="./logos/2.jpg" width="350" height="710" title="hover text"> </p>
 
 # Drawer
-> ZoomDrawer
+> FluidSlider
 
-Daha fazla seçenek ve iletişim için drawer menü'yü kullanın：
+Konuşma hızını ve diğer ses özelliklerini konfigüre etmek için,
+Uygulama dilini Türkçe ve İngilizce arasında değiştirmek için,
+Gece modunu kullanmak için drawer menü'yü kullanın：
 
-<p> <img src="./logos/5.jpg" width="350" height="710" title="hover text"> </p>
+<p> <img src="./github_images/5.png" width="310" height="672" title="hover text"> </p>
 
 
