@@ -81,6 +81,7 @@ class _HomePageState extends ConsumerState<HomePage>
     connectionStatusSnackbar();
 
     return Scaffold(
+      backgroundColor: primaryColor,
       appBar: myAppbar(height, width, context),
       drawer: const MyDrawer(),
       body: SafeArea(
@@ -167,9 +168,8 @@ class _HomePageState extends ConsumerState<HomePage>
 
   AppBar myAppbar(double height, double width, BuildContext context) {
     return AppBar(
-      systemOverlayStyle: const SystemUiOverlayStyle(
-        statusBarColor: Colors.white10,
-      ),
+      systemOverlayStyle:
+          const SystemUiOverlayStyle(statusBarColor: ColorConsts.myBlue),
 
       elevation: 0,
       iconTheme: IconThemeData(color: backgroundColor),
@@ -303,7 +303,9 @@ class _HomePageState extends ConsumerState<HomePage>
             ],
           ),
           child: Card(
-            elevation: 4,
+            elevation: 20,
+            clipBehavior: Clip.none,
+            shadowColor: const Color.fromARGB(255, 0, 23, 39),
             child: ref.read(translateCardListProvider.notifier).state[index],
           ),
         );

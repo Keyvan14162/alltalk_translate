@@ -107,7 +107,25 @@ class _TranslateCardState extends ConsumerState<TranslateCard> {
           );
         } else {
           // shimmer
-          return expansionPanelItemShimmer(height);
+          return ExpansionPanelList(
+            elevation: 0,
+            // dividerColor: Colors.red,
+            expandedHeaderPadding: const EdgeInsets.all(8.0),
+            expansionCallback: (panelIndex, isExpanded) {
+              setState(() {
+                myIsExpanded = !isExpanded;
+              });
+            },
+            children: [
+              getExpansionPanelListItems(
+                "toString",
+                width,
+                height,
+              ),
+            ],
+          );
+
+          //expansionPanelItemShimmer(height);
         }
       },
     );
