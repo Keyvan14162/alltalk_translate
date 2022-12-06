@@ -36,222 +36,223 @@ class _MyDrawer extends ConsumerState<MyDrawer> {
         padding: EdgeInsets.fromLTRB(8, height / 40, 0, 0),
         child: SingleChildScrollView(
           physics: const BouncingScrollPhysics(),
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            crossAxisAlignment: CrossAxisAlignment.center,
-            children: [
-              // profile
-              Column(
-                children: [
-                  SizedBox(
-                    height: height / 6,
-                    child: Row(
+          child: SizedBox(
+            height: height - 16,
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              crossAxisAlignment: CrossAxisAlignment.center,
+              children: [
+                // profile
+
+                Column(
+                  children: [
+                    SizedBox(
+                      height: height / 6,
+                      child: Row(
+                        children: [
+                          // profile image
+                          const CircleAvatar(
+                            radius: 50,
+                            backgroundImage:
+                                AssetImage("assets/logos/logo.png"),
+                          ),
+                          const SizedBox(
+                            width: 10,
+                          ),
+                          // header and icons
+                          Expanded(
+                            child: Column(
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              crossAxisAlignment: CrossAxisAlignment.center,
+                              children: [
+                                // kendin bi tane icon yapabilin
+                                Text(
+                                  "AllTalk",
+                                  style: TextStyle(
+                                      fontSize: headerSize,
+                                      color: backgroundColor),
+                                ),
+                              ],
+                            ),
+                          ),
+                        ],
+                      ),
+                    ),
+                    // social media icons
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
                       children: [
-                        // profile image
-                        const CircleAvatar(
-                          radius: 50,
-                          backgroundImage: AssetImage("assets/logos/logo.png"),
-                        ),
-                        const SizedBox(
-                          width: 10,
-                        ),
-                        // header and icons
-                        Expanded(
-                          child: Column(
-                            mainAxisAlignment: MainAxisAlignment.center,
-                            crossAxisAlignment: CrossAxisAlignment.center,
+                        // lang change
+                        ElevatedButton(
+                          style: ElevatedButton.styleFrom(
+                            elevation: 0,
+                            backgroundColor: primaryColor,
+                            foregroundColor: backgroundColor,
+                            splashFactory: NoSplash.splashFactory,
+                          ),
+                          onPressed: () {
+                            if (context.locale == const Locale("tr")) {
+                              context.setLocale(const Locale("en"));
+                            } else {
+                              context.setLocale(const Locale("tr"));
+                            }
+                          },
+                          child: Row(
                             children: [
-                              // kendin bi tane icon yapabilin
-                              Text(
-                                "AllTalk",
-                                style: TextStyle(
-                                    fontSize: headerSize,
-                                    color: backgroundColor),
+                              const Icon(AllTalkIcons.globe_outline),
+                              Text(context.locale.toString().toUpperCase()),
+                            ],
+                          ),
+                        ),
+
+                        // github
+                        createSocialMediaIcon(AllTalkIcons.github,
+                            "https://github.com/Keyvan14162"),
+
+                        // linkedin
+                        createSocialMediaIcon(AllTalkIcons.linkedin,
+                            "https://www.linkedin.com/in/ismail-keyvan/"),
+
+                        // gmail
+                        createSocialMediaIcon(AllTalkIcons.mail,
+                            "mailto:ismailkyvsn2000@gmail.com?subject=Hello%20!&body="),
+
+                        // play store vote
+                        createSocialMediaIcon(AllTalkIcons.star_filled,
+                            "https://play.google.com/store/apps/details?id=com.ismailkeyvan.aktuel_urunler_bim_a101_sok"),
+
+                        // dark - light mode
+                        Flexible(
+                          child: AnimatedIconButton(
+                            icons: const [
+                              AnimatedIconItem(
+                                icon: Icon(
+                                  AllTalkIcons.sun,
+                                ),
+                              ),
+                              AnimatedIconItem(
+                                icon: Icon(
+                                  AllTalkIcons.moon,
+                                ),
                               ),
                             ],
+                            onPressed: () {
+                              if (brightness == Brightness.dark) {
+                                MyApp.of(context).changeTheme(ThemeMode.light);
+                              } else {
+                                MyApp.of(context).changeTheme(ThemeMode.dark);
+                              }
+                            },
                           ),
                         ),
                       ],
                     ),
-                  ),
-                  // social media icons
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      // lang change
-                      ElevatedButton(
-                        style: ElevatedButton.styleFrom(
-                          elevation: 0,
-                          backgroundColor: primaryColor,
-                          foregroundColor: backgroundColor,
-                          splashFactory: NoSplash.splashFactory,
-                        ),
-                        onPressed: () {
-                          if (context.locale == const Locale("tr")) {
-                            context.setLocale(const Locale("en"));
-                          } else {
-                            context.setLocale(const Locale("tr"));
-                          }
-                        },
-                        child: Row(
-                          children: [
-                            const Icon(AllTalkIcons.globe_outline),
-                            Text(context.locale.toString().toUpperCase()),
-                          ],
-                        ),
+                  ],
+                ),
+
+                // sound settings, reset
+                Column(
+                  crossAxisAlignment: CrossAxisAlignment.center,
+                  children: [
+                    // volume
+                    Text(
+                      LocaleKeys.volume.tr(),
+                      style: TextStyle(
+                        fontSize: soundSettingsTextSize,
+                        color: backgroundColor,
                       ),
+                    ),
+                    const SizedBox(
+                      height: 10,
+                    ),
+                    createFluidSlider(
+                      0.0,
+                      1.0,
+                      AllTalkIcons.volume_high,
+                      volumeProvider.notifier,
+                    ),
+                    const SizedBox(
+                      height: 20,
+                    ),
 
-                      // github
-                      createSocialMediaIcon(AllTalkIcons.github,
-                          "https://github.com/Keyvan14162"),
+                    // pitch
+                    Text(
+                      LocaleKeys.pitch.tr(),
+                      style: TextStyle(
+                        fontSize: soundSettingsTextSize,
+                        color: backgroundColor,
+                      ),
+                    ),
+                    const SizedBox(
+                      height: 10,
+                    ),
+                    createFluidSlider(
+                      0.5,
+                      2.0,
+                      AllTalkIcons.mic_outline,
+                      pitchProvider.notifier,
+                    ),
+                    const SizedBox(
+                      height: 20,
+                    ),
 
-                      // linkedin
-                      createSocialMediaIcon(AllTalkIcons.linkedin,
-                          "https://www.linkedin.com/in/ismail-keyvan/"),
+                    // speech rate
+                    Text(
+                      LocaleKeys.speech_rate.tr(),
+                      style: TextStyle(
+                        fontSize: soundSettingsTextSize,
+                        color: backgroundColor,
+                      ),
+                    ),
+                    const SizedBox(
+                      height: 10,
+                    ),
+                    createFluidSlider(
+                      0.1,
+                      1.0,
+                      AllTalkIcons.clock,
+                      speechRateProvider.notifier,
+                    ),
+                    const SizedBox(
+                      height: 20,
+                    ),
 
-                      // gmail
-                      createSocialMediaIcon(AllTalkIcons.mail,
-                          "mailto:ismailkyvsn2000@gmail.com?subject=Hello%20!&body="),
-
-                      // play store vote
-                      createSocialMediaIcon(AllTalkIcons.star_filled,
-                          "https://play.google.com/store/apps/details?id=com.ismailkeyvan.aktuel_urunler_bim_a101_sok"),
-
-                      // dark - light mode
-                      Flexible(
-                        child: AnimatedIconButton(
+                    // reset
+                    Column(
+                      children: [
+                        AnimatedIconButton(
                           icons: const [
                             AnimatedIconItem(
                               icon: Icon(
-                                AllTalkIcons.sun,
-                              ),
-                            ),
-                            AnimatedIconItem(
-                              icon: Icon(
-                                AllTalkIcons.moon,
+                                AllTalkIcons.arrows_cw,
+                                size: 32,
                               ),
                             ),
                           ],
                           onPressed: () {
-                            if (brightness == Brightness.dark) {
-                              MyApp.of(context).changeTheme(ThemeMode.light);
-                            } else {
-                              MyApp.of(context).changeTheme(ThemeMode.dark);
-                            }
+                            setState(() {
+                              ref.read(volumeProvider.notifier).state = 1.0;
+                              ref.read(pitchProvider.notifier).state = 1.0;
+                              ref.read(speechRateProvider.notifier).state = 0.5;
+                            });
                           },
                         ),
-                      ),
-                    ],
-                  ),
-                ],
-              ),
-
-              // sound settings
-              Column(
-                crossAxisAlignment: CrossAxisAlignment.center,
-                children: [
-                  // volume
-                  Text(
-                    LocaleKeys.volume.tr(),
-                    style: TextStyle(
-                      fontSize: soundSettingsTextSize,
-                      color: backgroundColor,
-                    ),
-                  ),
-                  const SizedBox(
-                    height: 10,
-                  ),
-                  createFluidSlider(
-                    0.0,
-                    1.0,
-                    AllTalkIcons.volume_high,
-                    volumeProvider.notifier,
-                  ),
-                  const SizedBox(
-                    height: 20,
-                  ),
-
-                  // pitch
-                  Text(
-                    LocaleKeys.pitch.tr(),
-                    style: TextStyle(
-                      fontSize: soundSettingsTextSize,
-                      color: backgroundColor,
-                    ),
-                  ),
-                  const SizedBox(
-                    height: 10,
-                  ),
-                  createFluidSlider(
-                    0.5,
-                    2.0,
-                    AllTalkIcons.mic_outline,
-                    pitchProvider.notifier,
-                  ),
-                  const SizedBox(
-                    height: 20,
-                  ),
-
-                  // speech rate
-                  Text(
-                    LocaleKeys.speech_rate.tr(),
-                    style: TextStyle(
-                      fontSize: soundSettingsTextSize,
-                      color: backgroundColor,
-                    ),
-                  ),
-                  const SizedBox(
-                    height: 10,
-                  ),
-                  createFluidSlider(
-                    0.1,
-                    1.0,
-                    AllTalkIcons.clock,
-                    speechRateProvider.notifier,
-                  ),
-                  const SizedBox(
-                    height: 20,
-                  ),
-
-                  // reset
-                  Column(
-                    children: [
-                      AnimatedIconButton(
-                        icons: const [
-                          AnimatedIconItem(
-                            icon: Icon(
-                              AllTalkIcons.arrows_cw,
-                              size: 32,
-                            ),
+                        Text(
+                          LocaleKeys.reset.tr(),
+                          style: TextStyle(
+                            fontSize: soundSettingsTextSize,
+                            color: backgroundColor,
                           ),
-                        ],
-                        onPressed: () {
-                          setState(() {
-                            ref.read(volumeProvider.notifier).state = 1.0;
-                            ref.read(pitchProvider.notifier).state = 1.0;
-                            ref.read(speechRateProvider.notifier).state = 0.5;
-                          });
-                        },
-                      ),
-                      Text(
-                        LocaleKeys.reset.tr(),
-                        style: TextStyle(
-                          fontSize: soundSettingsTextSize,
-                          color: backgroundColor,
                         ),
-                      ),
-                    ],
-                  ),
-                ],
-              ),
+                      ],
+                    ),
+                  ],
+                ),
 
-              SizedBox(
-                height: height / 12,
-              ),
-
-              // About
-              createAbout(primaryColor, backgroundColor),
-            ],
+                // About
+                createAbout(primaryColor, backgroundColor),
+              ],
+            ),
           ),
         ),
       ),
@@ -312,83 +313,85 @@ class _MyDrawer extends ConsumerState<MyDrawer> {
   }
 
   createAbout(Color primaryColor, Color backgroundColor) {
-    return Padding(
-      padding: const EdgeInsets.all(8.0),
-      child: Row(
-        mainAxisAlignment: MainAxisAlignment.center,
-        children: [
-          InkWell(
-            onTap: () {
-              showDialog(
-                context: context,
-                builder: (context) {
-                  return AlertDialog(
-                    title: const Center(
-                      child: Text(
-                        "AllTalk",
-                      ),
-                    ),
-                    content: Column(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: [
-                        // main text
-                        Text(
-                          "${LocaleKeys.about_first_part.tr()} \n\n ${LocaleKeys.about_second_part.tr()}",
-                          textAlign: TextAlign.center,
+    return Flexible(
+      child: Padding(
+        padding: const EdgeInsets.all(8.0),
+        child: Row(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            InkWell(
+              onTap: () {
+                showDialog(
+                  context: context,
+                  builder: (context) {
+                    return AlertDialog(
+                      title: const Center(
+                        child: Text(
+                          "AllTalk",
                         ),
-                        const SizedBox(
-                          height: 30,
-                        ), // instagram link
-                        GestureDetector(
-                          onTap: () async {
-                            if (!await launchUrl(
-                                Uri.parse(
-                                    "https://www.instagram.com/ismail_kyvsn/"),
-                                mode: LaunchMode.externalApplication)) {
-                              throw "Could not launch ";
-                            }
-                          },
-                          child: const Text(
-                            "İsmail Keyvan",
-                            style: TextStyle(
-                              decoration: TextDecoration.underline,
+                      ),
+                      content: Column(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          // main text
+                          Text(
+                            "${LocaleKeys.about_first_part.tr()} \n\n ${LocaleKeys.about_second_part.tr()}",
+                            textAlign: TextAlign.center,
+                          ),
+                          const SizedBox(
+                            height: 30,
+                          ), // instagram link
+                          GestureDetector(
+                            onTap: () async {
+                              if (!await launchUrl(
+                                  Uri.parse(
+                                      "https://www.instagram.com/ismail_kyvsn/"),
+                                  mode: LaunchMode.externalApplication)) {
+                                throw "Could not launch ";
+                              }
+                            },
+                            child: const Text(
+                              "İsmail Keyvan",
+                              style: TextStyle(
+                                decoration: TextDecoration.underline,
+                              ),
                             ),
                           ),
+                        ],
+                      ),
+                      actions: [
+                        TextButton(
+                          onPressed: () {
+                            Navigator.of(context).pop();
+                          },
+                          child: Text(LocaleKeys.ok.tr()),
                         ),
                       ],
-                    ),
-                    actions: [
-                      TextButton(
-                        onPressed: () {
-                          Navigator.of(context).pop();
-                        },
-                        child: Text(LocaleKeys.ok.tr()),
-                      ),
-                    ],
-                  );
-                },
-              );
-            },
-            child: Row(
-              children: [
-                Icon(
-                  AllTalkIcons.info_outline,
-                  color: backgroundColor,
-                  size: 14,
-                ),
-                Text(
-                  LocaleKeys.about.tr(),
-                  style: TextStyle(
+                    );
+                  },
+                );
+              },
+              child: Row(
+                children: [
+                  Icon(
+                    AllTalkIcons.info_outline,
                     color: backgroundColor,
-                    decoration: TextDecoration.underline,
-                    decorationThickness: 1.6,
-                    fontSize: 10,
+                    size: 14,
                   ),
-                ),
-              ],
+                  Text(
+                    LocaleKeys.about.tr(),
+                    style: TextStyle(
+                      color: backgroundColor,
+                      decoration: TextDecoration.underline,
+                      decorationThickness: 1.6,
+                      fontSize: 10,
+                    ),
+                  ),
+                ],
+              ),
             ),
-          ),
-        ],
+          ],
+        ),
       ),
     );
   }
