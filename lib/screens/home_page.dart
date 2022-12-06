@@ -168,8 +168,10 @@ class _HomePageState extends ConsumerState<HomePage>
 
   AppBar myAppbar(double height, double width, BuildContext context) {
     return AppBar(
+      /*
       systemOverlayStyle:
           const SystemUiOverlayStyle(statusBarColor: ColorConsts.myBlue),
+      */
 
       elevation: 0,
       iconTheme: IconThemeData(color: backgroundColor),
