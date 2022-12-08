@@ -3,12 +3,12 @@ Birden çok dile aynı anda çeviri yapabileceğiniz ve çeviriyi ait olduğu di
 
 <p> <img src="./github_images/logo-removebg-preview.png" width="350" title="hover text"> </p>
 
-<a href="https://github.com/Keyvan14162/aktuel_market_kataloglari/stargazers"><img src="https://img.shields.io/github/stars/Keyvan14162/aktuel_market_kataloglari" alt="Stars Badge"/></a>
-<a href="https://github.com/Keyvan14162/aktuel_market_kataloglari/network/members"><img src="https://img.shields.io/github/forks/Keyvan14162/aktuel_market_kataloglari" alt="Forks Badge"/></a>
-<a href="https://github.com/Keyvan14162/aktuel_market_kataloglari/pulls"><img src="https://img.shields.io/github/issues-pr/Keyvan14162/aktuel_market_kataloglari" alt="Pull Requests Badge"/></a>
-<a href="https://github.com/Keyvan14162/aktuel_market_kataloglari/issues"><img src="https://img.shields.io/github/issues/Keyvan14162/aktuel_market_kataloglari" alt="Issues Badge"/></a>
-<a href="https://github.com/Keyvan14162/aktuel_market_kataloglari/graphs/contributors"><img alt="GitHub contributors" src="https://img.shields.io/github/contributors/Keyvan14162/awesome-github-profile-readme?color=2b9348"></a>
-<a href="https://github.com/Keyvan14162/aktuel_market_kataloglari/blob/master/LICENSE"><img src="https://img.shields.io/github/license/Keyvan14162/aktuel_market_kataloglari?color=2b9348" alt="License Badge"/></a>
+<a href="https://github.com/Keyvan14162/alltalk_translate/stargazers"><img src="https://img.shields.io/github/stars/Keyvan14162/alltalk_translate" alt="Stars Badge"/></a>
+<a href="https://github.com/Keyvan14162/alltalk_translate/network/members"><img src="https://img.shields.io/github/forks/Keyvan14162/alltalk_translate" alt="Forks Badge"/></a>
+<a href="https://github.com/Keyvan14162/alltalk_translate/pulls"><img src="https://img.shields.io/github/issues-pr/Keyvan14162/alltalk_translate" alt="Pull Requests Badge"/></a>
+<a href="https://github.com/Keyvan14162/alltalk_translate/issues"><img src="https://img.shields.io/github/issues/Keyvan14162/alltalk_translate" alt="Issues Badge"/></a>
+<a href="https://github.com/Keyvan14162/alltalk_translate/graphs/contributors"><img alt="GitHub contributors" src="https://img.shields.io/github/contributors/Keyvan14162/awesome-github-profile-readme?color=2b9348"></a>
+<a href="https://github.com/Keyvan14162/alltalk_translate/blob/master/LICENSE"><img src="https://img.shields.io/github/license/Keyvan14162/alltalk_translate?color=2b9348" alt="License Badge"/></a>
 
 
 # Ana Sayfa
