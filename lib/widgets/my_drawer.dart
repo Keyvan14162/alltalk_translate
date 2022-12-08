@@ -118,7 +118,7 @@ class _MyDrawer extends ConsumerState<MyDrawer> {
 
                         // play store vote
                         createSocialMediaIcon(AllTalkIcons.star_filled,
-                            "https://play.google.com/store/apps/details?id=com.ismailkeyvan.alltalk_ceviri"),
+                            "https://play.google.com/store/apps/details?id=com.ismailkeyvan.alltalk_translate"),
 
                         // dark - light mode
                         Flexible(
