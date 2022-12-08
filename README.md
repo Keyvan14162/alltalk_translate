@@ -16,23 +16,20 @@ Birden çok dile aynı anda çeviri yapabileceğiniz ve çeviriyi ait olduğu di
 > AnimatedIconButton
 > Slidable
 
-Birden çok dile aynı ekran üzerinden erişim：
-
-<p> <img src="./github_images/1.png" width="310" height="672" title="hover text"> <img src="./github_images/2.png" width="310" height="672" title="hover text"></p>
-
-
-30+ dilden arayüze istediğiniz ekleyin, kullanmadıklarınızzı çıkartın
-
-<p> <img src="./github_images/4.png" width="310" height="672" title="hover text"> </p>
+- Birden çok dile aynı ekran üzerinden erişim,
+- Çeivirinizi canlı olarak dinleyin, çevirilen dilin karakterleri şeklinde kopyalayın
+<p> <img src="./github_images/1.png" width="310" height="672" title="ana sayfa"> <img src="./github_images/2.png" width="310" height="672" title="ana sayfa"></p>
 
 
-# Drawer
+# Drawer & Slidable
 > FluidSlider
 
-Konuşma hızını ve diğer ses özelliklerini konfigüre etmek için,
-Uygulama dilini Türkçe ve İngilizce arasında değiştirmek için,
-Gece modunu kullanmak için drawer menü'yü kullanın：
+- 30+ dilden arayüze istediğiniz ekleyin, kullanmadıklarınızı çıkartın
+- Konuşma hızını ve diğer ses özelliklerini konfigüre etmek için,
+- Uygulama dilini Türkçe ve İngilizce arasında değiştirmek için,
+- Gece modunu kullanmak için drawer menü'yü kullanın：
 
-<p> <img src="./github_images/5.png" width="310" height="672" title="hover text"> </p>
+<p> <img src="./github_images/5.png" width="310" height="672" title="drawer menu"> 
+<img src="./github_images/4.png" width="310" height="672" title="ana sayfa"> </p>
 
 
