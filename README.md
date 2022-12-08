@@ -1,51 +1,35 @@
 # ALLTALK ÇEVİRİ
 Birden çok dile aynı anda çeviri yapabileceğiniz ve çeviriyi ait olduğu dilin aksanı ile dinleyebilceğiniz bir çeviri uygulaması.
 
-<p> <img src="./logos/1024.png" width="350" title="hover text"> </p>
+<p> <img src="./github_images/logo-removebg-preview.png" width="350" title="hover text"> </p>
 
-<a href="https://github.com/Keyvan14162/aktuel_market_kataloglari/stargazers"><img src="https://img.shields.io/github/stars/Keyvan14162/aktuel_market_kataloglari" alt="Stars Badge"/></a>
-<a href="https://github.com/Keyvan14162/aktuel_market_kataloglari/network/members"><img src="https://img.shields.io/github/forks/Keyvan14162/aktuel_market_kataloglari" alt="Forks Badge"/></a>
-<a href="https://github.com/Keyvan14162/aktuel_market_kataloglari/pulls"><img src="https://img.shields.io/github/issues-pr/Keyvan14162/aktuel_market_kataloglari" alt="Pull Requests Badge"/></a>
-<a href="https://github.com/Keyvan14162/aktuel_market_kataloglari/issues"><img src="https://img.shields.io/github/issues/Keyvan14162/aktuel_market_kataloglari" alt="Issues Badge"/></a>
-<a href="https://github.com/Keyvan14162/aktuel_market_kataloglari/graphs/contributors"><img alt="GitHub contributors" src="https://img.shields.io/github/contributors/Keyvan14162/awesome-github-profile-readme?color=2b9348"></a>
-<a href="https://github.com/Keyvan14162/aktuel_market_kataloglari/blob/master/LICENSE"><img src="https://img.shields.io/github/license/Keyvan14162/aktuel_market_kataloglari?color=2b9348" alt="License Badge"/></a>
+<a href="https://github.com/Keyvan14162/alltalk_translate/stargazers"><img src="https://img.shields.io/github/stars/Keyvan14162/alltalk_translate" alt="Stars Badge"/></a>
+<a href="https://github.com/Keyvan14162/alltalk_translate/network/members"><img src="https://img.shields.io/github/forks/Keyvan14162/alltalk_translate" alt="Forks Badge"/></a>
+<a href="https://github.com/Keyvan14162/alltalk_translate/pulls"><img src="https://img.shields.io/github/issues-pr/Keyvan14162/alltalk_translate" alt="Pull Requests Badge"/></a>
+<a href="https://github.com/Keyvan14162/alltalk_translate/issues"><img src="https://img.shields.io/github/issues/Keyvan14162/alltalk_translate" alt="Issues Badge"/></a>
+<a href="https://github.com/Keyvan14162/alltalk_translate/graphs/contributors"><img alt="GitHub contributors" src="https://img.shields.io/github/contributors/Keyvan14162/awesome-github-profile-readme?color=2b9348"></a>
+<a href="https://github.com/Keyvan14162/alltalk_translate/blob/master/LICENSE"><img src="https://img.shields.io/github/license/Keyvan14162/alltalk_translate?color=2b9348" alt="License Badge"/></a>
 
 
 # Ana Sayfa
-> AnimatedPadding
-> CachedNetworkImage
+> InternetConnectionChecker
+> AnimatedIconButton
+> Slidable
 
-Birden çok dile ：
+- Birden çok dile aynı ekran üzerinden erişim,
+- Çeivirinizi canlı olarak dinleyin, çevirilen dilin karakterleri şeklinde kopyalayın
+<p> <img src="./github_images/1.png" width="310" height="672" title="ana sayfa"> <img src="./github_images/2.png" width="310" height="672" title="ana sayfa"></p>
 
-<p> <img src="./logos/1.jpg" width="350" height="710" title="hover text"> </p>
 
-# Katalog Sayfaları
+# Drawer & Slidable
+> FluidSlider
 
-> GridView.builder
+- 30+ dilden arayüze istediğiniz ekleyin, kullanmadıklarınızı çıkartın
+- Konuşma hızını ve diğer ses özelliklerini konfigüre etmek için,
+- Uygulama dilini Türkçe ve İngilizce arasında değiştirmek için,
+- Gece modunu kullanmak için drawer menü'yü kullanın：
 
-Seçilen kataloğun tüm sayfalarını tek ekranda görün ve istediklerinizi daha yakından inceleyin：
-
-<p> <img src="./logos/4.jpg" width="350" height="710" title="hover text"> </p>
-
-# Afiş Sayfası
-
-Afişler arasında kolayca gezinin ve daha detaylı incelemek için tıklayın：
-> CarouselSlider
-
-<p> <img src="./logos/3.jpg" width="350" height="710" title="hover text"> </p>
-
-# Detay Sayfası
-> PhotoViewGallery.builder
-
-Afişi yakınlaştırın, ürünleri daha yakından inceleyin：
-
-<p> <img src="./logos/2.jpg" width="350" height="710" title="hover text"> </p>
-
-# Drawer
-> ZoomDrawer
-
-Daha fazla seçenek ve iletişim için drawer menü'yü kullanın：
-
-<p> <img src="./logos/5.jpg" width="350" height="710" title="hover text"> </p>
+<p> <img src="./github_images/5.png" width="310" height="672" title="drawer menu"> 
+<img src="./github_images/4.png" width="310" height="672" title="ana sayfa"> </p>
 
 
