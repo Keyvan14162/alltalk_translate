@@ -168,11 +168,6 @@ class _HomePageState extends ConsumerState<HomePage>
 
   AppBar myAppbar(double height, double width, BuildContext context) {
     return AppBar(
-      /*
-      systemOverlayStyle:
-          const SystemUiOverlayStyle(statusBarColor: ColorConsts.myBlue),
-      */
-
       elevation: 0,
       iconTheme: IconThemeData(color: backgroundColor),
 
@@ -238,7 +233,16 @@ class _HomePageState extends ConsumerState<HomePage>
                           _textController.text;
                     }
                   },
-                  onChanged: (value) {},
+
+                  onChanged: (value) {
+                    if (value.isNotEmpty) {
+                      ref.read(mainTextProvider.notifier).state =
+                          _textController.text;
+                    } else {
+                      ref.read(mainTextProvider.notifier).state =
+                          "I need something to translate";
+                    }
+                  },
                 ),
               ),
             ),
